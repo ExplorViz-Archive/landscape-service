@@ -19,12 +19,19 @@ public final class SampleLoader {
   private SampleLoader() {/* Utility */}
 
 
+  /**
+   * Loads a list of {@link LandscapeRecord} from file {@code samplerecords.json}.
+   *
+   * @return the list of records
+   * @throws IOException if the list could not be loaded
+   */
   public static List<LandscapeRecord> load() throws IOException {
     InputStream recordInputStream =
         SampleLoader.class.getClassLoader().getResourceAsStream(SAMPLEFILE_NAME);
 
     ObjectMapper mapper = new JsonMapper();
-    return mapper.readValue(recordInputStream, new TypeReference<List<LandscapeRecord>>() {});
+    return mapper.readValue(recordInputStream, new TypeReference<List<LandscapeRecord>>() {
+    });
   }
 
 

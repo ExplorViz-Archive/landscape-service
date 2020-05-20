@@ -4,6 +4,10 @@
   "name": "LandscapeRecord",
   "fields": [
     {
+      "name": "id",
+      "type": "string"
+    },
+    {
       "name": "node",
       "type": {
         "name": "Node",

@@ -30,3 +30,7 @@ nb-configuration.xml
 # Gradle
 .gradle/
 build/
+
+# Other
+
+target/
