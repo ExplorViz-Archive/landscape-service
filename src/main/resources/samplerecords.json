@@ -1,0 +1,132 @@
+[
+  {
+    "node": {
+      "ipAddress": "todo",
+      "hostName": "who"
+    },
+    "application": {
+      "name": "UNKNOWN-APPLICATION",
+      "language": "java"
+    },
+    "package$": "net.explorviz.sampleApplication.database.helper",
+    "class$": "SQLConnectionHandler",
+    "method": "createDatabase"
+  },
+  {
+    "node": {
+      "ipAddress": "todo",
+      "hostName": "who"
+    },
+    "application": {
+      "name": "UNKNOWN-APPLICATION",
+      "language": "java"
+    },
+    "package$": "net.explorviz.sampleApplication",
+    "class$": "Main$DatabaseTask",
+    "method": "run"
+  },
+  {
+    "node": {
+      "ipAddress": "todo",
+      "hostName": "who"
+    },
+    "application": {
+      "name": "UNKNOWN-APPLICATION",
+      "language": "java"
+    },
+    "package$": "net.explorviz.sampleApplication.database.helper",
+    "class$": "SQLStatementHandler",
+    "method": "executeStatementHandler"
+  },
+  {
+    "node": {
+      "ipAddress": "todo",
+      "hostName": "who"
+    },
+    "application": {
+      "name": "UNKNOWN-APPLICATION",
+      "language": "java"
+    },
+    "package$": "net.explorviz.sampleApplication.database.helper",
+    "class$": "SQLConnectionHandler",
+    "method": "connect"
+  },
+  {
+    "node": {
+      "ipAddress": "todo",
+      "hostName": "who"
+    },
+    "application": {
+      "name": "UNKNOWN-APPLICATION",
+      "language": "java"
+    },
+    "package$": "net.explorviz.sampleApplication.database.helper",
+    "class$": "SQLConnectionHandler",
+    "method": "disconnect"
+  },
+  {
+    "node": {
+      "ipAddress": "todo",
+      "hostName": "who"
+    },
+    "application": {
+      "name": "UNKNOWN-APPLICATION",
+      "language": "java"
+    },
+    "package$": "net.explorviz.sampleApplication.util",
+    "class$": "RandomNumberGenerator",
+    "method": "getRandomNumber"
+  },
+  {
+    "node": {
+      "ipAddress": "todo",
+      "hostName": "who"
+    },
+    "application": {
+      "name": "UNKNOWN-APPLICATION",
+      "language": "java"
+    },
+    "package$": "net.explorviz.sampleApplication",
+    "class$": "Main$ApplicationTask",
+    "method": "run"
+  },
+  {
+    "node": {
+      "ipAddress": "todo",
+      "hostName": "who"
+    },
+    "application": {
+      "name": "UNKNOWN-APPLICATION",
+      "language": "java"
+    },
+    "package$": "net.explorviz.sampleApplication.application",
+    "class$": "JavaExample",
+    "method": "start"
+  },
+  {
+    "node": {
+      "ipAddress": "todo",
+      "hostName": "who"
+    },
+    "application": {
+      "name": "UNKNOWN-APPLICATION",
+      "language": "java"
+    },
+    "package$": "net.explorviz.sampleApplication.application.math",
+    "class$": "Fibonacci",
+    "method": "calculate"
+  },
+  {
+    "node": {
+      "ipAddress": "todo",
+      "hostName": "who"
+    },
+    "application": {
+      "name": "UNKNOWN-APPLICATION",
+      "language": "java"
+    },
+    "package$": "net.explorviz.sampleApplication.database",
+    "class$": "JDBCExample",
+    "method": "start"
+  }
+]
