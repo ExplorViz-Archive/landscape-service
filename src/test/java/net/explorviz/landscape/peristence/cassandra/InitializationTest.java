@@ -1,46 +1,18 @@
-package net.explorviz.landscape.peristence;
+package net.explorviz.landscape.peristence.cassandra;
 
-import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.cql.ResultSet;
 import com.datastax.oss.driver.api.core.cql.Row;
-import io.quarkus.test.junit.QuarkusTest;
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.Assert;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-@QuarkusTest
-class CassandraDBTest {
-
-  private CassandraDB db;
-  private CqlSession sess;
+public class InitializationTest extends CassandraDBTest{
 
   private static final String GET_ALL_KEYSPACES = "SELECT * FROM system_schema.keyspaces";
   private static final String GET_ALL_TABLES =
       "SELECT * FROM system_schema.tables WHERE keyspace_name = '{}'";
-
-
-  @BeforeAll
-  static void beforeAll() throws IOException, InterruptedException {
-    EmbeddedCassandraServerHelper.startEmbeddedCassandra();
-  }
-
-  @BeforeEach
-  void setUp() {
-    sess = EmbeddedCassandraServerHelper.getSession();
-    db = new CassandraDB(sess);
-  }
-
-  @AfterEach
-  void tearDown() {
-    EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
-  }
 
   @Test
   public void testKeyspaceCreated() {
@@ -68,5 +40,4 @@ class CassandraDBTest {
         CassandraDB.RECORDS_TABLE_NAME);
 
   }
-
 }
