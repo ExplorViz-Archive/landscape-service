@@ -3,7 +3,7 @@ package net.explorviz.landscape.peristence;
 import java.util.List;
 
 /**
- *  Manages (usually persistent) access to a collection of objects.
+ * Manages (usually persistent) access to a collection of objects.
  *
  * @param <T> type of objects the repository manages.
  */
@@ -21,6 +21,7 @@ public interface Repository<T> {
 
   /**
    * Queries the collection for a specific subset
+   *
    * @param spec the specification of the items to retrieve
    * @return a (possibly empty) list containing the queried items
    * @throws QueryException if the query could not be executed

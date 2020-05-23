@@ -7,8 +7,8 @@ import java.util.Map;
 import net.explorviz.landscape.Application;
 import net.explorviz.landscape.LandscapeRecord;
 import net.explorviz.landscape.Node;
-import net.explorviz.landscape.peristence.cassandra.DBHelper;
 import net.explorviz.landscape.peristence.cassandra.CassandraTest;
+import net.explorviz.landscape.peristence.cassandra.DBHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,7 +75,8 @@ class LandscapeRecordMapperTest extends CassandraTest {
   void fromRow() {
     // Tests the conversion but not the codecs...
     mockRow = Mockito.mock(Row.class);
-    Mockito.when(mockRow.getString(DBHelper.COL_TOKEN)).thenReturn(sampleRecord.getLandscapeToken());
+    Mockito.when(mockRow.getString(DBHelper.COL_TOKEN))
+        .thenReturn(sampleRecord.getLandscapeToken());
     Mockito.when(mockRow.getLong(DBHelper.COL_TIMESTAMP)).thenReturn(sampleRecord.getTimestamp());
     Mockito.when(mockRow.getString(DBHelper.COL_METHOD)).thenReturn(sampleRecord.getMethod());
     Mockito.when(mockRow.getString(DBHelper.COL_PACKAGE)).thenReturn(sampleRecord.getPackage$());

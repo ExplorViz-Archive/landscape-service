@@ -1,7 +1,5 @@
 package net.explorviz.landscape.peristence.cassandra;
 
-import com.datastax.oss.driver.api.core.cql.ResultSet;
-import io.quarkus.test.junit.QuarkusTest;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;

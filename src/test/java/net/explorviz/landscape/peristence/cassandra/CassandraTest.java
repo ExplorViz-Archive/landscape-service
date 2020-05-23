@@ -17,7 +17,6 @@ public class CassandraTest {
 
 
 
-
   @BeforeAll
   static void beforeAll() throws IOException, InterruptedException {
     EmbeddedCassandraServerHelper.startEmbeddedCassandra();
@@ -31,7 +30,7 @@ public class CassandraTest {
 
   @AfterEach
   void tearDown() {
-      EmbeddedCassandraServerHelper.cleanDataEmbeddedCassandra(DBHelper.KEYSPACE_NAME);
+    EmbeddedCassandraServerHelper.cleanDataEmbeddedCassandra(DBHelper.KEYSPACE_NAME);
   }
 
 

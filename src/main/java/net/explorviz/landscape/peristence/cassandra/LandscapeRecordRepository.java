@@ -1,15 +1,12 @@
 package net.explorviz.landscape.peristence.cassandra;
 
 import com.datastax.oss.driver.api.core.cql.ResultSet;
-import com.datastax.oss.driver.api.core.cql.Statement;
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
-import com.datastax.oss.driver.api.querybuilder.SchemaBuilder;
 import java.util.List;
 import net.explorviz.landscape.LandscapeRecord;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.peristence.Repository;
 import net.explorviz.landscape.peristence.Specification;
-import net.explorviz.landscape.peristence.cassandra.mapper.LandscapeRecordMapper;
 import net.explorviz.landscape.peristence.cassandra.mapper.ValueMapper;
 import net.explorviz.landscape.peristence.cassandra.specifications.InsertLandscapeRecord;
 

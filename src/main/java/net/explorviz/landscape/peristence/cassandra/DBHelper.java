@@ -133,7 +133,7 @@ public class DBHelper {
     ((MutableCodecRegistry) codecRegistry).register(nodeCodec);
 
     // Register Application codec
-    UserDefinedType applicationUdt =  dbSession.getMetadata().getKeyspace(KEYSPACE_NAME)
+    UserDefinedType applicationUdt = dbSession.getMetadata().getKeyspace(KEYSPACE_NAME)
         .flatMap(ks -> ks.getUserDefinedType(COL_APPLICATION))
         .orElseThrow(IllegalStateException::new);
     TypeCodec<UdtValue> appUdtCodec = codecRegistry.codecFor(applicationUdt);
