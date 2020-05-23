@@ -111,7 +111,7 @@ public class DBHelper {
         .withClusteringColumn(COL_PACKAGE, DataTypes.TEXT)
         .withClusteringColumn(COL_CLASS, DataTypes.TEXT)
         .withClusteringColumn(COL_METHOD, DataTypes.TEXT)
-        .withColumn(COL_TIMESTAMP, DataTypes.DECIMAL);
+        .withColumn(COL_TIMESTAMP, DataTypes.BIGINT);
 
 
     dbSession.execute(createNodeUdt.asCql());
