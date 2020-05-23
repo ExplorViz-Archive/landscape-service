@@ -106,11 +106,11 @@ public class DBHelper {
         .createTable(KEYSPACE_NAME, RECORDS_TABLE_NAME)
         .ifNotExists()
         .withPartitionKey(COL_TOKEN, DataTypes.TEXT)
-        .withColumn(COL_NODE, SchemaBuilder.udt(COL_NODE, true))
-        .withColumn(COL_APPLICATION, SchemaBuilder.udt(COL_APPLICATION, true))
-        .withColumn(COL_PACKAGE, DataTypes.TEXT)
-        .withColumn(COL_CLASS, DataTypes.TEXT)
-        .withColumn(COL_METHOD, DataTypes.TEXT)
+        .withClusteringColumn(COL_NODE, SchemaBuilder.udt(COL_NODE, true))
+        .withClusteringColumn(COL_APPLICATION, SchemaBuilder.udt(COL_APPLICATION, true))
+        .withClusteringColumn(COL_PACKAGE, DataTypes.TEXT)
+        .withClusteringColumn(COL_CLASS, DataTypes.TEXT)
+        .withClusteringColumn(COL_METHOD, DataTypes.TEXT)
         .withColumn(COL_TIMESTAMP, DataTypes.TEXT);
 
 
