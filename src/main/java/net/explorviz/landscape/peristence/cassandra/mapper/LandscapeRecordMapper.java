@@ -41,7 +41,7 @@ public class LandscapeRecordMapper implements ValueMapper<LandscapeRecord> {
 
     return LandscapeRecord.newBuilder()
         .setLandscapeToken(row.getString(DBHelper.COL_TOKEN))
-        .setTimestamp(row.getLong(DBHelper.COL_TIMESTAMP))
+        .setTimestamp(row.getBigDecimal(DBHelper.COL_TIMESTAMP).longValue())
         .setNode(row.get(DBHelper.COL_NODE, Node.class))
         .setApplication(row.get(DBHelper.COL_APPLICATION, Application.class))
         .setPackage$(row.getString(DBHelper.COL_PACKAGE))

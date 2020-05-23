@@ -8,11 +8,15 @@ import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.peristence.cassandra.DBHelper;
 import net.explorviz.landscape.peristence.cassandra.CassandraSpecification;
 import net.explorviz.landscape.peristence.cassandra.mapper.ValueMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Specification to insert a {@link LandscapeRecord} into the datasbe
  */
 public class InsertLandscapeRecord implements CassandraSpecification {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(InsertLandscapeRecord.class);
 
   private LandscapeRecord record;
   private SimpleStatement statement;
@@ -20,13 +24,30 @@ public class InsertLandscapeRecord implements CassandraSpecification {
 
 
   /**
-   * Create a new insertion specification for a given record
+   * Create a new insertion specification for a given record.
+   * Sanitizes the input beforehand.
    *
    * @param record the record to insert
    */
   public InsertLandscapeRecord(LandscapeRecord record, ValueMapper<LandscapeRecord> mapper) {
     this.record = record;
     this.mapper = mapper;
+  }
+
+  /**
+   *
+   */
+  private void sanitize() throws QueryException {
+    if (record.getLandscapeToken() == null || record.getLandscapeToken().isEmpty()) {
+      throw new QueryException("Given record has no landscape token assigned");
+    }
+    if (record.getTimestamp() <= 0) {
+      record.setTimestamp(System.currentTimeMillis());
+      if (LOGGER.isWarnEnabled()) {
+        LOGGER.warn("Record to insert had no timestamp assigned, setting timestamp to now ({})",
+            record.getTimestamp());
+      }
+    }
   }
 
   /**
@@ -43,6 +64,7 @@ public class InsertLandscapeRecord implements CassandraSpecification {
 
   @Override
   public String toQuery() throws QueryException {
+    sanitize();
     // Initialize lazy
     if (this.statement == null) {
       try {
