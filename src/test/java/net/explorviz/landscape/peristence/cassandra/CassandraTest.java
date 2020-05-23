@@ -31,9 +31,7 @@ public class CassandraTest {
 
   @AfterEach
   void tearDown() {
-    try {
-      EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
-    } catch (Throwable ignored) {}
+      EmbeddedCassandraServerHelper.cleanDataEmbeddedCassandra(DBHelper.KEYSPACE_NAME);
   }
 
 

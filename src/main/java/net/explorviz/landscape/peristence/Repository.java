@@ -10,21 +10,14 @@ import java.util.List;
 public interface Repository<T> {
 
   /**
-   * Returns all objects in the collection
+   * Returns all objects in the collection for a given landscape token.
    */
-  List<T> getAll();
+  List<T> getAll(String landscapeToken);
 
   /**
    * Inserts an item into the repository
    */
-  void add(T item);
-
-  /**
-   * Removes an item from the repository
-   * @param item the item to remove
-   */
-  void remove(T item);
-
+  void add(T item) throws QueryException;
 
   /**
    * Queries the collection for a specific subset

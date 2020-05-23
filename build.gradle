@@ -32,7 +32,9 @@ dependencies {
   implementation group: 'com.datastax.oss', name: 'java-driver-core', version: '4.6.1'
   implementation group: 'com.datastax.oss', name: 'java-driver-query-builder', version: '4.6.1'
 
+
   testImplementation 'io.quarkus:quarkus-junit5'
+  testImplementation "org.mockito:mockito-core:2.+"
   testImplementation 'io.rest-assured:rest-assured'
   testImplementation group: 'org.cassandraunit', name: 'cassandra-unit', version: '4.3.1.0'
 }
