@@ -4,8 +4,12 @@
   "name": "LandscapeRecord",
   "fields": [
     {
-      "name": "id",
+      "name": "landscapeToken",
       "type": "string"
+    },
+    {
+      "name": "timestamp",
+      "type": "long"
     },
     {
       "name": "node",

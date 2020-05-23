@@ -5,10 +5,9 @@ import com.datastax.oss.driver.api.core.type.UserDefinedType;
 import com.datastax.oss.driver.api.core.type.codec.MappingCodec;
 import com.datastax.oss.driver.api.core.type.codec.TypeCodec;
 import com.datastax.oss.driver.api.core.type.reflect.GenericType;
-import com.datastax.oss.driver.internal.core.type.DefaultUserDefinedType;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import net.explorviz.landscape.Application;
-import net.explorviz.landscape.peristence.cassandra.CassandraDB;
+import net.explorviz.landscape.peristence.cassandra.DBHelper;
 
 public class ApplicationCodec extends MappingCodec<UdtValue, Application> {
 
@@ -19,8 +18,8 @@ public class ApplicationCodec extends MappingCodec<UdtValue, Application> {
   @Nullable
   @Override
   protected Application innerToOuter(@Nullable UdtValue value) {
-    String name = value.getString(CassandraDB.COL_APP_NAME);
-    String language = value.getString(CassandraDB.COL_APP_LANGUAGE);
+    String name = value.getString(DBHelper.COL_APP_NAME);
+    String language = value.getString(DBHelper.COL_APP_LANGUAGE);
     return new Application(name, language);
   }
 
@@ -28,8 +27,8 @@ public class ApplicationCodec extends MappingCodec<UdtValue, Application> {
   @Override
   protected UdtValue outerToInner(@Nullable Application value) {
     UdtValue udtValue = ((UserDefinedType) getCqlType()).newValue();
-    udtValue.setString(CassandraDB.COL_APP_NAME, value.getName());
-    udtValue.setString(CassandraDB.COL_APP_LANGUAGE, value.getLanguage());
+    udtValue.setString(DBHelper.COL_APP_NAME, value.getName());
+    udtValue.setString(DBHelper.COL_APP_LANGUAGE, value.getLanguage());
     return udtValue;
   }
 }

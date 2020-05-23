@@ -26,7 +26,7 @@ import net.explorviz.landscape.peristence.cassandra.mapper.NodeCodec;
  * {@link #initialize()} prior to using it.
  */
 @Singleton
-public class CassandraDB {
+public class DBHelper {
 
   public static final String KEYSPACE_NAME = "explorviz";
   public static final String RECORDS_TABLE_NAME = "records";
@@ -34,7 +34,8 @@ public class CassandraDB {
   public static final String COL_NODE_IP_ADDRESS = "ip_address";
   public static final String COL_APP_NAME = "name";
   public static final String COL_APP_LANGUAGE = "language";
-  public static final String COL_ID = "id";
+  public static final String COL_TIMESTAMP = "timestamp";
+  public static final String COL_TOKEN = "landscape_token";
   public static final String COL_PACKAGE = "package";
   public static final String COL_CLASS = "class";
   public static final String COL_METHOD = "method";
@@ -48,11 +49,11 @@ public class CassandraDB {
    * @param session the CqlSession
    */
   @Inject
-  public CassandraDB(CqlSession session) {
+  public DBHelper(CqlSession session) {
     this.dbSession = session;
   }
 
-  public CqlSession getDbSession() {
+  public CqlSession getSession() {
     return dbSession;
   }
 
@@ -104,12 +105,14 @@ public class CassandraDB {
     CreateTable createTable = SchemaBuilder
         .createTable(KEYSPACE_NAME, RECORDS_TABLE_NAME)
         .ifNotExists()
-        .withPartitionKey(COL_ID, DataTypes.TEXT)
+        .withPartitionKey(COL_TOKEN, DataTypes.TEXT)
         .withColumn(COL_NODE, SchemaBuilder.udt(COL_NODE, true))
         .withColumn(COL_APPLICATION, SchemaBuilder.udt(COL_APPLICATION, true))
         .withColumn(COL_PACKAGE, DataTypes.TEXT)
         .withColumn(COL_CLASS, DataTypes.TEXT)
-        .withColumn(COL_METHOD, DataTypes.TEXT);
+        .withColumn(COL_METHOD, DataTypes.TEXT)
+        .withColumn(COL_TIMESTAMP, DataTypes.TEXT);
+
 
     dbSession.execute(createNodeUdt.asCql());
     dbSession.execute(createApplicationUdt.asCql());

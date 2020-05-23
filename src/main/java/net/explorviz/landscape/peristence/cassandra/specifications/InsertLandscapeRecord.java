@@ -3,14 +3,10 @@ package net.explorviz.landscape.peristence.cassandra.specifications;
 import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import javax.inject.Inject;
 import net.explorviz.landscape.LandscapeRecord;
 import net.explorviz.landscape.peristence.QueryException;
-import net.explorviz.landscape.peristence.cassandra.CassandraDB;
+import net.explorviz.landscape.peristence.cassandra.DBHelper;
 import net.explorviz.landscape.peristence.cassandra.CassandraSpecification;
-import net.explorviz.landscape.peristence.cassandra.mapper.LandscapeRecordMapper;
 import net.explorviz.landscape.peristence.cassandra.mapper.ValueMapper;
 
 /**
@@ -40,7 +36,7 @@ public class InsertLandscapeRecord implements CassandraSpecification {
    */
   private SimpleStatement createStatement() throws JsonProcessingException {
 
-    return QueryBuilder.insertInto(CassandraDB.KEYSPACE_NAME, CassandraDB.RECORDS_TABLE_NAME)
+    return QueryBuilder.insertInto(DBHelper.KEYSPACE_NAME, DBHelper.RECORDS_TABLE_NAME)
         .values(mapper.toMap(this.record))
         .build();
   }

@@ -1,16 +1,15 @@
 package net.explorviz.landscape.peristence.cassandra;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import com.datastax.oss.driver.api.core.CqlSession;
-import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
+import com.datastax.oss.driver.api.core.cql.ResultSet;
+import io.quarkus.test.junit.QuarkusTest;
 import java.io.IOException;
 import java.util.List;
 import net.explorviz.landscape.LandscapeRecord;
 import net.explorviz.landscape.helper.SampleLoader;
-import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
+import net.explorviz.landscape.peristence.QueryException;
+import net.explorviz.landscape.peristence.cassandra.mapper.LandscapeRecordMapper;
+import net.explorviz.landscape.peristence.cassandra.specifications.InsertLandscapeRecord;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,48 +17,58 @@ import org.junit.jupiter.api.Test;
  * Tests for the {@link LandscapeRecordRepository}. The test are run against an in-memory
  * Cassandra databse.
  */
-class LandscapeRecordRepositoryTest {
+class LandscapeRecordRepositoryTest extends CassandraTest {
 
-  private CassandraDB db;
-  private CqlSession sess;
 
-  @BeforeAll
-  static void beforeAll() throws IOException, InterruptedException {
-    // Start emebedded cassandra instance for testing
-    EmbeddedCassandraServerHelper.startEmbeddedCassandra();
-  }
+  private LandscapeRecordMapper mapper;
+
+  private LandscapeRecordRepository repository;
 
   @BeforeEach
   void setUp() {
-    sess = EmbeddedCassandraServerHelper.getSession();
-    db = new CassandraDB(sess);
-
+    this.db.initialize();
+    mapper = new LandscapeRecordMapper(this.db);
+    this.repository = new LandscapeRecordRepository(this.db, this.mapper);
   }
 
-  @AfterEach
-  void tearDown() {
-    // Clean the cassandra server after each test
-    EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
-  }
-
-  private void fillSampleData() throws IOException {
+  private int fillSampleData() throws IOException {
     List<LandscapeRecord> record = SampleLoader.load();
-    //sess.execute()
+    for (LandscapeRecord r : record) {
+      InsertLandscapeRecord s = new InsertLandscapeRecord(r, mapper);
+      try {
+        sess.execute(s.toQuery());
+      } catch (QueryException e) {
+        e.printStackTrace();
+      }
+    }
+    return record.size();
   }
 
   @Test
-  void getAll() {
+  void getAll() throws IOException {
+    int inserted = fillSampleData();
+    List<LandscapeRecord> got = repository.getAll();
+    Assertions.assertEquals(inserted, got.size());
   }
 
   @Test
   void add() {
   }
 
-  @Test
-  void remove() {
-  }
 
   @Test
   void query() {
+  }
+
+  @Test
+  void testGetAll() {
+  }
+
+  @Test
+  void testAdd() {
+  }
+
+  @Test
+  void testQuery() {
   }
 }

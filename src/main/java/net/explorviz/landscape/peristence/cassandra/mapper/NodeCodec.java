@@ -5,10 +5,9 @@ import com.datastax.oss.driver.api.core.type.UserDefinedType;
 import com.datastax.oss.driver.api.core.type.codec.MappingCodec;
 import com.datastax.oss.driver.api.core.type.codec.TypeCodec;
 import com.datastax.oss.driver.api.core.type.reflect.GenericType;
-import com.datastax.oss.driver.internal.core.type.DefaultUserDefinedType;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import net.explorviz.landscape.Node;
-import net.explorviz.landscape.peristence.cassandra.CassandraDB;
+import net.explorviz.landscape.peristence.cassandra.DBHelper;
 
 public class NodeCodec extends MappingCodec<UdtValue, Node> {
 
@@ -19,8 +18,8 @@ public class NodeCodec extends MappingCodec<UdtValue, Node> {
   @Nullable
   @Override
   protected Node innerToOuter(@Nullable UdtValue value) {
-    String name = value.getString(CassandraDB.COL_NODE_NAME);
-    String ip = value.getString(CassandraDB.COL_NODE_IP_ADDRESS);
+    String name = value.getString(DBHelper.COL_NODE_NAME);
+    String ip = value.getString(DBHelper.COL_NODE_IP_ADDRESS);
     return new Node(ip, name);
   }
 
@@ -28,8 +27,8 @@ public class NodeCodec extends MappingCodec<UdtValue, Node> {
   @Override
   protected UdtValue outerToInner(@Nullable Node value) {
     UdtValue udtValue = ((UserDefinedType) getCqlType()).newValue();
-    udtValue.setString(CassandraDB.COL_NODE_NAME, value.getHostName());
-    udtValue.setString(CassandraDB.COL_NODE_IP_ADDRESS, value.getIpAddress());
+    udtValue.setString(DBHelper.COL_NODE_NAME, value.getHostName());
+    udtValue.setString(DBHelper.COL_NODE_IP_ADDRESS, value.getIpAddress());
     return udtValue;
   }
 }
