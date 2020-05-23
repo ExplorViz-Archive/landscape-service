@@ -25,7 +25,7 @@ public class Main implements QuarkusApplication {
   @Override
   public int run(String... args) throws Exception {
 
-    System.out.println(SampleLoader.load());
+    System.out.println(SampleLoader.loadSampleApplication());
     System.out.println(session);
 
     Quarkus.waitForExit();

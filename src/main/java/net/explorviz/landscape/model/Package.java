@@ -1,6 +1,7 @@
 package net.explorviz.landscape.model;
 
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Abstraction of a package/namespace.
@@ -16,6 +17,11 @@ public class Package {
     this.name = name;
     this.subPackages = subPackages;
     this.classes = classes;
+  }
+
+
+  public Package(String name) {
+    this(name, Collections.emptyList(), Collections.emptyList());
   }
 
   public String getName() {

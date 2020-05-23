@@ -1,6 +1,7 @@
 package net.explorviz.landscape.model;
 
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * A node represent a physical host uniquely identified by its hostname and ip address.
@@ -18,6 +19,10 @@ public class Node {
     this.hostName = hostName;
     this.ipAddress = ipAddress;
     this.applications = applications;
+  }
+
+  public Node(String hostName, String ipAddress) {
+    this(hostName, ipAddress, Collections.emptyList());
   }
 
   public String getHostName() {

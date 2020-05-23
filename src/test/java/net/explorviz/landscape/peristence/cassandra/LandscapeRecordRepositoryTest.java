@@ -36,7 +36,7 @@ class LandscapeRecordRepositoryTest extends CassandraTest {
 
   @Test
   void getAll() throws IOException, QueryException {
-    List<LandscapeRecord> records = SampleLoader.load();
+    List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
     for (LandscapeRecord r : records) {
       InsertLandscapeRecord s = new InsertLandscapeRecord(r, mapper);
       sess.execute(s.toQuery());
@@ -55,7 +55,7 @@ class LandscapeRecordRepositoryTest extends CassandraTest {
 
   @Test
   void addNew() throws IOException, QueryException {
-    List<LandscapeRecord> records = SampleLoader.load();
+    List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
     for (LandscapeRecord r : records) {
       InsertLandscapeRecord s = new InsertLandscapeRecord(r, mapper);
       sess.execute(s.toQuery());
@@ -105,7 +105,7 @@ class LandscapeRecordRepositoryTest extends CassandraTest {
 
   @Test
   void addExisting() throws IOException, QueryException {
-    List<LandscapeRecord> records = SampleLoader.load();
+    List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
     for (LandscapeRecord r : records) {
       InsertLandscapeRecord s = new InsertLandscapeRecord(r, mapper);
       sess.execute(s.toQuery());
