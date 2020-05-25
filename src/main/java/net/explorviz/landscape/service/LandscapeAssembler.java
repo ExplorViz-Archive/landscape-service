@@ -20,7 +20,8 @@ public interface LandscapeAssembler {
    * @return the assembled landscape model
    * @throws LandscapeAssemblyException if the landscape could not be assembled
    */
-  Landscape assembleFromRecords(Collection<LandscapeRecord> records) throws LandscapeAssemblyException;
+  Landscape assembleFromRecords(Collection<LandscapeRecord> records)
+      throws LandscapeAssemblyException;
 
   /**
    * Inserts a new record into an existing landscape model. If the record is already included this
@@ -28,12 +29,11 @@ public interface LandscapeAssembler {
    *
    * @param landscape the landscape
    * @param newRecord the record to insert
-   * @return the same landscape now including the given record
    * @throws LandscapeAssemblyException if the record could not be included
    */
-  default Landscape insert(Landscape landscape, LandscapeRecord newRecord)
+  default void insert(Landscape landscape, LandscapeRecord newRecord)
       throws LandscapeAssemblyException {
-    return insertAll(landscape, Collections.singleton(newRecord));
+    insertAll(landscape, Collections.singleton(newRecord));
   }
 
   /**
@@ -41,11 +41,10 @@ public interface LandscapeAssembler {
    * are ignored. Every new record must have the same landscape token as the landscape.
    *
    * @param landscape the landscape to insert the records into
-   * @param records the records to insert
-   * @return the landscape with the given records inserted
+   * @param records   the records to insert
    * @throws LandscapeAssemblyException if at least one record could not be inserted.
    */
-  Landscape insertAll(Landscape landscape, Collection<LandscapeRecord> records)
+  void insertAll(Landscape landscape, Collection<LandscapeRecord> records)
       throws LandscapeAssemblyException;
 
 

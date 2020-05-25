@@ -1,5 +1,6 @@
 package net.explorviz.landscape.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -17,7 +18,7 @@ public class Landscape {
   }
 
   public Landscape(String token) {
-    this(token, Collections.emptyList());
+    this(token, new ArrayList<>());
   }
 
   public String getToken() {

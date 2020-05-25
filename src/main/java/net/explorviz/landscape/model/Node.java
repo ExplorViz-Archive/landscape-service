@@ -1,5 +1,6 @@
 package net.explorviz.landscape.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -22,7 +23,7 @@ public class Node {
   }
 
   public Node(String hostName, String ipAddress) {
-    this(hostName, ipAddress, Collections.emptyList());
+    this(hostName, ipAddress, new ArrayList<>());
   }
 
   public String getHostName() {

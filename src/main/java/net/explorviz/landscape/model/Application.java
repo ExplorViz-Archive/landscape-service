@@ -1,7 +1,9 @@
 package net.explorviz.landscape.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * An application is the abstraction of any process monitored with ExplorViz.
@@ -12,10 +14,10 @@ public class Application {
   private final String language;
   private final String pid;
 
-  private final Collection<Package> packages;
+  private final List<Package> packages;
 
   public Application(String name, String language, String pid,
-                     Collection<Package> packages) {
+                     List<Package> packages) {
     this.name = name;
     this.language = language;
     this.pid = pid;
@@ -23,7 +25,7 @@ public class Application {
   }
 
   public Application(String name, String language, String pid) {
-    this(name, language, pid, Collections.emptyList());
+    this(name, language, pid, new ArrayList<>());
   }
 
   public String getName() {

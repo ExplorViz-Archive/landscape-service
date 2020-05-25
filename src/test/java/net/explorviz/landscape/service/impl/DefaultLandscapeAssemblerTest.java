@@ -3,6 +3,8 @@ package net.explorviz.landscape.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -86,12 +88,14 @@ class DefaultLandscapeAssemblerTest {
   @Test
   void assembleFromRecordsMultipleTokens() throws IOException, LandscapeAssemblyException {
     List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
+    LandscapeRecord r = LandscapeRecord.newBuilder(records.get(0)).setLandscapeToken("test").build();
+    records.add(r);
     Assertions.assertThrows(LandscapeAssemblyException.class,
         () -> assembler.assembleFromRecords(records));
   }
 
   @Test
-  void assmbleFromEmptyRecords() throws IOException, LandscapeAssemblyException {
+  void assembleFromEmptyRecords() throws IOException, LandscapeAssemblyException {
     Assertions.assertThrows(LandscapeAssemblyException.class,
         () -> assembler.assembleFromRecords(Collections.emptyList()));
   }
@@ -111,12 +115,13 @@ class DefaultLandscapeAssemblerTest {
     String ip = "0.0.0.0";
     String appname = "app";
     String pid = "1";
-    Collection<Clazz> classes =
-        Collections.singleton(new Clazz("TestClass", Collections.singleton("method")));
+    List<Clazz> classes =
+        Collections.singletonList(new Clazz("TestClass", Collections.singleton("method")));
     Package rootPkg1 = new Package("net", Collections.emptyList(), classes);
     Collection<Application> apps = Collections.singletonList(
-        new Application(appname, "java", pid, Collections.singleton(rootPkg1)));
-    Collection<Node> nodes = Collections.singletonList(new Node(hostname, ip, apps));
+        new Application(appname, "java", pid, Collections.singletonList(rootPkg1)));
+    Collection<Node> nodes = new ArrayList<>(
+        Collections.singletonList(new Node(hostname, ip, apps)));
     Landscape landscape = new Landscape("tok", nodes);
 
 
@@ -127,9 +132,10 @@ class DefaultLandscapeAssemblerTest {
     String newMethod = "tstMethod";
     LandscapeRecord toInsert =
         new LandscapeRecord("tok", 123L, new net.explorviz.landscape.Node(hostname, ip),
-            new net.explorviz.landscape.Application(appname, "java"), "net.test", "TestClass", "tstMethod()");
+            new net.explorviz.landscape.Application(appname, "java"), "net.test", "TestClass",
+            "tstMethod()");
 
-    Landscape inserted = assembler.insertAll(landscape, Collections.singleton(toInsert));
+    assembler.insertAll(landscape, Collections.singleton(toInsert));
 
     // TODO: Check if inserted
 

@@ -1,6 +1,7 @@
 package net.explorviz.landscape.model;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -14,6 +15,10 @@ public class Clazz {
   public Clazz(String name, Collection<String> methods) {
     this.name = name;
     this.methods = methods;
+  }
+
+  public Clazz(String name) {
+    this(name, new ArrayList<>());
   }
 
   public String getName() {

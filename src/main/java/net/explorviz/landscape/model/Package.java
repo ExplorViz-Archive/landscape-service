@@ -1,7 +1,9 @@
 package net.explorviz.landscape.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Abstraction of a package/namespace.
@@ -9,11 +11,11 @@ import java.util.Collections;
 public class Package {
 
   private final String name;
-  private final Collection<Package> subPackages;
+  private final List<Package> subPackages;
   private final Collection<Clazz> classes;
 
-  public Package(String name, Collection<Package> subPackages,
-                 Collection<Clazz> classes) {
+  public Package(String name, List<Package> subPackages,
+                 List<Clazz> classes) {
     this.name = name;
     this.subPackages = subPackages;
     this.classes = classes;
@@ -21,14 +23,14 @@ public class Package {
 
 
   public Package(String name) {
-    this(name, Collections.emptyList(), Collections.emptyList());
+    this(name, new ArrayList<>(), new ArrayList<>());
   }
 
   public String getName() {
     return name;
   }
 
-  public Collection<Package> getSubPackages() {
+  public List<Package> getSubPackages() {
     return subPackages;
   }
 
