@@ -1,4 +1,4 @@
-package net.explorviz.landscape.service.impl;
+package net.explorviz.landscape.service.assemble.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -16,7 +16,7 @@ import net.explorviz.landscape.model.Clazz;
 import net.explorviz.landscape.model.Landscape;
 import net.explorviz.landscape.model.Node;
 import net.explorviz.landscape.model.Package;
-import net.explorviz.landscape.service.LandscapeAssemblyException;
+import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

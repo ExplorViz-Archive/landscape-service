@@ -1,4 +1,4 @@
-package net.explorviz.landscape.service.impl;
+package net.explorviz.landscape.service.assemble.impl;
 
 import net.explorviz.landscape.Application;
 import net.explorviz.landscape.LandscapeRecord;

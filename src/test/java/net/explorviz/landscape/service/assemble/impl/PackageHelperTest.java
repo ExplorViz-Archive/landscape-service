@@ -1,4 +1,4 @@
-package net.explorviz.landscape.service.impl;
+package net.explorviz.landscape.service.assemble.impl;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -7,7 +7,7 @@ import net.explorviz.landscape.model.Application;
 import net.explorviz.landscape.model.Landscape;
 import net.explorviz.landscape.model.Node;
 import net.explorviz.landscape.model.Package;
-import net.explorviz.landscape.service.LandscapeAssemblyException;
+import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package net.explorviz.landscape.service;
+package net.explorviz.landscape.service.assemble;
 
 /**
  * Thrown if a landscape could not be assembled

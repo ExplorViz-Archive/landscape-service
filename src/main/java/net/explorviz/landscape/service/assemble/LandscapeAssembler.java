@@ -1,4 +1,4 @@
-package net.explorviz.landscape.service;
+package net.explorviz.landscape.service.assemble;
 
 import java.util.Collection;
 import java.util.Collections;

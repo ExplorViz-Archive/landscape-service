@@ -1,10 +1,8 @@
-package net.explorviz.landscape.service.impl;
+package net.explorviz.landscape.service.assemble.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -14,8 +12,8 @@ import net.explorviz.landscape.model.Clazz;
 import net.explorviz.landscape.model.Landscape;
 import net.explorviz.landscape.model.Node;
 import net.explorviz.landscape.model.Package;
-import net.explorviz.landscape.service.LandscapeAssembler;
-import net.explorviz.landscape.service.LandscapeAssemblyException;
+import net.explorviz.landscape.service.assemble.LandscapeAssembler;
+import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 
 @ApplicationScoped
 public class DefaultLandscapeAssembler implements LandscapeAssembler {

@@ -1,15 +1,11 @@
-package net.explorviz.landscape.service.impl;
+package net.explorviz.landscape.service.assemble.impl;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
-import javax.swing.text.html.Option;
 import net.explorviz.landscape.model.Application;
 import net.explorviz.landscape.model.Clazz;
 import net.explorviz.landscape.model.Landscape;
 import net.explorviz.landscape.model.Node;
 import net.explorviz.landscape.model.Package;
-import net.explorviz.landscape.service.LandscapeAssemblyException;
 
 public final class AssemblyUtils {
 
