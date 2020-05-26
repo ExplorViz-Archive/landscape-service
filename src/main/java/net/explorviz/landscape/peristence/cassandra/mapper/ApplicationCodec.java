@@ -20,7 +20,8 @@ public class ApplicationCodec extends MappingCodec<UdtValue, Application> {
   protected Application innerToOuter(@Nullable UdtValue value) {
     String name = value.getString(DBHelper.COL_APP_NAME);
     String language = value.getString(DBHelper.COL_APP_LANGUAGE);
-    return new Application(name, language);
+    String pid = value.getString(DBHelper.COL_APP_PID);
+    return new Application(name, pid, language);
   }
 
   @Nullable
@@ -29,6 +30,7 @@ public class ApplicationCodec extends MappingCodec<UdtValue, Application> {
     UdtValue udtValue = ((UserDefinedType) getCqlType()).newValue();
     udtValue.setString(DBHelper.COL_APP_NAME, value.getName());
     udtValue.setString(DBHelper.COL_APP_LANGUAGE, value.getLanguage());
+    udtValue.setString(DBHelper.COL_APP_PID, value.getPid());
     return udtValue;
   }
 }

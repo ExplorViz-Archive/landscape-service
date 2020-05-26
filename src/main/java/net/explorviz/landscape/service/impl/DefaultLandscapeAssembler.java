@@ -63,7 +63,7 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
 
       // Find application in node or insert new
       String appName = insertMe.getApplication().getName();
-      String appPid = "todo"; //insertMe.getApplication().getPid();
+      String appPid = insertMe.getApplication().getPid();
       String appLanguage = insertMe.getApplication().getLanguage();
       Application app;
       Optional<Application> foundApp =

@@ -30,10 +30,15 @@ public class DBHelper {
 
   public static final String KEYSPACE_NAME = "explorviz";
   public static final String RECORDS_TABLE_NAME = "records";
+
   public static final String COL_NODE_NAME = "name";
   public static final String COL_NODE_IP_ADDRESS = "ip_address";
+
   public static final String COL_APP_NAME = "name";
   public static final String COL_APP_LANGUAGE = "language";
+  public static final String COL_APP_PID = "pid";
+
+
   public static final String COL_TIMESTAMP = "timestamp";
   public static final String COL_TOKEN = "landscape_token";
   public static final String COL_PACKAGE = "package";
@@ -100,6 +105,7 @@ public class DBHelper {
         .createType(KEYSPACE_NAME, COL_APPLICATION)
         .ifNotExists()
         .withField(COL_APP_NAME, DataTypes.TEXT)
+        .withField(COL_APP_PID, DataTypes.TEXT)
         .withField(COL_APP_LANGUAGE, DataTypes.TEXT);
 
     CreateTable createTable = SchemaBuilder

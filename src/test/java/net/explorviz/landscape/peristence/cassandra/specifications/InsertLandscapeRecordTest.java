@@ -25,7 +25,7 @@ class InsertLandscapeRecordTest extends CassandraTest {
   @Test
   void valid() throws QueryException {
     Node node = new Node("0.0.0.0", "localhost");
-    Application app = new Application("SampleApplication", "java");
+    Application app = new Application("SampleApplication", "1234", "java");
     String package$ = "net.explorviz.test";
     String class$ = "SampleClass";
     String method = "sampleMethod()";
@@ -42,14 +42,14 @@ class InsertLandscapeRecordTest extends CassandraTest {
     InsertLandscapeRecord ilr = new InsertLandscapeRecord(sampleRecord, mapper);
     String query = ilr.toQuery();
     String expected =
-        "INSERT INTO explorviz.records (node,package,application,method,landscape_token,class,timestamp) VALUES ({name:'localhost',ip_address:'0.0.0.0'},'net.explorviz.test',{name:'SampleApplication',language:'java'},'sampleMethod()','tok','SampleClass',1590231993321)";
+        "INSERT INTO explorviz.records (node,package,application,method,landscape_token,class,timestamp) VALUES ({name:'localhost',ip_address:'0.0.0.0'},'net.explorviz.test',{name:'SampleApplication',pid:'1234',language:'java'},'sampleMethod()','tok','SampleClass',1590231993321)";
     Assertions.assertEquals(expected, query);
   }
 
   @Test
   void noToken() throws QueryException {
     Node node = new Node("0.0.0.0", "localhost");
-    Application app = new Application("SampleApplication", "java");
+    Application app = new Application("SampleApplication", "1234", "java");
     String package$ = "net.explorviz.test";
     String class$ = "SampleClass";
     String method = "sampleMethod()";

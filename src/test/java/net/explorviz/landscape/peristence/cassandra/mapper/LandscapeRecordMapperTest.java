@@ -29,7 +29,7 @@ class LandscapeRecordMapperTest extends CassandraTest {
     db.initialize();
     // Setup a sample LandscapeRecord object to test with
     Node node = new Node("0.0.0.0", "localhost");
-    Application app = new Application("SampleApplication", "java");
+    Application app = new Application("SampleApplication", "1234", "java");
     String package$ = "net.explorviz.test";
     String class$ = "SampleClass";
     String method = "sampleMethod()";

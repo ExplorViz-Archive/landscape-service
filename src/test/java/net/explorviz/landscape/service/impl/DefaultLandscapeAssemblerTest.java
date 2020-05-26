@@ -120,7 +120,7 @@ class DefaultLandscapeAssemblerTest {
 
     Package rootPkg1 = new Package("net", new ArrayList<>(), classes);
     Collection<Application> apps = new ArrayList<>(Collections.singletonList(
-        new Application(appname, "java", "todo", new ArrayList<>(Collections.singletonList(rootPkg1)))));
+        new Application(appname, "java", pid, new ArrayList<>(Collections.singletonList(rootPkg1)))));
     Collection<Node> nodes = new ArrayList<>(
         new ArrayList<>(Collections.singletonList(new Node(hostname, ip, apps))));
     Landscape landscape = new Landscape("tok", nodes);
@@ -133,7 +133,7 @@ class DefaultLandscapeAssemblerTest {
     String newMethod = "tstMethod";
     LandscapeRecord toInsert =
         new LandscapeRecord("tok", 123L, new net.explorviz.landscape.Node(ip, hostname),
-            new net.explorviz.landscape.Application(appname, "java"), newPkg, newClass,
+            new net.explorviz.landscape.Application(appname, pid, "java"), newPkg, newClass,
             newMethod);
 
     assembler.insertAll(landscape, Collections.singleton(toInsert));

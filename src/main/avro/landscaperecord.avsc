@@ -29,6 +29,7 @@
         "type": "record",
         "fields": [
           {"name": "name", "type": "string"},
+          {"name": "pid", "type": "string"},
           {"name": "language", "type": "string", "default": "java"}
         ]
       }

@@ -61,7 +61,7 @@ class LandscapeRecordRepositoryTest extends CassandraTest {
       sess.execute(s.toQuery());
     }
     Node node = new Node("0.0.0.0", "localhost");
-    Application app = new Application("SampleApplication", "java");
+    Application app = new Application("SampleApplication", "1234",  "java");
     String package$ = "net.explorviz.test";
     String class$ = "SampleClass";
     String method = "sampleMethod()";
@@ -86,7 +86,7 @@ class LandscapeRecordRepositoryTest extends CassandraTest {
   @Test
   void addWithoutToken() {
     Node node = new Node("0.0.0.0", "localhost");
-    Application app = new Application("SampleApplication", "java");
+    Application app = new Application("SampleApplication", "1234", "java");
     String package$ = "net.explorviz.test";
     String class$ = "SampleClass";
     String method = "sampleMethod()";
