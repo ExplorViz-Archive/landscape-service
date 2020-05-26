@@ -26,8 +26,8 @@ class DefaultLandscapeAssemblerTest {
 
   private DefaultLandscapeAssembler assembler;
 
-  // Stats of the "simple" sample records (samplerecordss/sampleApplication.json)
-  // If `sampleApplication.json` is modified this values need to be adjusted accordingly
+  // Stats of the "simple" sample records (samplerecordss/sampleApplicationRecords.json)
+  // If `sampleApplicationRecords.json` is modified this values need to be adjusted accordingly
   private final String token = "samplelandscape";
   private final String nodeIp = "1.2.3.4";
   private final String nodeName = "testhost";
@@ -52,7 +52,7 @@ class DefaultLandscapeAssemblerTest {
 
     Landscape generated = assembler.assembleFromRecords(singleTokenRecords);
 
-    // Theses stats change if `sampleApplication.json` is modified!
+    // Theses stats change if `sampleApplicationRecords.json` is modified!
     Assertions.assertEquals(records.get(0).getLandscapeToken(), generated.getToken());
     Assertions.assertEquals(1, generated.getNodes().size());
 

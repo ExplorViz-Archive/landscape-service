@@ -1,0 +1,119 @@
+{
+  "token": "samplelandscape",
+  "nodes": [
+    {
+      "hostName": "testhost",
+      "ipAddress": "1.2.3.4",
+      "applications": [
+        {
+          "name": "UNKNOWN-APPLICATION",
+          "language": "java",
+          "pid": "1234",
+          "packages": [
+            {
+              "name": "net",
+              "subPackages": [
+                {
+                  "name": "explorviz",
+                  "subPackages": [
+                    {
+                      "name": "sampleApplication",
+                      "subPackages": [
+                        {
+                          "name": "application",
+                          "subPackages": [
+                            {
+                              "name": "math",
+                              "subPackages": [],
+                              "classes": [
+                                {
+                                  "name": "Fibonacci",
+                                  "methods": [
+                                    "calculate"
+                                  ]
+                                }
+                              ]
+                            }
+                          ],
+                          "classes": [
+                            {
+                              "name": "JavaExample",
+                              "methods": [
+                                "start"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "database",
+                          "subPackages": [
+                            {
+                              "name": "helper",
+                              "subPackages": [],
+                              "classes": [
+                                {
+                                  "name": "SQLConnectionHandler",
+                                  "methods": [
+                                    "connect",
+                                    "createDatabase",
+                                    "disconnect"
+                                  ]
+                                },
+                                {
+                                  "name": "SQLStatementHandler",
+                                  "methods": [
+                                    "executeStatementHandler"
+                                  ]
+                                }
+                              ]
+                            }
+                          ],
+                          "classes": [
+                            {
+                              "name": "JDBCExample",
+                              "methods": [
+                                "start"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "util",
+                          "subPackages": [],
+                          "classes": [
+                            {
+                              "name": "RandomNumberGenerator",
+                              "methods": [
+                                "getRandomNumber"
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "classes": [
+                        {
+                          "name": "Main$ApplicationTask",
+                          "methods": [
+                            "run"
+                          ]
+                        },
+                        {
+                          "name": "Main$DatabaseTask",
+                          "methods": [
+                            "run"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "classes": []
+                }
+              ],
+              "classes": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
