@@ -8,6 +8,7 @@ import com.datastax.oss.driver.api.core.type.codec.TypeCodec;
 import com.datastax.oss.driver.api.core.type.codec.registry.CodecRegistry;
 import com.datastax.oss.driver.api.core.type.codec.registry.MutableCodecRegistry;
 import com.datastax.oss.driver.api.querybuilder.SchemaBuilder;
+import com.datastax.oss.driver.api.querybuilder.schema.CreateIndex;
 import com.datastax.oss.driver.api.querybuilder.schema.CreateKeyspace;
 import com.datastax.oss.driver.api.querybuilder.schema.CreateTable;
 import com.datastax.oss.driver.api.querybuilder.schema.CreateType;
@@ -16,6 +17,8 @@ import javax.inject.Singleton;
 import net.explorviz.landscape.LandscapeRecord;
 import net.explorviz.landscape.peristence.cassandra.mapper.ApplicationCodec;
 import net.explorviz.landscape.peristence.cassandra.mapper.NodeCodec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Wrapper class for accessing the Cassandra database.
@@ -27,6 +30,8 @@ import net.explorviz.landscape.peristence.cassandra.mapper.NodeCodec;
  */
 @Singleton
 public class DBHelper {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(DBHelper.class);
 
   public static final String KEYSPACE_NAME = "explorviz";
   public static final String RECORDS_TABLE_NAME = "records";
@@ -120,9 +125,21 @@ public class DBHelper {
         .withColumn(COL_TIMESTAMP, DataTypes.BIGINT);
 
 
+    // Create index on timestamps for efficient querying
+    CreateIndex createTSIndex = SchemaBuilder.createIndex("timestamp_index")
+        .ifNotExists()
+        .onTable(KEYSPACE_NAME, RECORDS_TABLE_NAME)
+        .andColumn(COL_TIMESTAMP);
+
+
     dbSession.execute(createNodeUdt.asCql());
     dbSession.execute(createApplicationUdt.asCql());
     dbSession.execute(createTable.asCql());
+    dbSession.execute(createTSIndex.asCql());
+
+    if (LOGGER.isInfoEnabled()) {
+      LOGGER.info("Created records table and associated types");
+    }
 
   }
 
@@ -146,6 +163,9 @@ public class DBHelper {
     ApplicationCodec applicationCodec = new ApplicationCodec(appUdtCodec);
     ((MutableCodecRegistry) codecRegistry).register(applicationCodec);
 
+    if (LOGGER.isInfoEnabled()) {
+      LOGGER.info("Registered codecs");
+    }
   }
 
 }

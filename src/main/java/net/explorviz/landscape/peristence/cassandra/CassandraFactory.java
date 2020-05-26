@@ -17,8 +17,6 @@ public class CassandraFactory {
   public CassandraFactory() {
     // TODO read from config values
     CqlSessionBuilder builder = CqlSession.builder();
-    builder.addContactPoint(new InetSocketAddress("127.0.0.1", 9042));
-    builder.withLocalDatacenter("local");
     this.session = builder.build();
   }
 

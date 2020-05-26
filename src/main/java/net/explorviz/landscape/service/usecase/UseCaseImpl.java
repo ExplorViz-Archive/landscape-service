@@ -37,7 +37,7 @@ public class UseCaseImpl implements UseCases {
       throws LandscapeException {
 
 
-    Specification spec = new FindRecordsBetweenTimestamps(from, to);
+    Specification spec = new FindRecordsBetweenTimestamps(landscapeToken, from, to);
     List<LandscapeRecord> recordList;
     Landscape buildLandscape;
 

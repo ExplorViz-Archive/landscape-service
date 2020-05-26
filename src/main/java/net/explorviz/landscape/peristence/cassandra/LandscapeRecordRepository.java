@@ -3,6 +3,7 @@ package net.explorviz.landscape.peristence.cassandra;
 import com.datastax.oss.driver.api.core.cql.ResultSet;
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
 import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
 import net.explorviz.landscape.LandscapeRecord;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.peristence.Repository;
@@ -13,6 +14,7 @@ import net.explorviz.landscape.peristence.cassandra.specifications.InsertLandsca
 /**
  * Cassandra-backed repository to access and save {@link LandscapeRecord} entities.
  */
+@ApplicationScoped
 public class LandscapeRecordRepository implements Repository<LandscapeRecord> {
 
 
@@ -26,6 +28,7 @@ public class LandscapeRecordRepository implements Repository<LandscapeRecord> {
    */
   public LandscapeRecordRepository(DBHelper db, ValueMapper<LandscapeRecord> mapper) {
     this.db = db;
+    db.initialize();
     this.mapper = mapper;
   }
 
