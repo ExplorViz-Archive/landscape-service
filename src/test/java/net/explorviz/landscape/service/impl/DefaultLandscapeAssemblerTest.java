@@ -88,7 +88,8 @@ class DefaultLandscapeAssemblerTest {
   @Test
   void assembleFromRecordsMultipleTokens() throws IOException, LandscapeAssemblyException {
     List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
-    LandscapeRecord r = LandscapeRecord.newBuilder(records.get(0)).setLandscapeToken("test").build();
+    LandscapeRecord r =
+        LandscapeRecord.newBuilder(records.get(0)).setLandscapeToken("test").build();
     records.add(r);
     Assertions.assertThrows(LandscapeAssemblyException.class,
         () -> assembler.assembleFromRecords(records));
@@ -115,13 +116,13 @@ class DefaultLandscapeAssemblerTest {
     String ip = "0.0.0.0";
     String appname = "app";
     String pid = "1";
-    List<Clazz> classes =
-        Collections.singletonList(new Clazz("TestClass", Collections.singleton("method")));
-    Package rootPkg1 = new Package("net", Collections.emptyList(), classes);
-    Collection<Application> apps = Collections.singletonList(
-        new Application(appname, "java", pid, Collections.singletonList(rootPkg1)));
+    List<Clazz> classes = new ArrayList<>(Arrays.asList(new Clazz("TestClass", new ArrayList<>(Collections.singleton("method")))));
+
+    Package rootPkg1 = new Package("net", new ArrayList<>(), classes);
+    Collection<Application> apps = new ArrayList<>(Collections.singletonList(
+        new Application(appname, "java", "todo", new ArrayList<>(Collections.singletonList(rootPkg1)))));
     Collection<Node> nodes = new ArrayList<>(
-        Collections.singletonList(new Node(hostname, ip, apps)));
+        new ArrayList<>(Collections.singletonList(new Node(hostname, ip, apps))));
     Landscape landscape = new Landscape("tok", nodes);
 
 
@@ -131,13 +132,29 @@ class DefaultLandscapeAssemblerTest {
     String newPkg = "net.test";
     String newMethod = "tstMethod";
     LandscapeRecord toInsert =
-        new LandscapeRecord("tok", 123L, new net.explorviz.landscape.Node(hostname, ip),
-            new net.explorviz.landscape.Application(appname, "java"), "net.test", "TestClass",
-            "tstMethod()");
+        new LandscapeRecord("tok", 123L, new net.explorviz.landscape.Node(ip, hostname),
+            new net.explorviz.landscape.Application(appname, "java"), newPkg, newClass,
+            newMethod);
 
     assembler.insertAll(landscape, Collections.singleton(toInsert));
 
     // TODO: Check if inserted
+    Node foundNode = landscape.getNodes().stream().filter(n -> n.getIpAddress().equals(ip))
+        .filter(n -> n.getHostName().equals(hostname))
+        .findAny().orElseThrow();
+    Application foundApp =
+        foundNode.getApplications().stream().filter(a -> a.getName().equals(appname))
+            .filter(a -> a.getLanguage().equals("java")).findAny().orElseThrow();
+
+    Package foundPkg =
+        foundApp.getPackages().stream().filter(p -> p.getName().equals("net")).findAny()
+            .orElseThrow()
+            .getSubPackages().stream().filter(p -> p.getName().equals("test")).findAny()
+            .orElseThrow();
+    Clazz foundClazz =
+        foundPkg.getClasses().stream().filter(c -> c.getName().equals(newClass)).findAny()
+            .orElseThrow();
+    Assertions.assertTrue(foundClazz.getMethods().stream().anyMatch(m -> m.equals(newMethod)));
 
   }
 }

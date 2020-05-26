@@ -31,8 +31,7 @@ class AssemblyUtilsTest {
     Package root = PackageHelper.toHierarchy("net.example.foo".split("\\."));
     Package examplePkg = root.getSubPackages().get(0);
     examplePkg.getSubPackages().add(new Package("bar"));
-    app = new Application("App", "java", "pid", Collections.singletonList(root));
-
+    app = new Application("App", "java", "pid", new ArrayList<>(Arrays.asList(root)));
     nodeA = new Node("host1", "1.2.3.4", Collections.singleton(app));
     nodeB = new Node("host2", "4.5.6.7", Collections.emptyList());
     landscape = new Landscape("tok", Arrays.asList(nodeA, nodeB));
