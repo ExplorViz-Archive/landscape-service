@@ -1,10 +1,13 @@
 package net.explorviz.landscape.resources;
 
+import java.awt.*;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import net.explorviz.landscape.model.Landscape;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
@@ -22,6 +25,7 @@ public class LandscapeResource {
   }
 
   @GET
+  @Produces(MediaType.APPLICATION_JSON)
   public Landscape getLandscape(
       @QueryParam("token") String token,
       @QueryParam("from") Long from,

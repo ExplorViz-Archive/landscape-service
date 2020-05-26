@@ -28,6 +28,8 @@ sourceSets.main.java.srcDirs = ['build/generated-main-avro-java','src/main/java'
 dependencies {
   implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
   implementation 'io.quarkus:quarkus-resteasy'
+  implementation 'io.quarkus:quarkus-resteasy-jackson'
+
   implementation group: 'org.apache.avro', name: 'avro', version: '1.9.2'
   implementation group: 'com.datastax.oss', name: 'java-driver-core', version: '4.6.1'
   implementation group: 'com.datastax.oss', name: 'java-driver-query-builder', version: '4.6.1'
