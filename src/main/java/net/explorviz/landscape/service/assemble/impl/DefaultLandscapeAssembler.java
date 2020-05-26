@@ -30,7 +30,7 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
       throws LandscapeAssemblyException {
 
     final String token = records.stream().findFirst()
-        .orElseThrow(() -> new LandscapeAssemblyException("At least one record must be given"))
+        .orElseThrow(NoRecordsException::new)
         .getLandscapeToken();
 
     // Create empty landscape and insert all records
@@ -48,16 +48,15 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
 
     // Check if all records belong to the same landscape (i.e. check token)
     if (!sameToken(token, records)) {
-      throw new LandscapeAssemblyException("All records must have the same token");
+      throw new InvalidRecordException("All records must have the same token");
     }
 
     for (LandscapeRecord insertMe : records) {
 
-      try {
-        validator.validate(insertMe);
-      } catch (InvalidRecordException e) {
-        throw new LandscapeAssemblyException("Collection contain invalid record", e);
-      }
+
+      // Throws if invalid
+      validator.validate(insertMe);
+
 
       // Find node in landscape or insert new
       String hostName = insertMe.getNode().getHostName();

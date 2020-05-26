@@ -1,7 +1,8 @@
 package net.explorviz.landscape.service.usecase;
 
 import net.explorviz.landscape.model.Landscape;
-import net.explorviz.landscape.service.LandscapeException;
+import net.explorviz.landscape.peristence.QueryException;
+import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 
 public interface UseCases {
 
@@ -11,7 +12,8 @@ public interface UseCases {
    * @param landscapeToken the token of the landscape to assemble
    * @return the landscape assembled out of all records associated to the given token
    */
-  default Landscape BuildLandscape(String landscapeToken) throws LandscapeException {
+  default Landscape buildLandscape(String landscapeToken)
+      throws QueryException, LandscapeAssemblyException {
     return this.BuildLandscapeBetweeen(landscapeToken, 0, System.currentTimeMillis());
   }
 
@@ -27,7 +29,8 @@ public interface UseCases {
    * @return the landscape assembled out of all records with the given token and matching the time
    *     constraint
    */
-  default Landscape BuildLandscapeFrom(String landscapeToken, long fromTimestamp) throws LandscapeException  {
+  default Landscape BuildLandscapeFrom(String landscapeToken, long fromTimestamp)
+      throws QueryException, LandscapeAssemblyException {
     return this
         .BuildLandscapeBetweeen(landscapeToken, fromTimestamp, System.currentTimeMillis());
   }
@@ -42,7 +45,8 @@ public interface UseCases {
    * @return the landscape assembled out of all records with the given token and matching the time
    *     constraint
    */
-  default Landscape BuildLandscapeTo(String landscapeToken, long toTimestamp) throws LandscapeException {
+  default Landscape BuildLandscapeTo(String landscapeToken, long toTimestamp)
+      throws QueryException, LandscapeAssemblyException {
     return this.BuildLandscapeBetweeen(landscapeToken,0, toTimestamp);
   }
 
@@ -58,6 +62,7 @@ public interface UseCases {
    * @return the landscape assembled out of all records with the given token and matching the time
    *     constraint
    */
-  Landscape BuildLandscapeBetweeen(String landscapeToken, long from, long to) throws LandscapeException ;
+  Landscape BuildLandscapeBetweeen(String landscapeToken, long from, long to)
+      throws  LandscapeAssemblyException, QueryException;
 
 }

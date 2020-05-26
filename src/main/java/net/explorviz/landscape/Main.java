@@ -1,6 +1,5 @@
 package net.explorviz.landscape;
 
-import com.datastax.oss.driver.api.core.CqlSession;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.quarkus.runtime.Quarkus;
@@ -39,7 +38,7 @@ public class Main implements QuarkusApplication {
   @Override
   public int run(String... args) throws Exception {
     insertSampleData();
-    Landscape build = useCases.BuildLandscape("samplelandscape");
+    Landscape build = useCases.buildLandscape("samplelandscape");
 
     ObjectMapper mapper = new JsonMapper();
     System.out.println(mapper.writeValueAsString(build));
