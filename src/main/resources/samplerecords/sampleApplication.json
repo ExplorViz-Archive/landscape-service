@@ -8,6 +8,7 @@
     },
     "application": {
       "name": "UNKNOWN-APPLICATION",
+      "pid": "1234",
       "language": "java"
     },
     "package$": "net.explorviz.sampleApplication.database.helper",
@@ -23,6 +24,7 @@
     },
     "application": {
       "name": "UNKNOWN-APPLICATION",
+      "pid": "1234",
       "language": "java"
     },
     "package$": "net.explorviz.sampleApplication",
@@ -38,6 +40,7 @@
     },
     "application": {
       "name": "UNKNOWN-APPLICATION",
+      "pid": "1234",
       "language": "java"
     },
     "package$": "net.explorviz.sampleApplication.database.helper",
@@ -53,6 +56,7 @@
     },
     "application": {
       "name": "UNKNOWN-APPLICATION",
+      "pid": "1234",
       "language": "java"
     },
     "package$": "net.explorviz.sampleApplication.database.helper",
@@ -68,6 +72,7 @@
     },
     "application": {
       "name": "UNKNOWN-APPLICATION",
+      "pid": "1234",
       "language": "java"
     },
     "package$": "net.explorviz.sampleApplication.database.helper",
@@ -83,6 +88,7 @@
     },
     "application": {
       "name": "UNKNOWN-APPLICATION",
+      "pid": "1234",
       "language": "java"
     },
     "package$": "net.explorviz.sampleApplication.util",
@@ -98,6 +104,7 @@
     },
     "application": {
       "name": "UNKNOWN-APPLICATION",
+      "pid": "1234",
       "language": "java"
     },
     "package$": "net.explorviz.sampleApplication",
@@ -113,6 +120,7 @@
     },
     "application": {
       "name": "UNKNOWN-APPLICATION",
+      "pid": "1234",
       "language": "java"
     },
     "package$": "net.explorviz.sampleApplication.application",
@@ -128,6 +136,7 @@
     },
     "application": {
       "name": "UNKNOWN-APPLICATION",
+      "pid": "1234",
       "language": "java"
     },
     "package$": "net.explorviz.sampleApplication.application.math",
@@ -143,6 +152,7 @@
     },
     "application": {
       "name": "UNKNOWN-APPLICATION",
+      "pid": "1234",
       "language": "java"
     },
     "package$": "net.explorviz.sampleApplication.database",

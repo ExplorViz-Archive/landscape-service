@@ -38,7 +38,8 @@ class DefaultLandscapeAssemblerTest {
 
   @BeforeEach
   void setUp() {
-    this.assembler = new DefaultLandscapeAssembler();
+    RecordValidator validator = new RecordValidator();
+    this.assembler = new DefaultLandscapeAssembler(validator);
   }
 
   @Test

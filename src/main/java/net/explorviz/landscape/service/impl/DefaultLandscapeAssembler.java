@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import net.explorviz.landscape.LandscapeRecord;
 import net.explorviz.landscape.model.Application;
 import net.explorviz.landscape.model.Clazz;
@@ -19,6 +20,12 @@ import net.explorviz.landscape.service.LandscapeAssemblyException;
 @ApplicationScoped
 public class DefaultLandscapeAssembler implements LandscapeAssembler {
 
+  private RecordValidator validator;
+
+  @Inject
+  public DefaultLandscapeAssembler(RecordValidator validator) {
+    this.validator = validator;
+  }
 
   @Override
   public Landscape assembleFromRecords(Collection<LandscapeRecord> records)
@@ -47,6 +54,12 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
     }
 
     for (LandscapeRecord insertMe : records) {
+
+      try {
+        validator.validate(insertMe);
+      } catch (InvalidRecordException e) {
+        throw new LandscapeAssemblyException("Collection contain invalid record", e);
+      }
 
       // Find node in landscape or insert new
       String hostName = insertMe.getNode().getHostName();
