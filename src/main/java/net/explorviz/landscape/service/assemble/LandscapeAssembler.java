@@ -2,12 +2,13 @@ package net.explorviz.landscape.service.assemble;
 
 import java.util.Collection;
 import java.util.Collections;
-import net.explorviz.landscape.LandscapeRecord;
+
+import net.explorviz.landscape.flat.LandscapeRecord;
 import net.explorviz.landscape.model.Landscape;
 
 /**
  * Contains method to build a landscape model out of a set of
- * {@link net.explorviz.landscape.LandscapeRecord}s.
+ * {@link net.explorviz.landscape.flat.LandscapeRecord}s.
  */
 public interface LandscapeAssembler {
 

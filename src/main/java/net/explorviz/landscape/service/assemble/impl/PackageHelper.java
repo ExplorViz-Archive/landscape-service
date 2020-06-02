@@ -1,5 +1,6 @@
 package net.explorviz.landscape.service.assemble.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import net.explorviz.landscape.model.Application;
 import net.explorviz.landscape.model.Package;
@@ -80,12 +81,12 @@ public final class PackageHelper {
     if (packages == null || packages.length == 0) {
       return null;
     }
-    Package root = new Package(packages[0]);
+    Package root = new Package(packages[0], new ArrayList<>(), new ArrayList<>());
     Package currentPkg = root;
     Collection<Package> current;
     for (int i = 1; i < packages.length; i++) {
       current = currentPkg.getSubPackages();
-      currentPkg = new Package(packages[i]);
+      currentPkg = new Package(packages[i], new ArrayList<>(), new ArrayList<>());
       current.add(currentPkg);
     }
     return root;

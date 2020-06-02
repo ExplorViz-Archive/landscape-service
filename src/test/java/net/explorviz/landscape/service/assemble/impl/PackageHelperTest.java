@@ -1,5 +1,6 @@
 package net.explorviz.landscape.service.assemble.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -24,11 +25,11 @@ public class PackageHelperTest {
   void setUp() {
     Package root = PackageHelper.toHierarchy("net.example.foo".split("\\."));
     Package examplePkg = root.getSubPackages().get(0);
-    examplePkg.getSubPackages().add(new Package("bar"));
+    examplePkg.getSubPackages().add(new Package("bar", new ArrayList<>(), new ArrayList<>()));
     app = new Application("App", "java", "pid", Collections.singletonList(root));
 
-    nodeA = new Node("host1", "1.2.3.4", Collections.singleton(app));
-    nodeB = new Node("host2", "4.5.6.7", Collections.emptyList());
+    nodeA = new Node("1.2.3.4", "host1", Collections.singletonList(app));
+    nodeB = new Node("4.5.6.7", "host2", Collections.emptyList());
     landscape = new Landscape("tok", Arrays.asList(nodeA, nodeB));
   }
 

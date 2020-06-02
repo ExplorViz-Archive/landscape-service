@@ -1,9 +1,9 @@
 package net.explorviz.landscape.service.assemble.impl;
 
 import javax.enterprise.context.ApplicationScoped;
-import net.explorviz.landscape.Application;
-import net.explorviz.landscape.LandscapeRecord;
-import net.explorviz.landscape.Node;
+import net.explorviz.landscape.flat.Application;
+import net.explorviz.landscape.flat.LandscapeRecord;
+import net.explorviz.landscape.flat.Node;
 
 @ApplicationScoped
 public class RecordValidator {

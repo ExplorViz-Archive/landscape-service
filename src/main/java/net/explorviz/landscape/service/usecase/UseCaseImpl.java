@@ -3,7 +3,7 @@ package net.explorviz.landscape.service.usecase;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import net.explorviz.landscape.LandscapeRecord;
+import net.explorviz.landscape.flat.LandscapeRecord;
 import net.explorviz.landscape.model.Landscape;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.peristence.Repository;

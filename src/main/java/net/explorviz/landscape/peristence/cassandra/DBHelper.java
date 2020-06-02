@@ -14,7 +14,6 @@ import com.datastax.oss.driver.api.querybuilder.schema.CreateTable;
 import com.datastax.oss.driver.api.querybuilder.schema.CreateType;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.explorviz.landscape.LandscapeRecord;
 import net.explorviz.landscape.peristence.cassandra.mapper.ApplicationCodec;
 import net.explorviz.landscape.peristence.cassandra.mapper.NodeCodec;
 import org.slf4j.Logger;

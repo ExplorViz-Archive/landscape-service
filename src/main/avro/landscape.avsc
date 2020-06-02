@@ -1,0 +1,80 @@
+{
+  "namespace": "net.explorviz.landscape.model",
+  "type": "record",
+  "name": "Landscape",
+  "fields": [
+    {
+      "name": "landscapeToken",
+      "type": "string"
+    },
+    {
+      "name": "nodes",
+      "type": {
+        "type": "array",
+        "items": {
+          "name": "Node",
+          "type": "record",
+          "fields": [
+            {"name": "ipAddress", "type": "string"},
+            {"name": "hostName", "type": "string"},
+            {
+              "name": "applications",
+              "type": {
+                "type": "array",
+                "items": {
+                  "name": "Application",
+                  "type": "record",
+                  "fields": [
+                    {"name": "name", "type": "string"},
+                    {"name": "language", "type": "string"},
+                    {"name": "pid", "type": "string"},
+                    {
+                      "name": "packages",
+                      "type": {
+                        "type": "array",
+                        "items": {
+                          "name": "Package",
+                          "type": "record",
+                          "fields": [
+                            {"name": "name", "type": "string"},
+                            {
+                              "name": "subPackages",
+                              "type": {
+                                "type": "array",
+                                "items": "Package"
+                              }
+                            },
+                            {
+                              "name": "classes",
+                              "type": {
+                                "type": "array",
+                                "items": {
+                                  "name": "Class",
+                                  "type": "record",
+                                  "fields": [
+                                    {"name": "name", "type": "string"},
+                                    {
+                                      "name": "methods",
+                                      "type": {
+                                        "type": "array",
+                                        "items": "string"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

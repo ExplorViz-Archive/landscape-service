@@ -4,7 +4,7 @@ import com.datastax.oss.driver.api.core.cql.ResultSet;
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
-import net.explorviz.landscape.LandscapeRecord;
+import net.explorviz.landscape.flat.LandscapeRecord;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.peristence.Repository;
 import net.explorviz.landscape.peristence.Specification;

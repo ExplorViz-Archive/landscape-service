@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import net.explorviz.landscape.Application;
-import net.explorviz.landscape.LandscapeRecord;
-import net.explorviz.landscape.Node;
+import net.explorviz.landscape.flat.Application;
+import net.explorviz.landscape.flat.LandscapeRecord;
+import net.explorviz.landscape.flat.Node;
 import net.explorviz.landscape.peristence.cassandra.DBHelper;
 
 @ApplicationScoped

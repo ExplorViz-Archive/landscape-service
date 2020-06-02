@@ -8,6 +8,7 @@ import io.quarkus.runtime.annotations.QuarkusMain;
 import java.io.IOException;
 import java.util.List;
 import javax.inject.Inject;
+import net.explorviz.landscape.flat.LandscapeRecord;
 import net.explorviz.landscape.helper.SampleLoader;
 import net.explorviz.landscape.model.Landscape;
 import net.explorviz.landscape.peristence.QueryException;
@@ -38,11 +39,6 @@ public class Main implements QuarkusApplication {
   @Override
   public int run(String... args) throws Exception {
     insertSampleData();
-    Landscape build = useCases.buildLandscape("samplelandscape");
-
-    ObjectMapper mapper = new JsonMapper();
-    System.out.println(mapper.writeValueAsString(build));
-
     Quarkus.waitForExit();
     return 0;
   }

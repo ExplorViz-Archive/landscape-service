@@ -1,6 +1,7 @@
 package net.explorviz.landscape.resources;
 
 import java.awt.*;
+import java.util.ArrayList;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
@@ -36,7 +37,7 @@ public class LandscapeResource {
     }
 
     int c = (from == null ? 0 : 1) + (to == null ? 0 : 2);
-    Landscape buildLandscape = new Landscape(token);
+    Landscape buildLandscape = new Landscape(token, new ArrayList<>());
     try {
       switch (c) {
         case 0: // Both null

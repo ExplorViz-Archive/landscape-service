@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import net.explorviz.landscape.model.Application;
-import net.explorviz.landscape.model.Clazz;
+import net.explorviz.landscape.model.Class;
 import net.explorviz.landscape.model.Landscape;
 import net.explorviz.landscape.model.Node;
 import net.explorviz.landscape.model.Package;
@@ -26,9 +26,9 @@ class AssemblyUtilsTest {
   void setUp() {
     Package root = PackageHelper.toHierarchy("net.example.foo".split("\\."));
     Package examplePkg = root.getSubPackages().get(0);
-    examplePkg.getSubPackages().add(new Package("bar"));
-    app = new Application("App", "java", "pid", new ArrayList<>(Arrays.asList(root)));
-    nodeA = new Node("host1", "1.2.3.4", Collections.singleton(app));
+    examplePkg.getSubPackages().add(new Package("bar", new ArrayList<>(), new ArrayList<>()));
+    app = new Application("App", "java", "pid", new ArrayList<>(Collections.singletonList(root)));
+    nodeA = new Node("1.2.3.4", "host1", Collections.singletonList(app));
     nodeB = new Node("host2", "4.5.6.7", Collections.emptyList());
     landscape = new Landscape("tok", Arrays.asList(nodeA, nodeB));
   }
@@ -50,7 +50,8 @@ class AssemblyUtilsTest {
 
   @Test
   void findApplicationExisting() {
-    Application toFind = new Application(app.getName(), app.getLanguage(), app.getPid());
+    Application toFind =
+        new Application(app.getName(), app.getLanguage(), app.getPid(), new ArrayList<>());
     Optional<Application> got = AssemblyUtils
         .findApplication(nodeA, toFind.getPid(), toFind.getName(), toFind.getLanguage());
     Assertions.assertTrue(got.isPresent());
@@ -61,19 +62,21 @@ class AssemblyUtilsTest {
 
   @Test
   void findClazzExisting() {
-    List<Clazz> classes = Arrays.asList(new Clazz("A"), new Clazz("B"));
+    List<Class> classes =
+        Arrays.asList(new Class("A", new ArrayList<>()), new Class("B", new ArrayList<>()));
     Package p = new Package("foo", new ArrayList<>(), classes);
 
-    Optional<Clazz> got = AssemblyUtils.findClazz(p, "A");
+    Optional<Class> got = AssemblyUtils.findClazz(p, "A");
     Assertions.assertTrue(got.isPresent());
   }
 
   @Test
   void findClazzNonExisting() {
-    List<Clazz> classes = Arrays.asList(new Clazz("A"), new Clazz("B"));
+    List<Class> classes =
+        Arrays.asList(new Class("A", new ArrayList<>()), new Class("B", new ArrayList<>()));
     Package p = new Package("foo", new ArrayList<>(), classes);
 
-    Optional<Clazz> got = AssemblyUtils.findClazz(p, "C");
+    Optional<Class> got = AssemblyUtils.findClazz(p, "C");
     Assertions.assertFalse(got.isPresent());
   }
 }

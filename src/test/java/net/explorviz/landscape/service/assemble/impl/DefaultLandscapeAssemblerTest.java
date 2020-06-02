@@ -9,14 +9,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import net.explorviz.landscape.LandscapeRecord;
+import net.explorviz.landscape.flat.LandscapeRecord;
 import net.explorviz.landscape.helper.SampleLoader;
 import net.explorviz.landscape.model.Application;
-import net.explorviz.landscape.model.Clazz;
+import net.explorviz.landscape.model.Class;
 import net.explorviz.landscape.model.Landscape;
 import net.explorviz.landscape.model.Node;
 import net.explorviz.landscape.model.Package;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
+import org.apache.avro.io.Encoder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,7 +54,7 @@ class DefaultLandscapeAssemblerTest {
     Landscape generated = assembler.assembleFromRecords(singleTokenRecords);
 
     // Theses stats change if `sampleApplicationRecords.json` is modified!
-    Assertions.assertEquals(records.get(0).getLandscapeToken(), generated.getToken());
+    Assertions.assertEquals(records.get(0).getLandscapeToken(), generated.getLandscapeToken());
     Assertions.assertEquals(1, generated.getNodes().size());
 
     Node node = generated.getNodes().stream().findAny().orElseThrow();
@@ -81,9 +82,6 @@ class DefaultLandscapeAssemblerTest {
         .anyMatch(c -> "Main$ApplicationTask".equals(c.getName())));
     Assertions.assertTrue(sampleAppPkg.getClasses().stream()
         .anyMatch(c -> "Main$DatabaseTask".equals(c.getName())));
-
-    ObjectMapper mapper = new JsonMapper();
-    System.out.println(mapper.writeValueAsString(generated));
   }
 
   @Test
@@ -117,13 +115,15 @@ class DefaultLandscapeAssemblerTest {
     String ip = "0.0.0.0";
     String appname = "app";
     String pid = "1";
-    List<Clazz> classes = new ArrayList<>(Arrays.asList(new Clazz("TestClass", new ArrayList<>(Collections.singleton("method")))));
+    List<Class> classes = new ArrayList<>(
+        Arrays.asList(new Class("TestClass", new ArrayList<>(Collections.singleton("method")))));
 
     Package rootPkg1 = new Package("net", new ArrayList<>(), classes);
-    Collection<Application> apps = new ArrayList<>(Collections.singletonList(
-        new Application(appname, "java", pid, new ArrayList<>(Collections.singletonList(rootPkg1)))));
-    Collection<Node> nodes = new ArrayList<>(
-        new ArrayList<>(Collections.singletonList(new Node(hostname, ip, apps))));
+    List<Application> apps = new ArrayList<>(Collections.singletonList(
+        new Application(appname, "java", pid,
+            new ArrayList<>(Collections.singletonList(rootPkg1)))));
+    List<Node> nodes = new ArrayList<>(
+        new ArrayList<>(Collections.singletonList(new Node(ip, hostname, apps))));
     Landscape landscape = new Landscape("tok", nodes);
 
 
@@ -133,8 +133,8 @@ class DefaultLandscapeAssemblerTest {
     String newPkg = "net.test";
     String newMethod = "tstMethod";
     LandscapeRecord toInsert =
-        new LandscapeRecord("tok", 123L, new net.explorviz.landscape.Node(ip, hostname),
-            new net.explorviz.landscape.Application(appname, pid, "java"), newPkg, newClass,
+        new LandscapeRecord("tok", 123L, new net.explorviz.landscape.flat.Node(ip, hostname),
+            new net.explorviz.landscape.flat.Application(appname, pid, "java"), newPkg, newClass,
             newMethod);
 
     assembler.insertAll(landscape, Collections.singleton(toInsert));
@@ -152,7 +152,7 @@ class DefaultLandscapeAssemblerTest {
             .orElseThrow()
             .getSubPackages().stream().filter(p -> p.getName().equals("test")).findAny()
             .orElseThrow();
-    Clazz foundClazz =
+    Class foundClazz =
         foundPkg.getClasses().stream().filter(c -> c.getName().equals(newClass)).findAny()
             .orElseThrow();
     Assertions.assertTrue(foundClazz.getMethods().stream().anyMatch(m -> m.equals(newMethod)));

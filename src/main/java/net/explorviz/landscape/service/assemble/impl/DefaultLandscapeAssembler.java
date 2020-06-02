@@ -6,9 +6,9 @@ import java.util.Collection;
 import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import net.explorviz.landscape.LandscapeRecord;
+import net.explorviz.landscape.flat.LandscapeRecord;
 import net.explorviz.landscape.model.Application;
-import net.explorviz.landscape.model.Clazz;
+import net.explorviz.landscape.model.Class;
 import net.explorviz.landscape.model.Landscape;
 import net.explorviz.landscape.model.Node;
 import net.explorviz.landscape.model.Package;
@@ -44,7 +44,7 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
   public void insertAll(Landscape landscape, Collection<LandscapeRecord> records)
       throws LandscapeAssemblyException {
 
-    final String token = landscape.getToken();
+    final String token = landscape.getLandscapeToken();
 
     // Check if all records belong to the same landscape (i.e. check token)
     if (!sameToken(token, records)) {
@@ -67,7 +67,7 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
       if (foundNode.isPresent()) {
         node = foundNode.get();
       } else {
-        node = new Node(hostName, ipAddress);
+        node = new Node(ipAddress, hostName, new ArrayList<>());
         landscape.getNodes().add(node);
       }
 
@@ -81,7 +81,7 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
       if (foundApp.isPresent()) {
         app = foundApp.get();
       } else {
-        app = new Application(appName, appLanguage, appPid);
+        app = new Application(appName, appLanguage, appPid, new ArrayList<>());
         node.getApplications().add(app);
       }
 
@@ -110,12 +110,12 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
       Package leafPkg = PackageHelper.fromPath(app, pkgs);
 
       // Get or creat class
-      Clazz cls;
-      Optional<Clazz> foundCls = AssemblyUtils.findClazz(leafPkg, insertMe.getClass$());
+      Class cls;
+      Optional<Class> foundCls = AssemblyUtils.findClazz(leafPkg, insertMe.getClass$());
       if (foundCls.isPresent()) {
         cls = foundCls.get();
       } else {
-        cls = new Clazz(insertMe.getClass$());
+        cls = new Class(insertMe.getClass$(), new ArrayList<>());
         leafPkg.getClasses().add(cls);
       }
       // Add the method

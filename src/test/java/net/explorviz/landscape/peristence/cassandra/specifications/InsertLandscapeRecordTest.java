@@ -1,8 +1,8 @@
 package net.explorviz.landscape.peristence.cassandra.specifications;
 
-import net.explorviz.landscape.Application;
-import net.explorviz.landscape.LandscapeRecord;
-import net.explorviz.landscape.Node;
+import net.explorviz.landscape.flat.Application;
+import net.explorviz.landscape.flat.LandscapeRecord;
+import net.explorviz.landscape.flat.Node;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.peristence.cassandra.CassandraTest;
 import net.explorviz.landscape.peristence.cassandra.mapper.LandscapeRecordMapper;

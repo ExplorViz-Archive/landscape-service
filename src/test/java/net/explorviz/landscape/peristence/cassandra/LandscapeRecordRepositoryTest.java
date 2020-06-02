@@ -4,9 +4,10 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
-import net.explorviz.landscape.Application;
-import net.explorviz.landscape.LandscapeRecord;
-import net.explorviz.landscape.Node;
+
+import net.explorviz.landscape.flat.Application;
+import net.explorviz.landscape.flat.LandscapeRecord;
+import net.explorviz.landscape.flat.Node;
 import net.explorviz.landscape.helper.SampleLoader;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.peristence.cassandra.mapper.LandscapeRecordMapper;

@@ -4,9 +4,10 @@ import com.datastax.oss.driver.api.core.cql.Row;
 import com.datastax.oss.driver.api.querybuilder.term.Term;
 import com.datastax.oss.driver.internal.querybuilder.DefaultLiteral;
 import java.util.Map;
-import net.explorviz.landscape.Application;
-import net.explorviz.landscape.LandscapeRecord;
-import net.explorviz.landscape.Node;
+
+import net.explorviz.landscape.flat.Application;
+import net.explorviz.landscape.flat.LandscapeRecord;
+import net.explorviz.landscape.flat.Node;
 import net.explorviz.landscape.peristence.cassandra.CassandraTest;
 import net.explorviz.landscape.peristence.cassandra.DBHelper;
 import org.junit.jupiter.api.Assertions;

@@ -2,7 +2,7 @@ package net.explorviz.landscape.service.assemble.impl;
 
 import java.util.Optional;
 import net.explorviz.landscape.model.Application;
-import net.explorviz.landscape.model.Clazz;
+import net.explorviz.landscape.model.Class;
 import net.explorviz.landscape.model.Landscape;
 import net.explorviz.landscape.model.Node;
 import net.explorviz.landscape.model.Package;
@@ -51,14 +51,14 @@ public final class AssemblyUtils {
   }
 
   /**
-   * Searches fo a {@link Clazz} in a package.
+   * Searches fo a {@link Class} in a package.
    *
    * @param pkg       the package to search in
    * @param className the name of the class to search for
    * @return an optional that contains the class if it is included in the package, and is empty
    *     *     otherwise
    */
-  public static Optional<Clazz> findClazz(Package pkg, String className) {
+  public static Optional<Class> findClazz(Package pkg, String className) {
     return pkg.getClasses().stream().filter(c -> c.getName().equals(className)).findAny();
   }
 
