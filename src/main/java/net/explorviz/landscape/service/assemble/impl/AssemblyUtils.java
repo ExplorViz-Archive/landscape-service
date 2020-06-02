@@ -34,16 +34,13 @@ public final class AssemblyUtils {
    *
    * @param node the node
    * @param pid the PID of the application to search for
-   * @param name the name of the application to search for
-   * @param language the language of the application to search for
    * @return an optional that contains the app if it is included in the node, and is empty
    *     otherwise
    */
-  public static Optional<Application> findApplication(Node node, String pid, String name,
-                                                      String language) {
+  public static Optional<Application> findApplication(Node node, String pid) {
     for (Application a : node.getApplications()) {
-      // TODO: Only check if PID equals. Currently PID is not included in records.
-      if (a.getPid().equals(pid) && a.getName().equals(name) && a.getLanguage().equals(language)) {
+
+      if (a.getPid().equals(pid)) {
         return Optional.of(a);
       }
     }

@@ -77,7 +77,7 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
       String appLanguage = insertMe.getApplication().getLanguage();
       Application app;
       Optional<Application> foundApp =
-          AssemblyUtils.findApplication(node, appPid, appName, appLanguage);
+          AssemblyUtils.findApplication(node, appPid);
       if (foundApp.isPresent()) {
         app = foundApp.get();
       } else {

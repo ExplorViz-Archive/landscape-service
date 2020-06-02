@@ -53,7 +53,7 @@ class AssemblyUtilsTest {
     Application toFind =
         new Application(app.getName(), app.getLanguage(), app.getPid(), new ArrayList<>());
     Optional<Application> got = AssemblyUtils
-        .findApplication(nodeA, toFind.getPid(), toFind.getName(), toFind.getLanguage());
+        .findApplication(nodeA, toFind.getPid());
     Assertions.assertTrue(got.isPresent());
     Assertions.assertEquals(app, got.get());
   }
