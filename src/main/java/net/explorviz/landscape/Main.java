@@ -38,7 +38,7 @@ public class Main implements QuarkusApplication {
 
   @Override
   public int run(String... args) throws Exception {
-    insertSampleData();
+    //insertSampleData();
     Quarkus.waitForExit();
     return 0;
   }
