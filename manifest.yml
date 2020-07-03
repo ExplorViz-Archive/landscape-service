@@ -17,3 +17,20 @@ spec:
       containers:
       - name: explorviz-landscape-service
         image: localhost:32000/explorviz/explorviz-landscape-service:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: explorviz-landscape-service
+  labels:
+    app: explorviz-landscape-service
+spec:
+  type: NodePort
+  ports:
+    - name: explorviz-landscape-service
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+      nodePort: 32680
+  selector:
+    app: explorviz-landscape-service
