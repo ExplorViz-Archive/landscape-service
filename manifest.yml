@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: explorviz-landscape-service
+  labels:
+    app: explorviz-landscape-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: explorviz-landscape-service
+  template:
+    metadata:
+      labels:
+        app: explorviz-landscape-service
+    spec:
+      containers:
+      - name: explorviz-landscape-service
+        image: localhost:32000/explorviz/explorviz-landscape-service:latest
