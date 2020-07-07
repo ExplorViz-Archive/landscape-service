@@ -15,7 +15,7 @@ import net.explorviz.landscape.flat.LandscapeRecord;
  */
 public final class SampleLoader {
 
-  private static String SIMPLE = "samples/sampleApplicationRecords.json";
+  private static final String SIMPLE = "samples/sampleApplicationRecords.json";
 
   private SampleLoader() {/* Utility */}
 

@@ -22,8 +22,8 @@ public class UseCaseImpl implements UseCases {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(UseCaseImpl.class);
 
-  private Repository<LandscapeRecord> repo;
-  private LandscapeAssembler assembler;
+  private final Repository<LandscapeRecord> repo;
+  private final LandscapeAssembler assembler;
 
   @Inject
   public UseCaseImpl(Repository<LandscapeRecord> repo, LandscapeAssembler assembler) {

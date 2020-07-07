@@ -47,7 +47,7 @@ public interface UseCases {
    */
   default Landscape BuildLandscapeTo(String landscapeToken, long toTimestamp)
       throws QueryException, LandscapeAssemblyException {
-    return this.BuildLandscapeBetweeen(landscapeToken,0, toTimestamp);
+    return this.BuildLandscapeBetweeen(landscapeToken, 0, toTimestamp);
   }
 
   /**
@@ -63,6 +63,6 @@ public interface UseCases {
    *     constraint
    */
   Landscape BuildLandscapeBetweeen(String landscapeToken, long from, long to)
-      throws  LandscapeAssemblyException, QueryException;
+      throws LandscapeAssemblyException, QueryException;
 
 }

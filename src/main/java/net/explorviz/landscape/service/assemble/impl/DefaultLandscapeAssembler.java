@@ -18,7 +18,7 @@ import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 @ApplicationScoped
 public class DefaultLandscapeAssembler implements LandscapeAssembler {
 
-  private RecordValidator validator;
+  private final RecordValidator validator;
 
   @Inject
   public DefaultLandscapeAssembler(RecordValidator validator) {

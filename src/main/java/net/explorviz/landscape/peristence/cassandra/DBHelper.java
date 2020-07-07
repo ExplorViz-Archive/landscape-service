@@ -52,7 +52,7 @@ public class DBHelper {
   public static final String COL_APPLICATION = "application";
 
 
-  private CqlSession dbSession;
+  private final CqlSession dbSession;
 
   /**
    * @param session the CqlSession

@@ -18,9 +18,9 @@ public class InsertLandscapeRecord implements CassandraSpecification {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(InsertLandscapeRecord.class);
 
-  private LandscapeRecord record;
+  private final LandscapeRecord record;
   private SimpleStatement statement;
-  private ValueMapper<LandscapeRecord> mapper;
+  private final ValueMapper<LandscapeRecord> mapper;
 
 
   /**

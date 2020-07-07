@@ -2,7 +2,6 @@ package net.explorviz.landscape.service.assemble;
 
 import java.util.Collection;
 import java.util.Collections;
-
 import net.explorviz.landscape.flat.LandscapeRecord;
 import net.explorviz.landscape.model.Landscape;
 

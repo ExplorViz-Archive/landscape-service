@@ -12,15 +12,16 @@ import net.explorviz.landscape.peristence.cassandra.DBHelper;
  */
 public class FindRecordsBetweenTimestamps implements CassandraSpecification {
 
-  private long from;
-  private long to;
+  private final long from;
+  private final long to;
 
-  private SimpleStatement statement;
+  private final SimpleStatement statement;
 
   /**
    * Creats a new query to find all records discovered between to given timestamps
+   *
    * @param from the lower timestamp bound (inclusive)
-   * @param to the upper timestamp bound (inclusive)
+   * @param to   the upper timestamp bound (inclusive)
    */
   public FindRecordsBetweenTimestamps(String token, long from, long to) {
     this.from = from;
@@ -29,8 +30,10 @@ public class FindRecordsBetweenTimestamps implements CassandraSpecification {
         .all()
         .allowFiltering()
         .whereColumn(DBHelper.COL_TOKEN).isEqualTo(QueryBuilder.literal(token))
-        .where(Relation.column(DBHelper.COL_TIMESTAMP).isGreaterThanOrEqualTo(QueryBuilder.literal(this.from)))
-        .where(Relation.column(DBHelper.COL_TIMESTAMP).isLessThanOrEqualTo(QueryBuilder.literal(this.to)))
+        .where(Relation.column(DBHelper.COL_TIMESTAMP)
+            .isGreaterThanOrEqualTo(QueryBuilder.literal(this.from)))
+        .where(Relation.column(DBHelper.COL_TIMESTAMP)
+            .isLessThanOrEqualTo(QueryBuilder.literal(this.to)))
         .build();
   }
 
