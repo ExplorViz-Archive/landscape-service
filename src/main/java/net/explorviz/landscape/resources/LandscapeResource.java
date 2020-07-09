@@ -1,6 +1,5 @@
 package net.explorviz.landscape.resources;
 
-import java.awt.*;
 import java.util.ArrayList;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.GET;
@@ -12,14 +11,13 @@ import javax.ws.rs.core.MediaType;
 import net.explorviz.landscape.model.Landscape;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
-import net.explorviz.landscape.service.assemble.impl.InvalidRecordException;
 import net.explorviz.landscape.service.assemble.impl.NoRecordsException;
 import net.explorviz.landscape.service.usecase.UseCases;
 
 @Path("/v2/landscapes")
 public class LandscapeResource {
 
-  private UseCases useCases;
+  private final UseCases useCases;
 
   public LandscapeResource(UseCases useCases) {
     this.useCases = useCases;

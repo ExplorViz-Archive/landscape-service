@@ -16,7 +16,7 @@ import net.explorviz.landscape.peristence.cassandra.DBHelper;
 @ApplicationScoped
 public class LandscapeRecordMapper implements ValueMapper<LandscapeRecord> {
 
-  private CodecRegistry codecRegistry;
+  private final CodecRegistry codecRegistry;
 
   @Inject
   public LandscapeRecordMapper(DBHelper db) {

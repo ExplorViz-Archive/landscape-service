@@ -2,7 +2,6 @@ package net.explorviz.landscape.peristence.cassandra;
 
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.CqlSessionBuilder;
-import java.net.InetSocketAddress;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
@@ -14,7 +13,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @ApplicationScoped
 public class CassandraFactory {
 
-  private CqlSession session;
+  private final CqlSession session;
 
 
   @Inject

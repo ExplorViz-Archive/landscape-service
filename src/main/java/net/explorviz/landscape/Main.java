@@ -1,7 +1,5 @@
 package net.explorviz.landscape;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
@@ -10,7 +8,6 @@ import java.util.List;
 import javax.inject.Inject;
 import net.explorviz.landscape.flat.LandscapeRecord;
 import net.explorviz.landscape.helper.SampleLoader;
-import net.explorviz.landscape.model.Landscape;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.peristence.Repository;
 import net.explorviz.landscape.service.usecase.UseCases;
@@ -27,8 +24,8 @@ public class Main implements QuarkusApplication {
   }
 
 
-  private Repository<LandscapeRecord> repo;
-  private UseCases useCases;
+  private final Repository<LandscapeRecord> repo;
+  private final UseCases useCases;
 
   @Inject
   public Main(Repository<LandscapeRecord> repo, UseCases useCases) {

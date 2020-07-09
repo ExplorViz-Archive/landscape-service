@@ -18,8 +18,8 @@ import net.explorviz.landscape.peristence.cassandra.specifications.InsertLandsca
 public class LandscapeRecordRepository implements Repository<LandscapeRecord> {
 
 
-  private DBHelper db;
-  private ValueMapper<LandscapeRecord> mapper;
+  private final DBHelper db;
+  private final ValueMapper<LandscapeRecord> mapper;
 
   /**
    * Create a new repository for accessing {@link LandscapeRecord} object.

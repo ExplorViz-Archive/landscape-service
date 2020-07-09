@@ -55,7 +55,7 @@ public final class PackageHelper {
     }
 
     i = 0;
-    while (current != null ) {
+    while (current != null) {
       i++;
       final int finalI = i; // Must be final for lambda expression
       if (finalI < packages.length) {
@@ -114,7 +114,8 @@ public final class PackageHelper {
 
     for (int i = 1; i < path.length; i++) {
       final int finalI = i;
-      current = current.getSubPackages().stream().filter(p -> p.getName().equals(path[finalI])).findFirst()
+      current = current.getSubPackages().stream().filter(p -> p.getName().equals(path[finalI]))
+          .findFirst()
           .orElseThrow(() -> noSuchPathException);
     }
     return current;

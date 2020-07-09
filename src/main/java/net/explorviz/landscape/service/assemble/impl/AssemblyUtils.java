@@ -33,7 +33,7 @@ public final class AssemblyUtils {
    * Searches for an {@link Application} in a node.
    *
    * @param node the node
-   * @param pid the PID of the application to search for
+   * @param pid  the PID of the application to search for
    * @return an optional that contains the app if it is included in the node, and is empty
    *     otherwise
    */
