@@ -15,8 +15,9 @@ spec:
         app: explorviz-landscape-service
     spec:
       containers:
-      - name: explorviz-landscape-service
-        image: localhost:32000/explorviz/landscape-service:latest
+       - name: explorviz-landscape-service
+         image: explorviz/landscape-service:latest
+         imagePullPolicy: IfNotPresent
 ---
 apiVersion: v1
 kind: Service
