@@ -5,6 +5,7 @@ import javax.ws.rs.BadRequestException;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -24,9 +25,10 @@ public class LandscapeResource {
   }
 
   @GET
+  @Path("/{token}/structure")
   @Produces(MediaType.APPLICATION_JSON)
   public Landscape getLandscape(
-      @QueryParam("token") String token,
+      @PathParam("token") String token,
       @QueryParam("from") Long from,
       @QueryParam("to") Long to) {
 
