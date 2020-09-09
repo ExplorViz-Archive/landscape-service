@@ -24,6 +24,7 @@ dependencies {
   implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
   implementation 'io.quarkus:quarkus-resteasy'
   implementation 'io.quarkus:quarkus-resteasy-jackson'
+  implementation 'io.quarkus:quarkus-smallrye-openapi'
 
   implementation group: 'org.apache.avro', name: 'avro', version: '1.9.2'
 
