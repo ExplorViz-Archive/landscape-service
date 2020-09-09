@@ -11,7 +11,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 /**
  * Producer for preconfigured {@link CqlSession}.
  */
-@ApplicationScoped
+//@ApplicationScoped
 public class CassandraFactory {
 
   private final CqlSession session;
@@ -36,7 +36,7 @@ public class CassandraFactory {
    * Return a ready for use {@link CqlSession}
    */
 
-  @Produces
+  //@Produces
   public CqlSession produceCqlSession() {
     return this.session;
   }

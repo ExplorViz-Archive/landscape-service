@@ -24,12 +24,13 @@ dependencies {
   implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
   implementation 'io.quarkus:quarkus-resteasy'
   implementation 'io.quarkus:quarkus-resteasy-jackson'
+  implementation 'com.datastax.oss.quarkus:cassandra-quarkus-client'
 
   implementation group: 'org.apache.avro', name: 'avro', version: '1.9.2'
 
-  implementation group: 'com.datastax.oss', name: 'java-driver-core', version: '4.6.1'
-
+  //implementation group: 'com.datastax.oss', name: 'java-driver-core', version: '4.6.1'
   implementation group: 'com.datastax.oss', name: 'java-driver-query-builder', version: '4.6.1'
+
 
 
   testImplementation 'io.quarkus:quarkus-junit5'
@@ -58,4 +59,8 @@ java {
 
 test {
   systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
+}
+
+avro {
+  //templateDirectory = projectDir.absolutePath + "/src/main/resources/templates/"
 }
