@@ -37,12 +37,13 @@ class InsertLandscapeRecordTest extends CassandraTest {
         .setPackage$(package$)
         .setClass$(class$)
         .setMethod(method)
+        .setHashCode("1234")
         .build();
     ValueMapper<LandscapeRecord> mapper = new LandscapeRecordMapper(this.db);
     InsertLandscapeRecord ilr = new InsertLandscapeRecord(sampleRecord, mapper);
     String query = ilr.toQuery();
     String expected =
-        "INSERT INTO explorviz.records (node,package,application,method,landscape_token,class,timestamp) VALUES ({name:'localhost',ip_address:'0.0.0.0'},'net.explorviz.test',{name:'SampleApplication',pid:'1234',language:'java'},'sampleMethod()','tok','SampleClass',1590231993321)";
+        "INSERT INTO explorviz.records (node,package,hash_code,application,method,landscape_token,class,timestamp) VALUES ({name:'localhost',ip_address:'0.0.0.0'},'net.explorviz.test','1234',{name:'SampleApplication',pid:'1234',language:'java'},'sampleMethod()','tok','SampleClass',1590231993321)";
     Assertions.assertEquals(expected, query);
   }
 
@@ -61,6 +62,7 @@ class InsertLandscapeRecordTest extends CassandraTest {
         .setPackage$(package$)
         .setClass$(class$)
         .setMethod(method)
+        .setHashCode("12345")
         .build();
     ValueMapper<LandscapeRecord> mapper = new LandscapeRecordMapper(this.db);
     InsertLandscapeRecord ilr = new InsertLandscapeRecord(sampleRecord, mapper);
