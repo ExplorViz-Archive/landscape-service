@@ -14,6 +14,7 @@ import net.explorviz.landscape.helper.SampleLoader;
 import net.explorviz.landscape.model.Application;
 import net.explorviz.landscape.model.Class;
 import net.explorviz.landscape.model.Landscape;
+import net.explorviz.landscape.model.Method;
 import net.explorviz.landscape.model.Node;
 import net.explorviz.landscape.model.Package;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
@@ -115,8 +116,8 @@ class DefaultLandscapeAssemblerTest {
     String ip = "0.0.0.0";
     String appname = "app";
     String pid = "1";
-    List<Class> classes = new ArrayList<>(
-        Arrays.asList(new Class("TestClass", new ArrayList<>(Collections.singleton("method")))));
+    List<Class> classes = new ArrayList<>(Arrays.asList(new Class("TestClass",
+        new ArrayList<>(Collections.singleton(new Method("method", "1234"))))));
 
     Package rootPkg1 = new Package("net", new ArrayList<>(), classes);
     List<Application> apps = new ArrayList<>(Collections.singletonList(
@@ -131,11 +132,11 @@ class DefaultLandscapeAssemblerTest {
 
     String newClass = "TestClass";
     String newPkg = "net.test";
-    String newMethod = "tstMethod";
+    Method newMethod = new Method("method", "1234");
     LandscapeRecord toInsert =
         new LandscapeRecord("tok", 123L, new net.explorviz.landscape.flat.Node(ip, hostname),
             new net.explorviz.landscape.flat.Application(appname, pid, "java"), newPkg, newClass,
-            newMethod);
+            newMethod.getName(), newMethod.getHashCode());
 
     assembler.insertAll(landscape, Collections.singleton(toInsert));
 

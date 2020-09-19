@@ -45,6 +45,10 @@
     {
       "name": "method",
       "type": "string"
+    },
+    {
+      "name": "hashCode",
+      "type": "string"
     }
   ]
 }

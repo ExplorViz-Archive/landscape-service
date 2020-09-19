@@ -10,6 +10,7 @@ import net.explorviz.landscape.flat.LandscapeRecord;
 import net.explorviz.landscape.model.Application;
 import net.explorviz.landscape.model.Class;
 import net.explorviz.landscape.model.Landscape;
+import net.explorviz.landscape.model.Method;
 import net.explorviz.landscape.model.Node;
 import net.explorviz.landscape.model.Package;
 import net.explorviz.landscape.service.assemble.LandscapeAssembler;
@@ -119,7 +120,7 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
         leafPkg.getClasses().add(cls);
       }
       // Add the method
-      cls.getMethods().add(insertMe.getMethod());
+      cls.getMethods().add(new Method(insertMe.getMethod(), insertMe.getHashCode()));
     }
   }
 
