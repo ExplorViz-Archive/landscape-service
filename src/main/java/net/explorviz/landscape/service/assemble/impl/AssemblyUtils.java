@@ -1,11 +1,11 @@
 package net.explorviz.landscape.service.assemble.impl;
 
 import java.util.Optional;
-import net.explorviz.landscape.model.Application;
-import net.explorviz.landscape.model.Class;
-import net.explorviz.landscape.model.Landscape;
-import net.explorviz.landscape.model.Node;
-import net.explorviz.landscape.model.Package;
+import net.explorviz.avro.landscape.model.Application;
+import net.explorviz.avro.landscape.model.Landscape;
+import net.explorviz.avro.landscape.model.Node;
+import net.explorviz.avro.landscape.model.Package;
+import net.explorviz.avro.landscape.model.Class;
 
 public final class AssemblyUtils {
 

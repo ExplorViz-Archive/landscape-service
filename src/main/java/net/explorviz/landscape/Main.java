@@ -3,17 +3,8 @@ package net.explorviz.landscape;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
-import java.io.IOException;
-import java.util.List;
 import javax.inject.Inject;
-import net.explorviz.landscape.flat.LandscapeRecord;
-import net.explorviz.landscape.helper.SampleLoader;
 import net.explorviz.landscape.kafka.RecordPersistingStream;
-import net.explorviz.landscape.peristence.QueryException;
-import net.explorviz.landscape.peristence.Repository;
-import net.explorviz.landscape.service.usecase.UseCases;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @QuarkusMain
 public class Main implements QuarkusApplication {

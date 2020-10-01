@@ -3,7 +3,7 @@ package net.explorviz.landscape.peristence.cassandra.specifications;
 import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import net.explorviz.landscape.flat.LandscapeRecord;
+import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.peristence.cassandra.CassandraSpecification;
 import net.explorviz.landscape.peristence.cassandra.DBHelper;

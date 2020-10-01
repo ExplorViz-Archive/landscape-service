@@ -3,7 +3,7 @@ package net.explorviz.landscape.kafka;
 import java.util.Properties;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import net.explorviz.landscape.flat.LandscapeRecord;
+import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.peristence.Repository;
 import org.apache.kafka.common.serialization.Serdes;

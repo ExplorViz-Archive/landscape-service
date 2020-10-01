@@ -9,13 +9,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import net.explorviz.landscape.flat.LandscapeRecord;
+import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.landscape.helper.SampleLoader;
-import net.explorviz.landscape.model.Application;
-import net.explorviz.landscape.model.Class;
-import net.explorviz.landscape.model.Landscape;
-import net.explorviz.landscape.model.Node;
-import net.explorviz.landscape.model.Package;
+import net.explorviz.avro.landscape.model.Application;
+import net.explorviz.avro.landscape.model.Class;
+import net.explorviz.avro.landscape.model.Landscape;
+import net.explorviz.avro.landscape.model.Node;
+import net.explorviz.avro.landscape.model.Package;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 import org.apache.avro.io.Encoder;
 import org.junit.jupiter.api.Assertions;
@@ -133,8 +133,8 @@ class DefaultLandscapeAssemblerTest {
     String newPkg = "net.test";
     String newMethod = "tstMethod";
     LandscapeRecord toInsert =
-        new LandscapeRecord("tok", 123L, new net.explorviz.landscape.flat.Node(ip, hostname),
-            new net.explorviz.landscape.flat.Application(appname, pid, "java"), newPkg, newClass,
+        new LandscapeRecord("tok", 123L, new net.explorviz.avro.landscape.flat.Node(ip, hostname),
+            new net.explorviz.avro.landscape.flat.Application(appname, pid, "java"), newPkg, newClass,
             newMethod);
 
     assembler.insertAll(landscape, Collections.singleton(toInsert));
