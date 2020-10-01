@@ -57,7 +57,14 @@
                                       "name": "methods",
                                       "type": {
                                         "type": "array",
-                                        "items": "string"
+                                        "items": {
+                                          "name": "Method",
+                                          "type": "record",
+                                          "fields": [
+                                            {"name": "name", "type": "string"},
+                                            {"name": "hashCode", "type": "string"}
+                                          ]
+                                        }
                                       }
                                     }
                                   ]

@@ -1,9 +1,12 @@
 package net.explorviz.landscape.service.assemble.impl;
 
 
+
 import net.explorviz.avro.landscape.flat.Application;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.avro.landscape.flat.Node;
+
+import net.explorviz.avro.landscape.model.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,9 +22,10 @@ class RecordValidatorTest {
     Application app = new Application("sample app", "1234", "java");
     String pkg = "foo.bar";
     String clazz = "Foo";
-    String method = "bar";
+    Method method = new Method("method", "1234");
     validRecord =
-        new LandscapeRecord("tok", System.currentTimeMillis(), n, app, pkg, clazz, method);
+        new LandscapeRecord("tok", System.currentTimeMillis(), n, app, pkg, clazz, method.getName(),
+            method.getHashCode());
 
     validator = new RecordValidator();
   }
@@ -87,7 +91,8 @@ class RecordValidatorTest {
         LandscapeRecord.newBuilder(validRecord).setApplication(appBuilder.setLanguage("").build())
             .build();
 
-    for (LandscapeRecord r : new LandscapeRecord[] {nullApp, emptyAppName, emptyPid, emptyLanguage}) {
+    for (LandscapeRecord r : new LandscapeRecord[] {nullApp, emptyAppName, emptyPid,
+        emptyLanguage}) {
       Assertions.assertThrows(InvalidRecordException.class, () -> validator.validate(r));
     }
   }

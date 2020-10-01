@@ -14,6 +14,8 @@ import com.datastax.oss.driver.api.querybuilder.schema.CreateTable;
 import com.datastax.oss.driver.api.querybuilder.schema.CreateType;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.landscape.peristence.cassandra.mapper.ApplicationCodec;
 import net.explorviz.landscape.peristence.cassandra.mapper.NodeCodec;
 import org.slf4j.Logger;
@@ -48,6 +50,7 @@ public class DBHelper {
   public static final String COL_PACKAGE = "package";
   public static final String COL_CLASS = "class";
   public static final String COL_METHOD = "method";
+  public static final String COL_HASHCODE = "hash_code";
   public static final String COL_NODE = "node";
   public static final String COL_APPLICATION = "application";
 
@@ -121,6 +124,7 @@ public class DBHelper {
         .withClusteringColumn(COL_PACKAGE, DataTypes.TEXT)
         .withClusteringColumn(COL_CLASS, DataTypes.TEXT)
         .withClusteringColumn(COL_METHOD, DataTypes.TEXT)
+        .withClusteringColumn(COL_HASHCODE, DataTypes.TEXT)
         .withColumn(COL_TIMESTAMP, DataTypes.BIGINT);
 
 

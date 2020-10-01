@@ -13,7 +13,8 @@
     },
     "package$": "net.explorviz.sampleApplication.database.helper",
     "class$": "SQLConnectionHandler",
-    "method": "createDatabase"
+    "method": "createDatabase",
+    "hashCode": "0ca95666-f998-11ea-adc1-0242ac120002"
   },
   {
     "landscapeToken": "samplelandscape",
@@ -29,7 +30,9 @@
     },
     "package$": "net.explorviz.sampleApplication",
     "class$": "Main$DatabaseTask",
-    "method": "run"
+    "method": "run",
+    "hashCode": "15815496-f998-11ea-adc1-0242ac120002"
+
   },
   {
     "landscapeToken": "samplelandscape",
@@ -45,7 +48,8 @@
     },
     "package$": "net.explorviz.sampleApplication.database.helper",
     "class$": "SQLStatementHandler",
-    "method": "executeStatementHandler"
+    "method": "executeStatementHandler",
+    "hashCode": "2088b47e-f998-11ea-adc1-0242ac120002"
   },
   {
     "landscapeToken": "samplelandscape",
@@ -61,7 +65,8 @@
     },
     "package$": "net.explorviz.sampleApplication.database.helper",
     "class$": "SQLConnectionHandler",
-    "method": "connect"
+    "method": "connect",
+    "hashCode": "6a0f8299-fa11-43e1-a60e-1f2b3978a1cb"
   },
   {
     "landscapeToken": "samplelandscape",
@@ -77,7 +82,8 @@
     },
     "package$": "net.explorviz.sampleApplication.database.helper",
     "class$": "SQLConnectionHandler",
-    "method": "disconnect"
+    "method": "disconnect",
+    "hashCode": "616dc462-eefd-4208-8594-1d6a6f040e28"
   },
   {
     "landscapeToken": "samplelandscape",
@@ -93,7 +99,8 @@
     },
     "package$": "net.explorviz.sampleApplication.util",
     "class$": "RandomNumberGenerator",
-    "method": "getRandomNumber"
+    "method": "getRandomNumber",
+    "hashCode": "b476d3f1-c808-495c-8f5d-9a55ee87d849"
   },
   {
     "landscapeToken": "samplelandscape",
@@ -109,7 +116,8 @@
     },
     "package$": "net.explorviz.sampleApplication",
     "class$": "Main$ApplicationTask",
-    "method": "run"
+    "method": "run",
+    "hashCode": "b476d3f1-c808-495c-8f5d-9a55ee87d849"
   },
   {
     "landscapeToken": "samplelandscape",
@@ -125,7 +133,8 @@
     },
     "package$": "net.explorviz.sampleApplication.application",
     "class$": "JavaExample",
-    "method": "start"
+    "method": "start",
+    "hashCode": "996ab0c5-3cfc-41d4-b052-e0c604aad782"
   },
   {
     "landscapeToken": "samplelandscape",
@@ -141,7 +150,8 @@
     },
     "package$": "net.explorviz.sampleApplication.application.math",
     "class$": "Fibonacci",
-    "method": "calculate"
+    "method": "calculate",
+    "hashCode": "df2486b2-d1cc-4053-95fa-ba6910a79c1d"
   },
   {
     "landscapeToken": "samplelandscape",
@@ -157,6 +167,7 @@
     },
     "package$": "net.explorviz.sampleApplication.database",
     "class$": "JDBCExample",
-    "method": "start"
+    "method": "start",
+    "hashCode": "5769007f-691e-4c4c-b3b9-ff06d128bea2"
   }
 ]

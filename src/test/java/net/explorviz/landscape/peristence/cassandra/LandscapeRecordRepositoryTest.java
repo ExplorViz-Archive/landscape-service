@@ -74,6 +74,7 @@ class LandscapeRecordRepositoryTest extends CassandraTest {
         .setPackage$(package$)
         .setClass$(class$)
         .setMethod(method)
+        .setHashCode("1234")
         .build();
 
     repository.add(toAdd);
@@ -99,6 +100,7 @@ class LandscapeRecordRepositoryTest extends CassandraTest {
         .setPackage$(package$)
         .setClass$(class$)
         .setMethod(method)
+        .setHashCode("12345")
         .build();
 
     Assertions.assertThrows(QueryException.class, () -> repository.add(toAdd));

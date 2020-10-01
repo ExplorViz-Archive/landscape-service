@@ -42,6 +42,7 @@ class LandscapeRecordMapperTest extends CassandraTest {
         .setPackage$(package$)
         .setClass$(class$)
         .setMethod(method)
+        .setHashCode("12345")
         .build();
 
     mapper = new LandscapeRecordMapper(this.db);
@@ -58,6 +59,7 @@ class LandscapeRecordMapperTest extends CassandraTest {
     DefaultLiteral<String> packageName = (DefaultLiteral<String>) map.get(DBHelper.COL_PACKAGE);
     DefaultLiteral<String> className = (DefaultLiteral<String>) map.get(DBHelper.COL_CLASS);
     DefaultLiteral<Node> node = (DefaultLiteral<Node>) map.get(DBHelper.COL_NODE);
+    DefaultLiteral<String> hashCode = (DefaultLiteral<String>) map.get(DBHelper.COL_HASHCODE);
     DefaultLiteral<Application> application =
         (DefaultLiteral<Application>) map.get(DBHelper.COL_APPLICATION);
 
@@ -68,6 +70,7 @@ class LandscapeRecordMapperTest extends CassandraTest {
     Assertions.assertEquals(sampleRecord.getMethod(), methodName.getValue());
     Assertions.assertEquals(sampleRecord.getClass$(), className.getValue());
     Assertions.assertEquals(sampleRecord.getNode(), node.getValue());
+    Assertions.assertEquals(sampleRecord.getHashCode(), hashCode.getValue());
     Assertions.assertEquals(sampleRecord.getApplication(), application.getValue());
   }
 
@@ -83,8 +86,10 @@ class LandscapeRecordMapperTest extends CassandraTest {
     Mockito.when(mockRow.getString(DBHelper.COL_PACKAGE)).thenReturn(sampleRecord.getPackage$());
     Mockito.when(mockRow.getString(DBHelper.COL_CLASS)).thenReturn(sampleRecord.getClass$());
     Mockito.when(mockRow.get(DBHelper.COL_NODE, Node.class)).thenReturn(sampleRecord.getNode());
+    Mockito.when(mockRow.getString(DBHelper.COL_HASHCODE)).thenReturn(sampleRecord.getHashCode());
     Mockito.when(mockRow.get(DBHelper.COL_APPLICATION, Application.class))
         .thenReturn(sampleRecord.getApplication());
+
 
     LandscapeRecord got = mapper.fromRow(mockRow);
     Assertions.assertEquals(sampleRecord, got);

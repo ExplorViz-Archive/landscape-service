@@ -1,23 +1,20 @@
 package net.explorviz.landscape.service.assemble.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
-import net.explorviz.landscape.helper.SampleLoader;
 import net.explorviz.avro.landscape.model.Application;
 import net.explorviz.avro.landscape.model.Class;
 import net.explorviz.avro.landscape.model.Landscape;
+import net.explorviz.avro.landscape.model.Method;
 import net.explorviz.avro.landscape.model.Node;
 import net.explorviz.avro.landscape.model.Package;
+import net.explorviz.landscape.helper.SampleLoader;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
-import org.apache.avro.io.Encoder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -115,8 +112,8 @@ class DefaultLandscapeAssemblerTest {
     String ip = "0.0.0.0";
     String appname = "app";
     String pid = "1";
-    List<Class> classes = new ArrayList<>(
-        Arrays.asList(new Class("TestClass", new ArrayList<>(Collections.singleton("method")))));
+    List<Class> classes = new ArrayList<>(Arrays.asList(new Class("TestClass",
+        new ArrayList<>(Collections.singleton(new Method("method", "1234"))))));
 
     Package rootPkg1 = new Package("net", new ArrayList<>(), classes);
     List<Application> apps = new ArrayList<>(Collections.singletonList(
@@ -131,11 +128,13 @@ class DefaultLandscapeAssemblerTest {
 
     String newClass = "TestClass";
     String newPkg = "net.test";
-    String newMethod = "tstMethod";
+    Method newMethod = new Method("method", "1234");
     LandscapeRecord toInsert =
         new LandscapeRecord("tok", 123L, new net.explorviz.avro.landscape.flat.Node(ip, hostname),
-            new net.explorviz.avro.landscape.flat.Application(appname, pid, "java"), newPkg, newClass,
-            newMethod);
+            new net.explorviz.avro.landscape.flat.Application(appname, pid, "java"), newPkg,
+            newClass,
+            newMethod.getName(), newMethod.getHashCode());
+
 
     assembler.insertAll(landscape, Collections.singleton(toInsert));
 

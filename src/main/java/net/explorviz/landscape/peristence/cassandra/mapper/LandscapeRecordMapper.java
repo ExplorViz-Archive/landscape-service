@@ -33,6 +33,7 @@ public class LandscapeRecordMapper implements ValueMapper<LandscapeRecord> {
     map.put(DBHelper.COL_PACKAGE, QueryBuilder.literal(item.getPackage$()));
     map.put(DBHelper.COL_CLASS, QueryBuilder.literal(item.getClass$()));
     map.put(DBHelper.COL_METHOD, QueryBuilder.literal(item.getMethod()));
+    map.put(DBHelper.COL_HASHCODE, QueryBuilder.literal(item.getHashCode()));
     return map;
   }
 
@@ -47,6 +48,7 @@ public class LandscapeRecordMapper implements ValueMapper<LandscapeRecord> {
         .setPackage$(row.getString(DBHelper.COL_PACKAGE))
         .setClass$(row.getString(DBHelper.COL_CLASS))
         .setMethod(row.getString(DBHelper.COL_METHOD))
+        .setHashCode(row.getString(DBHelper.COL_HASHCODE))
         .build();
 
   }

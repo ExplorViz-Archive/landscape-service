@@ -6,12 +6,15 @@ import java.util.Collection;
 import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.avro.landscape.model.Application;
 import net.explorviz.avro.landscape.model.Landscape;
+import net.explorviz.avro.landscape.model.Method;
 import net.explorviz.avro.landscape.model.Node;
 import net.explorviz.avro.landscape.model.Package;
 import net.explorviz.avro.landscape.model.Class;
+
 import net.explorviz.landscape.service.assemble.LandscapeAssembler;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 
@@ -119,7 +122,7 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
         leafPkg.getClasses().add(cls);
       }
       // Add the method
-      cls.getMethods().add(insertMe.getMethod());
+      cls.getMethods().add(new Method(insertMe.getMethod(), insertMe.getHashCode()));
     }
   }
 
