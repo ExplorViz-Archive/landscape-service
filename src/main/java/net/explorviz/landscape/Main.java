@@ -8,6 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 import net.explorviz.landscape.flat.LandscapeRecord;
 import net.explorviz.landscape.helper.SampleLoader;
+import net.explorviz.landscape.kafka.RecordPersistingStream;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.peristence.Repository;
 import net.explorviz.landscape.service.usecase.UseCases;
@@ -17,37 +18,28 @@ import org.slf4j.LoggerFactory;
 @QuarkusMain
 public class Main implements QuarkusApplication {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
-
   public static void main(String... args) {
     Quarkus.run(Main.class, args);
   }
 
 
-  private final Repository<LandscapeRecord> repo;
-  private final UseCases useCases;
+
+  private final RecordPersistingStream stream;
 
   @Inject
-  public Main(Repository<LandscapeRecord> repo, UseCases useCases) {
-    this.repo = repo;
-    this.useCases = useCases;
+  public Main(RecordPersistingStream stream) {
+    this.stream = stream;
   }
 
   @Override
   public int run(String... args) throws Exception {
-    //insertSampleData();
+    this.stream.getStream().cleanUp();
+    this.stream.getStream().start();
+
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> this.stream.getStream().cleanUp()));
     Quarkus.waitForExit();
     return 0;
   }
 
-  private void insertSampleData() throws IOException, QueryException {
 
-    List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
-    for (LandscapeRecord record : records) {
-      repo.add(record);
-    }
-    if (LOGGER.isInfoEnabled()) {
-      LOGGER.info("Added {} records to repository", records.size());
-    }
-  }
 }
