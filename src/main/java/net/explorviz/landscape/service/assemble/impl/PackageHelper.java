@@ -2,8 +2,8 @@ package net.explorviz.landscape.service.assemble.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import net.explorviz.landscape.model.Application;
-import net.explorviz.landscape.model.Package;
+import net.explorviz.avro.landscape.model.Application;
+import net.explorviz.avro.landscape.model.Package;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 
 public final class PackageHelper {

@@ -4,7 +4,7 @@ import com.datastax.oss.driver.api.core.cql.ResultSet;
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
-import net.explorviz.landscape.flat.LandscapeRecord;
+import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.peristence.Repository;
 import net.explorviz.landscape.peristence.Specification;
@@ -41,7 +41,7 @@ public class LandscapeRecordRepository implements Repository<LandscapeRecord> {
             .isEqualTo(QueryBuilder.literal(token))
             .asCql();
     ResultSet result = db.getSession().execute(getAll);
-    return result.map(r -> mapper.fromRow(r)).all();
+    return result.map(mapper::fromRow).all();
   }
 
   @Override
@@ -53,6 +53,6 @@ public class LandscapeRecordRepository implements Repository<LandscapeRecord> {
 
   @Override
   public List<LandscapeRecord> query(Specification spec) throws QueryException {
-    return db.getSession().execute(spec.toQuery()).map(r -> mapper.fromRow(r)).all();
+    return db.getSession().execute(spec.toQuery()).map(mapper::fromRow).all();
   }
 }

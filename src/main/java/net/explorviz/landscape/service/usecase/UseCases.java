@@ -1,6 +1,6 @@
 package net.explorviz.landscape.service.usecase;
 
-import net.explorviz.landscape.model.Landscape;
+import net.explorviz.avro.landscape.model.Landscape;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 

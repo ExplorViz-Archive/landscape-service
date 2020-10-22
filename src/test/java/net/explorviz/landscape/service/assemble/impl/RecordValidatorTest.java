@@ -1,10 +1,12 @@
 package net.explorviz.landscape.service.assemble.impl;
 
 
-import net.explorviz.landscape.flat.Application;
-import net.explorviz.landscape.flat.LandscapeRecord;
-import net.explorviz.landscape.flat.Node;
-import net.explorviz.landscape.model.Method;
+
+import net.explorviz.avro.landscape.flat.Application;
+import net.explorviz.avro.landscape.flat.LandscapeRecord;
+import net.explorviz.avro.landscape.flat.Node;
+
+import net.explorviz.avro.landscape.model.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

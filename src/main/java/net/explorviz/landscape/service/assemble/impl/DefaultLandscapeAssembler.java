@@ -6,13 +6,15 @@ import java.util.Collection;
 import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import net.explorviz.landscape.flat.LandscapeRecord;
-import net.explorviz.landscape.model.Application;
-import net.explorviz.landscape.model.Class;
-import net.explorviz.landscape.model.Landscape;
-import net.explorviz.landscape.model.Method;
-import net.explorviz.landscape.model.Node;
-import net.explorviz.landscape.model.Package;
+
+import net.explorviz.avro.landscape.flat.LandscapeRecord;
+import net.explorviz.avro.landscape.model.Application;
+import net.explorviz.avro.landscape.model.Landscape;
+import net.explorviz.avro.landscape.model.Method;
+import net.explorviz.avro.landscape.model.Node;
+import net.explorviz.avro.landscape.model.Package;
+import net.explorviz.avro.landscape.model.Class;
+
 import net.explorviz.landscape.service.assemble.LandscapeAssembler;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 

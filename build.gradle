@@ -9,6 +9,9 @@ repositories {
   mavenLocal()
   mavenCentral()
   jcenter()
+  maven {
+    url "https://packages.confluent.io/maven/"
+  }
 }
 
 // Add generated avro sources to main source sets
@@ -29,9 +32,12 @@ dependencies {
   implementation group: 'org.apache.avro', name: 'avro', version: '1.9.2'
 
   implementation group: 'com.datastax.oss', name: 'java-driver-core', version: '4.6.1'
-
   implementation group: 'com.datastax.oss', name: 'java-driver-query-builder', version: '4.6.1'
+  implementation 'io.quarkus:quarkus-kafka-streams'
+  implementation 'io.quarkus:quarkus-kafka-client'
 
+  implementation group: 'io.confluent', name: 'kafka-avro-serializer', version: '5.5.0'
+  implementation group: 'io.confluent', name: 'kafka-streams-avro-serde', version: '5.5.0'
 
   testImplementation 'io.quarkus:quarkus-junit5'
   testImplementation "org.mockito:mockito-core:2.+"
