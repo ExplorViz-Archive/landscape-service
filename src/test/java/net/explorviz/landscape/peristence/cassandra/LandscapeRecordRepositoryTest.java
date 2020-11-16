@@ -138,4 +138,16 @@ class LandscapeRecordRepositoryTest extends CassandraTest {
     Assertions.assertEquals(0, repository.getAll(token).size());
 
   }
+
+  @Test
+  void deleteByUnknownId() throws IOException, QueryException {
+
+    List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
+    final String token = "unknown";
+    for (LandscapeRecord r : records) {
+      InsertLandscapeRecord s = new InsertLandscapeRecord(r, mapper);
+      sess.execute(s.toQuery());
+    }
+    repository.deleteAll(token);
+  }
 }

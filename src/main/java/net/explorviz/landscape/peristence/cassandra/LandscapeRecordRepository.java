@@ -57,12 +57,13 @@ public class LandscapeRecordRepository implements Repository<LandscapeRecord> {
   }
 
   @Override
-  public void deleteAll(final String token) throws QueryException {
+  public void deleteAll(final String token) {
     String deletionQuery =
         QueryBuilder.deleteFrom(DBHelper.KEYSPACE_NAME, DBHelper.RECORDS_TABLE_NAME)
             .whereColumn(DBHelper.COL_TOKEN).isEqualTo(QueryBuilder.literal(token)).asCql();
     db.getSession().execute(deletionQuery);
   }
+
 
 
 }

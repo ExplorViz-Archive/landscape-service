@@ -32,6 +32,6 @@ public interface Repository<T> {
    * Delete all records for a given token
    * @param token the landscape token
    */
-  void deleteAll(String token) throws QueryException;
+  void deleteAll(String token);
 
 }
