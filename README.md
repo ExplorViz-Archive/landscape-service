@@ -38,3 +38,18 @@ Or, if you don't have GraalVM installed, you can run the native executable build
 You can then execute your native executable with: `./build/landscape-service-1.0.0-SNAPSHOT-runner`
 
 If you want to learn more about building native executables, please consult https://quarkus.io/guides/gradle-tooling#building-a-native-executable.
+
+## Bridge to Kubernetes
+
+The [VS Code plugin](https://marketplace.visualstudio.com/items?itemName=mindaro.mindaro) Bridge to Kubernetes allows for a faster development process in kubernetes, without the need to build new images for every change.
+
+### Initial Setup
+- Install the plugin
+- Deploy Explorviz with a local kind cluster as described [here](https://github.com/ExplorViz/deployment/tree/master/kind)
+- set `bridgeToKubernetes.disconnectAfterDebugging` to `false`
+
+### Setup
+- run the VS Code task `bridge-to-kubernetes.service`
+- Expose ports for kafka `kubectl port-forward pods/kafka-0 9092:9092 9093:9093 9094:9094 -n default`
+- start the service with `./gradlew quarkusDev`
+- if you want to debug, use the debug launch configuration `Debug (Attach)`
