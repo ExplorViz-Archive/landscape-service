@@ -15,6 +15,8 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.micrometer.core.instrument.MeterRegistry;
+
 @ApplicationScoped
 public class RecordPersistingStream {
 
@@ -29,6 +31,7 @@ public class RecordPersistingStream {
   private final Repository<LandscapeRecord> recordRepo;
 
   private final KafkaStreams stream;
+
 
 
   @Inject
