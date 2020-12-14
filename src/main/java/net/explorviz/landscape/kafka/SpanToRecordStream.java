@@ -18,6 +18,8 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.micrometer.core.instrument.MeterRegistry;
+
 @ApplicationScoped
 public class SpanToRecordStream {
 
@@ -34,6 +36,7 @@ public class SpanToRecordStream {
   private final KafkaStreams stream;
 
   private  final SpanToRecordConverter converter;
+
 
 
   @Inject
