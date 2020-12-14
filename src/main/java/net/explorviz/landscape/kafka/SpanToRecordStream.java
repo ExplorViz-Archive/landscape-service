@@ -3,11 +3,14 @@ package net.explorviz.landscape.kafka;
 import java.util.Properties;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import net.explorviz.avro.SpanStructure;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.peristence.Repository;
+import net.explorviz.landscape.service.converter.SpanToRecordConverter;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.Consumed;
@@ -16,9 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @ApplicationScoped
-public class RecordPersistingStream {
+public class SpanToRecordStream {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(RecordPersistingStream.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(SpanToRecordStream.class);
 
   private final KafkaHelper kHelper;
 
@@ -30,10 +33,15 @@ public class RecordPersistingStream {
 
   private final KafkaStreams stream;
 
+  private  final SpanToRecordConverter converter;
+
 
   @Inject
-  public RecordPersistingStream(final KafkaHelper kHelper, Repository<LandscapeRecord> repository) {
+  public SpanToRecordStream(final KafkaHelper kHelper,
+                            SpanToRecordConverter converter,
+                            Repository<LandscapeRecord> repository) {
     this.kHelper = kHelper;
+    this.converter = converter;
     this.recordRepo = repository;
     this.topology = this.buildTopology();
     this.props = kHelper.newDefaultStreamProperties();
@@ -47,11 +55,20 @@ public class RecordPersistingStream {
   private Topology buildTopology() {
     final StreamsBuilder builder = new StreamsBuilder();
 
-    final KStream<String, LandscapeRecord> recordStream =
-        builder.stream(this.kHelper.getTopicRecords(), Consumed
+    // Span Structure stream
+    final KStream<String, SpanStructure> spanStream =
+        builder.stream(this.kHelper.getTopicSpanStructure(), Consumed
             .with(Serdes.String(), this.kHelper.getAvroValueSerde()));
 
-    recordStream.foreach((k, rec) -> {
+    // Map to records
+    final KStream<String, LandscapeRecord> recordKStream =
+        spanStream.map((k, s) -> {
+          final LandscapeRecord record = this.converter.toRecord(s);
+          return new KeyValue<>(record.getLandscapeToken(), record);
+        });
+
+
+    recordKStream.foreach((k, rec) -> {
       try {
         this.recordRepo.add(rec);
       } catch (final QueryException e) {

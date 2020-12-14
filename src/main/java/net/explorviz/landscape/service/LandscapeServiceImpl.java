@@ -1,4 +1,4 @@
-package net.explorviz.landscape.service.usecase;
+package net.explorviz.landscape.service;
 
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
@@ -18,15 +18,15 @@ import org.slf4j.LoggerFactory;
  * Implements the use cases
  */
 @ApplicationScoped
-public class UseCaseImpl implements UseCases {
+public class LandscapeServiceImpl implements LandscapeService {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(UseCaseImpl.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(LandscapeServiceImpl.class);
 
   private final Repository<LandscapeRecord> repo;
   private final LandscapeAssembler assembler;
 
   @Inject
-  public UseCaseImpl(Repository<LandscapeRecord> repo, LandscapeAssembler assembler) {
+  public LandscapeServiceImpl(Repository<LandscapeRecord> repo, LandscapeAssembler assembler) {
     this.repo = repo;
     this.assembler = assembler;
   }

@@ -13,7 +13,7 @@ import net.explorviz.avro.landscape.model.Landscape;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 import net.explorviz.landscape.service.assemble.impl.NoRecordsException;
-import net.explorviz.landscape.service.usecase.UseCases;
+import net.explorviz.landscape.service.LandscapeService;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -23,10 +23,10 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 @Path("/v2/landscapes")
 public class LandscapeResource {
 
-  private final UseCases useCases;
+  private final LandscapeService landscapeService;
 
-  public LandscapeResource(UseCases useCases) {
-    this.useCases = useCases;
+  public LandscapeResource(LandscapeService landscapeService) {
+    this.landscapeService = landscapeService;
   }
 
   @GET
@@ -51,19 +51,19 @@ public class LandscapeResource {
     try {
       switch (c) {
         case 0: // Both null
-          buildLandscape = useCases.buildLandscape(token);
+          buildLandscape = landscapeService.buildLandscape(token);
           break;
         case 1: // from is given
           System.out.println(from);
-          buildLandscape = useCases.BuildLandscapeFrom(token, from);
+          buildLandscape = landscapeService.BuildLandscapeFrom(token, from);
           break;
         case 2:
           System.out.println(to);
-          buildLandscape = useCases.BuildLandscapeTo(token, to);
+          buildLandscape = landscapeService.BuildLandscapeTo(token, to);
           break;
         case 3:
           System.out.println(from + "   " + to);
-          buildLandscape = useCases.BuildLandscapeBetweeen(token, from, to);
+          buildLandscape = landscapeService.BuildLandscapeBetweeen(token, from, to);
       }
     } catch (QueryException e) {
       throw new InternalServerErrorException("Could not dispatch query");

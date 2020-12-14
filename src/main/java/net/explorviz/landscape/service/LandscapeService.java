@@ -1,10 +1,10 @@
-package net.explorviz.landscape.service.usecase;
+package net.explorviz.landscape.service;
 
 import net.explorviz.avro.landscape.model.Landscape;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 
-public interface UseCases {
+public interface LandscapeService {
 
   /**
    * Assembles the landscape with the given token using all known records.
