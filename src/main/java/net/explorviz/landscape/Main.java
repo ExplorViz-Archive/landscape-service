@@ -25,15 +25,15 @@ public class Main implements QuarkusApplication {
   }
 
 
-  private final DBHelper dbHelper;
+  // private final DBHelper dbHelper;
   private final SpanToRecordStream stream;
 
   private final MeterRegistry registry;
 
   @Inject
-  public Main(SpanToRecordStream stream, DBHelper dbHelper, MeterRegistry registry) {
+  public Main(SpanToRecordStream stream, /* DBHelper dbHelper,*/ MeterRegistry registry) {
     this.stream = stream;
-    this.dbHelper = dbHelper;
+    //this.dbHelper = dbHelper;
     this.registry = registry;
   }
 
@@ -44,7 +44,7 @@ public class Main implements QuarkusApplication {
         new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
 
 
-    dbHelper.initialize();
+    //dbHelper.initialize();
 
     this.stream.getStream().cleanUp();
     this.stream.getStream().start();
