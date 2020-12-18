@@ -3,6 +3,8 @@ package net.explorviz.landscape.peristence.cassandra;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
 
 import net.explorviz.avro.landscape.flat.Application;
@@ -78,6 +80,39 @@ class LandscapeRecordRepositoryTest extends CassandraTest {
         .build();
 
     repository.add(toAdd);
+
+    // Find
+    List<LandscapeRecord> rec = repository.getAll(toAdd.getLandscapeToken());
+    Assertions.assertEquals(1, rec.size());
+    Assertions.assertEquals(toAdd, rec.get(0));
+  }
+
+  @Test
+  void addNewAsync() throws IOException, QueryException {
+    List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
+
+    for (LandscapeRecord r : records) {
+      InsertLandscapeRecord s = new InsertLandscapeRecord(r, mapper);
+      sess.execute(s.toQuery());
+    }
+
+    Node node = new Node("0.0.0.0", "localhost");
+    Application app = new Application("SampleApplication", "1234",  "java");
+    String package$ = "net.explorviz.test";
+    String class$ = "SampleClass";
+    String method = "sampleMethod()";
+    LandscapeRecord toAdd = LandscapeRecord.newBuilder()
+        .setLandscapeToken("test_token")
+        .setNode(node)
+        .setApplication(app)
+        .setTimestamp(1590231993321L)
+        .setPackage$(package$)
+        .setClass$(class$)
+        .setMethod(method)
+        .setHashCode("1234")
+        .build();
+
+    repository.addAsync(toAdd).toCompletableFuture().join();
 
     // Find
     List<LandscapeRecord> rec = repository.getAll(toAdd.getLandscapeToken());
