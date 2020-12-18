@@ -53,7 +53,7 @@ public class RecordPersistingStream {
 
     recordStream.foreach((k, rec) -> {
       try {
-        this.recordRepo.add(rec);
+        this.recordRepo.addAsync(rec);
       } catch (final QueryException e) {
         if (LOGGER.isErrorEnabled()) {
           LOGGER.error("Failed to persist an record: {0}", e);
