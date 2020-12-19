@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
        - name: explorviz-landscape-service
-         image: explorviz/landscape-service-jvm:latest
+         image: eu.gcr.io/imposing-kite-298510/explorviz/landscape-service-jvm:lotzk-seminar
          imagePullPolicy: IfNotPresent
 ---
 apiVersion: v1
