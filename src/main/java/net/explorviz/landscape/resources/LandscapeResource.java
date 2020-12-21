@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -68,7 +69,7 @@ public class LandscapeResource {
     } catch (QueryException e) {
       throw new InternalServerErrorException("Could not dispatch query");
     } catch (NoRecordsException e) {
-      // Do nothing, returns empty landscape
+      throw new NotFoundException("No landscape with such token " + token);
     } catch (LandscapeAssemblyException e) {
       // Never caused by the user
       throw new InternalServerErrorException(e.getMessage());
