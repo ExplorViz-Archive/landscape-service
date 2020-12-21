@@ -55,17 +55,6 @@ public class LandscapeResource {
           break;
         case 1: // from is given
           System.out.println(from);
-<<<<<<< HEAD
-          buildLandscape = landscapeService.BuildLandscapeFrom(token, from);
-          break;
-        case 2:
-          System.out.println(to);
-          buildLandscape = landscapeService.BuildLandscapeTo(token, to);
-          break;
-        case 3:
-          System.out.println(from + "   " + to);
-          buildLandscape = landscapeService.BuildLandscapeBetweeen(token, from, to);
-=======
           buildLandscape = landscapeService.buildLandscapeFrom(token, from);
           break;
         case 2:
@@ -75,7 +64,6 @@ public class LandscapeResource {
         case 3:
           System.out.println(from + "   " + to);
           buildLandscape = landscapeService.buildLandscapeBetween(token, from, to);
->>>>>>> master
       }
     } catch (QueryException e) {
       throw new InternalServerErrorException("Could not dispatch query");

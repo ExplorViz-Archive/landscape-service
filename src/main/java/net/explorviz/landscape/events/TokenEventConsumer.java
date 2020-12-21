@@ -2,12 +2,14 @@ package net.explorviz.landscape.events;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import net.explorviz.avro.EventType;
-import net.explorviz.avro.TokenEvent;
-import net.explorviz.landscape.service.usecase.LandscapeService;
+
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.explorviz.avro.EventType;
+import net.explorviz.avro.TokenEvent;
+import net.explorviz.landscape.service.LandscapeService;
 
 
 @ApplicationScoped

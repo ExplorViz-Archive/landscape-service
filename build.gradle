@@ -45,7 +45,11 @@ dependencies {
   testImplementation "org.mockito:mockito-core:2.+"
   testImplementation 'io.rest-assured:rest-assured'
 
-  testImplementation group: 'org.cassandraunit', name: 'cassandra-unit', version: '4.3.1.0'
+
+  // https://stackoverflow.com/questions/59118223/problem-with-eclipse-when-using-java-11-and-cassandra-spring-unit-possibly-along
+  testImplementation ('org.cassandraunit:cassandra-unit:4.3.1.0') {
+  //  exclude module: 'high-scale-lib'
+  }
 }
 
 group 'net.explorviz'
