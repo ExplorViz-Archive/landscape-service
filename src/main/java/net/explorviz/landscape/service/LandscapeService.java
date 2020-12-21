@@ -14,7 +14,7 @@ public interface LandscapeService {
    */
   default Landscape buildLandscape(String landscapeToken)
       throws QueryException, LandscapeAssemblyException {
-    return this.BuildLandscapeBetweeen(landscapeToken, 0, System.currentTimeMillis());
+    return this.buildLandscapeBetween(landscapeToken, 0, System.currentTimeMillis());
   }
 
 
@@ -29,10 +29,10 @@ public interface LandscapeService {
    * @return the landscape assembled out of all records with the given token and matching the time
    *     constraint
    */
-  default Landscape BuildLandscapeFrom(String landscapeToken, long fromTimestamp)
+  default Landscape buildLandscapeFrom(String landscapeToken, long fromTimestamp)
       throws QueryException, LandscapeAssemblyException {
     return this
-        .BuildLandscapeBetweeen(landscapeToken, fromTimestamp, System.currentTimeMillis());
+        .buildLandscapeBetween(landscapeToken, fromTimestamp, System.currentTimeMillis());
   }
 
   /**
@@ -45,9 +45,9 @@ public interface LandscapeService {
    * @return the landscape assembled out of all records with the given token and matching the time
    *     constraint
    */
-  default Landscape BuildLandscapeTo(String landscapeToken, long toTimestamp)
+  default Landscape buildLandscapeTo(String landscapeToken, long toTimestamp)
       throws QueryException, LandscapeAssemblyException {
-    return this.BuildLandscapeBetweeen(landscapeToken, 0, toTimestamp);
+    return this.buildLandscapeBetween(landscapeToken, 0, toTimestamp);
   }
 
   /**
@@ -62,7 +62,16 @@ public interface LandscapeService {
    * @return the landscape assembled out of all records with the given token and matching the time
    *     constraint
    */
-  Landscape BuildLandscapeBetweeen(String landscapeToken, long from, long to)
+  Landscape buildLandscapeBetween(String landscapeToken, long from, long to)
       throws LandscapeAssemblyException, QueryException;
+
+
+  /**
+   * Deletes the complete landscape with the given token, if it exists.
+   * If there is no landscape associated to the given token, this operation does nothing.
+   *
+   * @param landscapeToken the token of the landscape to delete
+   */
+  void deleteLandscape(String landscapeToken);
 
 }

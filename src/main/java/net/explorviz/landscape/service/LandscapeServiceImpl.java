@@ -32,15 +32,13 @@ public class LandscapeServiceImpl implements LandscapeService {
   }
 
   @Override
-  public Landscape BuildLandscapeBetweeen(String landscapeToken, long from, long to)
+  public Landscape buildLandscapeBetween(String landscapeToken, long from, long to)
       throws LandscapeAssemblyException, QueryException {
 
 
     Specification spec = new FindRecordsBetweenTimestamps(landscapeToken, from, to);
     List<LandscapeRecord> recordList;
     Landscape buildLandscape;
-
-
 
     // Fetch records
     recordList = repo.query(spec);
@@ -51,9 +49,14 @@ public class LandscapeServiceImpl implements LandscapeService {
 
     // Assemble
     buildLandscape = assembler.assembleFromRecords(recordList);
-
-
     return buildLandscape;
   }
+
+  @Override
+  public void deleteLandscape(final String landscapeToken) {
+    repo.deleteAll(landscapeToken);
+  }
+
+
 
 }
