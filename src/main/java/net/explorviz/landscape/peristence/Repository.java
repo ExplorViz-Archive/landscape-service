@@ -36,6 +36,10 @@ public interface Repository<T> {
    */
   List<T> query(Specification spec) throws QueryException;
 
-
+  /**
+   * Delete all records for a given token
+   * @param token the landscape token
+   */
+  void deleteAll(String token);
 
 }
