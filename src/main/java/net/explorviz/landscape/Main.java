@@ -4,7 +4,7 @@ import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
 import javax.inject.Inject;
-import net.explorviz.landscape.kafka.RecordPersistingStream;
+import net.explorviz.landscape.kafka.SpanToRecordStream;
 import net.explorviz.landscape.peristence.cassandra.DBHelper;
 
 @QuarkusMain
@@ -16,10 +16,10 @@ public class Main implements QuarkusApplication {
 
 
   private final DBHelper dbHelper;
-  private final RecordPersistingStream stream;
+  private final SpanToRecordStream stream;
 
   @Inject
-  public Main(RecordPersistingStream stream, DBHelper dbHelper) {
+  public Main(SpanToRecordStream stream, DBHelper dbHelper) {
     this.stream = stream;
     this.dbHelper = dbHelper;
   }

@@ -1,8 +1,10 @@
 package net.explorviz.landscape.peristence.cassandra;
 
+import com.datastax.oss.driver.api.core.cql.AsyncResultSet;
 import com.datastax.oss.driver.api.core.cql.ResultSet;
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
 import java.util.List;
+import java.util.concurrent.CompletionStage;
 import javax.enterprise.context.ApplicationScoped;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.landscape.peristence.QueryException;
@@ -50,9 +52,25 @@ public class LandscapeRecordRepository implements Repository<LandscapeRecord> {
     query(insertSpecification);
   }
 
+  @Override
+  public CompletionStage<AsyncResultSet> addAsync(LandscapeRecord item) throws QueryException {
+    InsertLandscapeRecord insertSpecification = new InsertLandscapeRecord(item, mapper);
+    return db.getSession().executeAsync(insertSpecification.toQuery());
+  }
 
   @Override
   public List<LandscapeRecord> query(Specification spec) throws QueryException {
     return db.getSession().execute(spec.toQuery()).map(mapper::fromRow).all();
   }
+
+  @Override
+  public void deleteAll(final String token) {
+    String deletionQuery =
+        QueryBuilder.deleteFrom(DBHelper.KEYSPACE_NAME, DBHelper.RECORDS_TABLE_NAME)
+            .whereColumn(DBHelper.COL_TOKEN).isEqualTo(QueryBuilder.literal(token)).asCql();
+    db.getSession().execute(deletionQuery);
+  }
+
+
+
 }

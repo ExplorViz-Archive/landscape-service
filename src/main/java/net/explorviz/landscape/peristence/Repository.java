@@ -1,6 +1,8 @@
 package net.explorviz.landscape.peristence;
 
+import com.datastax.oss.driver.api.core.cql.AsyncResultSet;
 import java.util.List;
+import java.util.concurrent.CompletionStage;
 
 /**
  * Manages (usually persistent) access to a collection of objects.
@@ -15,9 +17,15 @@ public interface Repository<T> {
   List<T> getAll(String landscapeToken);
 
   /**
-   * Inserts an item into the repository
+   * Inserts an item into the repository.
    */
   void add(T item) throws QueryException;
+
+  /**
+   * Inserts an item into the repository asynchronously.
+   * @return
+   */
+  CompletionStage<AsyncResultSet> addAsync(T item) throws QueryException;
 
   /**
    * Queries the collection for a specific subset
@@ -28,6 +36,10 @@ public interface Repository<T> {
    */
   List<T> query(Specification spec) throws QueryException;
 
-
+  /**
+   * Delete all records for a given token
+   * @param token the landscape token
+   */
+  void deleteAll(String token);
 
 }
