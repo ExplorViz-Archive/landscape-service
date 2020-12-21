@@ -13,7 +13,7 @@ import net.explorviz.avro.landscape.model.Landscape;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 import net.explorviz.landscape.service.assemble.impl.NoRecordsException;
-import net.explorviz.landscape.service.usecase.LandscapeService;
+import net.explorviz.landscape.service.LandscapeService;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;

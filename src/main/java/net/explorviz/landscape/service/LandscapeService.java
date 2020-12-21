@@ -1,4 +1,4 @@
-package net.explorviz.landscape.service.usecase;
+package net.explorviz.landscape.service;
 
 import net.explorviz.avro.landscape.model.Landscape;
 import net.explorviz.landscape.peristence.QueryException;

@@ -1,4 +1,4 @@
-package net.explorviz.landscape.service.usecase;
+package net.explorviz.landscape.service;
 
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;

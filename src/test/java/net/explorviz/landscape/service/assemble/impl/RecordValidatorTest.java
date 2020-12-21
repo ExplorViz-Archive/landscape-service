@@ -55,7 +55,7 @@ class RecordValidatorTest {
     Node.Builder nodeBuilder = Node.newBuilder(validRecord.getNode());
 
     LandscapeRecord nullNode = LandscapeRecord.newBuilder(validRecord).build();
-    nullNode.node = null;
+    nullNode.setNode(null);
 
     LandscapeRecord emptyHostName =
         LandscapeRecord.newBuilder(validRecord).setNode(nodeBuilder.setHostName("").build())
@@ -75,7 +75,7 @@ class RecordValidatorTest {
     Application.Builder appBuilder = Application.newBuilder(validRecord.getApplication());
     LandscapeRecord nullApp =
         LandscapeRecord.newBuilder(validRecord).build();
-    nullApp.application = null;
+    nullApp.setApplication(null);
 
 
     LandscapeRecord emptyAppName =
