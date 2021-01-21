@@ -4,7 +4,12 @@ package net.explorviz.landscape.peristence;
  * Thrown if a query could not be created or executed.
  */
 public class QueryException extends Exception {
-  public QueryException() {}
+
+  private static final long serialVersionUID = 3092777195562183891L;
+
+  public QueryException() {
+    super();
+  }
 
   public QueryException(final String message) {
     super(message);

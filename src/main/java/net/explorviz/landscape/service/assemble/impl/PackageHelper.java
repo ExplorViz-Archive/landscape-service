@@ -89,7 +89,7 @@ public final class PackageHelper {
     Collection<Package> current;
     for (int i = 1; i < packages.length; i++) {
       current = currentPkg.getSubPackages();
-      currentPkg = new Package(packages[i], new ArrayList<>(), new ArrayList<>());
+      currentPkg = new Package(packages[i], new ArrayList<>(), new ArrayList<>()); // NOPMD
       current.add(currentPkg);
     }
     return root;

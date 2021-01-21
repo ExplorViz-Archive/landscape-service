@@ -5,7 +5,11 @@ package net.explorviz.landscape.service.assemble;
  */
 public class LandscapeAssemblyException extends Exception {
 
-  public LandscapeAssemblyException() {}
+  private static final long serialVersionUID = -5122287416640668604L;
+
+  public LandscapeAssemblyException() {
+    super();
+  }
 
   public LandscapeAssemblyException(final String message) {
     super(message);

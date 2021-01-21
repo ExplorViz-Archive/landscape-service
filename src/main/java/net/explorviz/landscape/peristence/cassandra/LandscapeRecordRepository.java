@@ -42,7 +42,7 @@ public class LandscapeRecordRepository implements Repository<LandscapeRecord> {
             .whereColumn(DbHelper.COL_TOKEN)
             .isEqualTo(QueryBuilder.literal(token))
             .asCql();
-    final ResultSet result = this.db.getSession().execute(getAll);
+    final ResultSet result = this.db.getSession().execute(getAll); // NOPMD
     return result.map(this.mapper::fromRow).all();
   }
 

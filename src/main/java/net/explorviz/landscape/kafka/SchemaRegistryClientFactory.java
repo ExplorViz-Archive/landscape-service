@@ -12,7 +12,7 @@ public class SchemaRegistryClientFactory {
   
   private static final int MAX_NUM_OF_SCHEMAS = 10;
 
-  @ConfigProperty(name = "explorviz.schema-registry.url")
+  @ConfigProperty(name = "explorviz.schema-registry.url") // NOPMD
   /* default */ String schemaRegistryUrl; //NOCS
 
   @Produces

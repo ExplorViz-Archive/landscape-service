@@ -54,10 +54,8 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
 
     for (final LandscapeRecord insertMe : records) {
 
-
       // Throws if invalid
       this.validator.validate(insertMe);
-
 
       // Find node in landscape or insert new
       final String hostName = insertMe.getNode().getHostName();
@@ -68,7 +66,7 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
       if (foundNode.isPresent()) {
         node = foundNode.get();
       } else {
-        node = new Node(ipAddress, hostName, new ArrayList<>());
+        node = new Node(ipAddress, hostName, new ArrayList<>()); // NOPMD
         landscape.getNodes().add(node);
       }
 
@@ -82,7 +80,7 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
       if (foundApp.isPresent()) {
         app = foundApp.get();
       } else {
-        app = new Application(appName, appLanguage, appPid, new ArrayList<>());
+        app = new Application(appName, appLanguage, appPid, new ArrayList<>()); // NOPMD
         node.getApplications().add(app);
       }
 
@@ -116,11 +114,11 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
       if (foundCls.isPresent()) {
         cls = foundCls.get();
       } else {
-        cls = new Class(insertMe.getClass$(), new ArrayList<>());
+        cls = new Class(insertMe.getClass$(), new ArrayList<>()); // NOPMD
         leafPkg.getClasses().add(cls);
       }
       // Add the method
-      cls.getMethods().add(new Method(insertMe.getMethod(), insertMe.getHashCode()));
+      cls.getMethods().add(new Method(insertMe.getMethod(), insertMe.getHashCode())); // NOPMD
     }
   }
 

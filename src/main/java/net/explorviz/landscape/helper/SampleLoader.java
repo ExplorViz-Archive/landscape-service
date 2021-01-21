@@ -29,7 +29,7 @@ public final class SampleLoader {
    */
   public static List<LandscapeRecord> loadSampleApplication() throws IOException {
     final InputStream recordInputStream =
-        SampleLoader.class.getClassLoader().getResourceAsStream(SIMPLE);
+        Thread.currentThread().getContextClassLoader().getResourceAsStream(SIMPLE);
 
     final ObjectMapper mapper = new JsonMapper();
     return mapper.readValue(recordInputStream, new TypeReference<List<LandscapeRecord>>() {});

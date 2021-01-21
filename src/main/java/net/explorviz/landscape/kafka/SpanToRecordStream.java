@@ -25,10 +25,6 @@ public class SpanToRecordStream {
 
   private final KafkaHelper kafkaHelper;
 
-  private final Topology topology;
-
-  private final Properties props;
-
   private final Repository<LandscapeRecord> recordRepo;
 
   private final KafkaStreams stream;
@@ -43,9 +39,9 @@ public class SpanToRecordStream {
     this.kafkaHelper = kafkaHelper;
     this.converter = converter;
     this.recordRepo = repository;
-    this.topology = this.buildTopology();
-    this.props = kafkaHelper.newDefaultStreamProperties();
-    this.stream = new KafkaStreams(this.topology, this.props);
+    final Topology topology = buildTopology();
+    final Properties props = kafkaHelper.newDefaultStreamProperties();
+    this.stream = new KafkaStreams(topology, props);
   }
 
   public KafkaStreams getStream() {

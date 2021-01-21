@@ -57,27 +57,24 @@ public class LandscapeResource {
           buildLandscape = this.landscapeService.buildLandscape(token);
           break;
         case 1: // from is given
-          System.out.println(from);
           buildLandscape = this.landscapeService.buildLandscapeFrom(token, from);
           break;
         case 2:
-          System.out.println(to);
           buildLandscape = this.landscapeService.buildLandscapeTo(token, to);
           break;
         case 3: // NOCS
-          System.out.println(from + "   " + to);
           buildLandscape = this.landscapeService.buildLandscapeBetween(token, from, to);
           break;
         default:
           throw new InternalServerErrorException("Failed query");
       }
     } catch (final QueryException e) {
-      throw new InternalServerErrorException("Could not dispatch query");
+      throw new InternalServerErrorException("Could not dispatch query", e);
     } catch (final NoRecordsException e) {
-      throw new NotFoundException("No landscape with such token " + token);
+      throw new NotFoundException("No landscape with such token " + token, e);
     } catch (final LandscapeAssemblyException e) {
       // Never caused by the user
-      throw new InternalServerErrorException(e.getMessage());
+      throw new InternalServerErrorException(e.getMessage(), e);
     }
 
 
