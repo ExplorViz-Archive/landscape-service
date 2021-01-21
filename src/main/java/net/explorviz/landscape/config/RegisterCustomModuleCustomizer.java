@@ -7,12 +7,13 @@ import io.quarkus.jackson.ObjectMapperCustomizer;
 import javax.inject.Singleton;
 
 /**
- * Jackson configuration
+ * Jackson configuration.
  */
 @Singleton
 public class RegisterCustomModuleCustomizer implements ObjectMapperCustomizer {
 
-  public void customize(ObjectMapper mapper) {
+  @Override
+  public void customize(final ObjectMapper mapper) {
     mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
     mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
         .withFieldVisibility(JsonAutoDetect.Visibility.ANY)

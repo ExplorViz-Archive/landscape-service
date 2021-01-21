@@ -8,22 +8,22 @@ import net.explorviz.avro.landscape.flat.Node;
 @ApplicationScoped
 public class RecordValidator {
 
-  public void validate(LandscapeRecord record) throws InvalidRecordException {
-    validateToken(record.getLandscapeToken());
-    validateNode(record.getNode());
-    validateApplication(record.getApplication());
-    validatePackage(record.getPackage$());
-    validateClass(record.getClass$());
+  public void validate(final LandscapeRecord record) throws InvalidRecordException {
+    this.validateToken(record.getLandscapeToken());
+    this.validateNode(record.getNode());
+    this.validateApplication(record.getApplication());
+    this.validatePackage(record.getPackage$());
+    this.validateClass(record.getClass$());
   }
 
 
-  private void validateToken(String token) throws InvalidRecordException {
+  private void validateToken(final String token) throws InvalidRecordException {
     if (token == null || token.length() == 0) {
       throw new InvalidRecordException("Record has no token");
     }
   }
 
-  private void validateNode(Node node) throws InvalidRecordException {
+  private void validateNode(final Node node) throws InvalidRecordException {
     if (node == null) {
       throw new InvalidRecordException("Record has no node");
     }
@@ -36,7 +36,7 @@ public class RecordValidator {
     }
   }
 
-  private void validateApplication(Application app) throws InvalidRecordException {
+  private void validateApplication(final Application app) throws InvalidRecordException {
     if (app == null) {
       throw new InvalidRecordException("Record has no application");
     }
@@ -52,13 +52,13 @@ public class RecordValidator {
     }
   }
 
-  private void validatePackage(String pkg) throws InvalidRecordException {
+  private void validatePackage(final String pkg) throws InvalidRecordException {
     if (pkg == null || pkg.length() == 0) {
       throw new InvalidRecordException("A package is required");
     }
   }
 
-  private void validateClass(String clazz) throws InvalidRecordException {
+  private void validateClass(final String clazz) throws InvalidRecordException {
     if (clazz == null || clazz.length() == 0) {
       throw new InvalidRecordException("A class is required");
     }

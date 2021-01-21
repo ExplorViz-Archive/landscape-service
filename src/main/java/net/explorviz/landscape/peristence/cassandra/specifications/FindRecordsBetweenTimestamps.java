@@ -5,7 +5,7 @@ import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
 import com.datastax.oss.driver.api.querybuilder.relation.Relation;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.peristence.cassandra.CassandraSpecification;
-import net.explorviz.landscape.peristence.cassandra.DBHelper;
+import net.explorviz.landscape.peristence.cassandra.DbHelper;
 
 /**
  * Query specification for finding records that fall between a pait timestamp bounds.
@@ -18,27 +18,27 @@ public class FindRecordsBetweenTimestamps implements CassandraSpecification {
   private final SimpleStatement statement;
 
   /**
-   * Creats a new query to find all records discovered between to given timestamps
+   * Creats a new query to find all records discovered between to given timestamps.
    *
    * @param from the lower timestamp bound (inclusive)
-   * @param to   the upper timestamp bound (inclusive)
+   * @param to the upper timestamp bound (inclusive)
    */
-  public FindRecordsBetweenTimestamps(String token, long from, long to) {
+  public FindRecordsBetweenTimestamps(final String token, final long from, final long to) {
     this.from = from;
     this.to = to;
-    statement = QueryBuilder.selectFrom(DBHelper.KEYSPACE_NAME, DBHelper.RECORDS_TABLE_NAME)
+    this.statement = QueryBuilder.selectFrom(DbHelper.KEYSPACE_NAME, DbHelper.RECORDS_TABLE_NAME)
         .all()
         .allowFiltering()
-        .whereColumn(DBHelper.COL_TOKEN).isEqualTo(QueryBuilder.literal(token))
-        .where(Relation.column(DBHelper.COL_TIMESTAMP)
+        .whereColumn(DbHelper.COL_TOKEN).isEqualTo(QueryBuilder.literal(token))
+        .where(Relation.column(DbHelper.COL_TIMESTAMP)
             .isGreaterThanOrEqualTo(QueryBuilder.literal(this.from)))
-        .where(Relation.column(DBHelper.COL_TIMESTAMP)
+        .where(Relation.column(DbHelper.COL_TIMESTAMP)
             .isLessThanOrEqualTo(QueryBuilder.literal(this.to)))
         .build();
   }
 
   @Override
   public String toQuery() throws QueryException {
-    return statement.getQuery();
+    return this.statement.getQuery();
   }
 }

@@ -15,28 +15,29 @@ public class DBHelperTest extends CassandraTest {
 
   @Test
   public void testKeyspaceCreated() {
-    db.initialize();
+    this.db.initialize();
 
     final String keyspaceNameColumn = "keyspace_name";
-    ResultSet keyspaces = sess.execute(GET_ALL_KEYSPACES);
+    final ResultSet keyspaces = this.sess.execute(GET_ALL_KEYSPACES);
 
-    boolean hasExplorVizKeyspace =
+    final boolean hasExplorVizKeyspace =
         keyspaces.all().stream().map(r -> r.getString(keyspaceNameColumn)).filter(Objects::nonNull)
-            .anyMatch(n -> n.equals(DBHelper.KEYSPACE_NAME));
+            .anyMatch(n -> n.equals(DbHelper.KEYSPACE_NAME));
     Assertions.assertTrue(hasExplorVizKeyspace);
 
   }
 
   @Test
   public void testTableCreated() {
-    db.initialize();
+    this.db.initialize();
 
-    ResultSet tables = sess.execute(GET_ALL_TABLES.replace("{}", DBHelper.KEYSPACE_NAME));
+    final ResultSet tables =
+        this.sess.execute(GET_ALL_TABLES.replace("{}", DbHelper.KEYSPACE_NAME));
     final String tableColumnName = "table_name";
-    List<Row> rows = tables.all();
+    final List<Row> rows = tables.all();
     Assertions.assertEquals(1, rows.size());
     Assertions.assertEquals(rows.get(0).getString(tableColumnName),
-        DBHelper.RECORDS_TABLE_NAME);
+        DbHelper.RECORDS_TABLE_NAME);
 
   }
 }

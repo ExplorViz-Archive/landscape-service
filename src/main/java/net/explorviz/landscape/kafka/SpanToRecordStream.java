@@ -23,7 +23,7 @@ public class SpanToRecordStream {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SpanToRecordStream.class);
 
-  private final KafkaHelper kHelper;
+  private final KafkaHelper kafkaHelper;
 
   private final Topology topology;
 
@@ -33,23 +33,23 @@ public class SpanToRecordStream {
 
   private final KafkaStreams stream;
 
-  private  final SpanToRecordConverter converter;
+  private final SpanToRecordConverter converter;
 
 
   @Inject
-  public SpanToRecordStream(final KafkaHelper kHelper,
-                            SpanToRecordConverter converter,
-                            Repository<LandscapeRecord> repository) {
-    this.kHelper = kHelper;
+  public SpanToRecordStream(final KafkaHelper kafkaHelper,
+      final SpanToRecordConverter converter,
+      final Repository<LandscapeRecord> repository) {
+    this.kafkaHelper = kafkaHelper;
     this.converter = converter;
     this.recordRepo = repository;
     this.topology = this.buildTopology();
-    this.props = kHelper.newDefaultStreamProperties();
+    this.props = kafkaHelper.newDefaultStreamProperties();
     this.stream = new KafkaStreams(this.topology, this.props);
   }
 
   public KafkaStreams getStream() {
-    return stream;
+    return this.stream;
   }
 
   private Topology buildTopology() {
@@ -57,8 +57,8 @@ public class SpanToRecordStream {
 
     // Span Structure stream
     final KStream<String, SpanStructure> spanStream =
-        builder.stream(this.kHelper.getTopicSpanStructure(), Consumed
-            .with(Serdes.String(), this.kHelper.getAvroValueSerde()));
+        builder.stream(this.kafkaHelper.getTopicSpanStructure(), Consumed
+            .with(Serdes.String(), this.kafkaHelper.getAvroValueSerde()));
 
     // Map to records
     final KStream<String, LandscapeRecord> recordKStream =

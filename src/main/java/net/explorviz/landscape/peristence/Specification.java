@@ -1,8 +1,8 @@
 package net.explorviz.landscape.peristence;
 
 /**
- * Specification to retrieve a specific subset of objects from a {@link Repository}.
- * Implementations provide the exact query.
+ * Specification to retrieve a specific subset of objects from a {@link Repository}. Implementations
+ * provide the exact query.
  */
 public interface Specification {
 

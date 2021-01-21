@@ -9,13 +9,15 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
 public class SchemaRegistryClientFactory {
+  
+  private static final int MAX_NUM_OF_SCHEMAS = 10;
 
   @ConfigProperty(name = "explorviz.schema-registry.url")
-  String schemaRegistryUrl;
+  /* default */ String schemaRegistryUrl; //NOCS
 
   @Produces
   @DefaultBean
   public SchemaRegistryClient schemaRegistryClient() {
-    return new CachedSchemaRegistryClient(this.schemaRegistryUrl, 10);
+    return new CachedSchemaRegistryClient(this.schemaRegistryUrl, MAX_NUM_OF_SCHEMAS);
   }
 }

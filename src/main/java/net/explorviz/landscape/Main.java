@@ -5,29 +5,28 @@ import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
 import javax.inject.Inject;
 import net.explorviz.landscape.kafka.SpanToRecordStream;
-import net.explorviz.landscape.peristence.cassandra.DBHelper;
+import net.explorviz.landscape.peristence.cassandra.DbHelper;
 
 @QuarkusMain
 public class Main implements QuarkusApplication {
 
-  public static void main(String... args) {
-    Quarkus.run(Main.class, args);
-  }
-
-
-  private final DBHelper dbHelper;
+  private final DbHelper dbHelper;
   private final SpanToRecordStream stream;
-
+  
   @Inject
-  public Main(SpanToRecordStream stream, DBHelper dbHelper) {
+  public Main(final SpanToRecordStream stream, final DbHelper dbHelper) {
     this.stream = stream;
     this.dbHelper = dbHelper;
   }
 
-  @Override
-  public int run(String... args) throws Exception {
+  public static void main(final String... args) {
+    Quarkus.run(Main.class, args);
+  }
 
-    dbHelper.initialize();
+  @Override
+  public int run(final String... args) throws Exception {
+
+    this.dbHelper.initialize();
 
     this.stream.getStream().cleanUp();
     this.stream.getStream().start();

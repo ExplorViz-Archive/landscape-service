@@ -16,8 +16,8 @@ public class SpanToRecordConverter {
 
 
   /**
-   * Converts a {@link SpanStructure} to a {@link LandscapeRecord} using the structural information given
-   * in the span.
+   * Converts a {@link SpanStructure} to a {@link LandscapeRecord} using the structural information
+   * given in the span.
    *
    * @param span the span
    * @return a records containing the structural information of the span

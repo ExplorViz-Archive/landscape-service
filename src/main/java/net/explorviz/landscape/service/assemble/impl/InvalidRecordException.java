@@ -7,10 +7,9 @@ import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
  */
 public class InvalidRecordException extends LandscapeAssemblyException {
 
-  public InvalidRecordException() {
-  }
+  public InvalidRecordException() {}
 
-  public InvalidRecordException(String message) {
+  public InvalidRecordException(final String message) {
     super(message);
   }
 }

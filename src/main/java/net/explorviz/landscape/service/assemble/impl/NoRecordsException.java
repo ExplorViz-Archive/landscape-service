@@ -11,7 +11,7 @@ public class NoRecordsException extends LandscapeAssemblyException {
     this("At least one records must be given");
   }
 
-  private NoRecordsException(String message) {
+  private NoRecordsException(final String message) {
     super(message);
   }
 }
