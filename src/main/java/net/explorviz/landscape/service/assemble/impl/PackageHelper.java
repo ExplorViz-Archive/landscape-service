@@ -6,6 +6,9 @@ import net.explorviz.avro.landscape.model.Application;
 import net.explorviz.avro.landscape.model.Package;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 
+/**
+ * Helper class for building/accessing package hierarchies out of strings.
+ */
 public final class PackageHelper {
 
   private PackageHelper() { /* Utility class */ }

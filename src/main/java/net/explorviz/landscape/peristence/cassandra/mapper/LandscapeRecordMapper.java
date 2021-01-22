@@ -13,6 +13,9 @@ import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.avro.landscape.flat.Node;
 import net.explorviz.landscape.peristence.cassandra.DbHelper;
 
+/**
+ * De/serializes {@link LandscapeRecord}s to/from Apache Cassandra rows.
+ */
 @ApplicationScoped
 public class LandscapeRecordMapper implements ValueMapper<LandscapeRecord> {
 

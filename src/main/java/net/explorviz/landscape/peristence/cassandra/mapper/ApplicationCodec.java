@@ -9,6 +9,9 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import net.explorviz.avro.landscape.flat.Application;
 import net.explorviz.landscape.peristence.cassandra.DbHelper;
 
+/**
+ * Codec to de/serialize {@link Application} objects.
+ */
 public class ApplicationCodec extends MappingCodec<UdtValue, Application> {
 
   public ApplicationCodec(final TypeCodec<UdtValue> innerCodec) {

@@ -4,6 +4,9 @@ import net.explorviz.avro.landscape.model.Landscape;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 
+/**
+ * Service for building landscape graphs out of a set of flat records.
+ */
 public interface LandscapeService {
 
   /**

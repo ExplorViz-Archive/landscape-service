@@ -16,6 +16,9 @@ import net.explorviz.avro.landscape.model.Package;
 import net.explorviz.landscape.service.assemble.LandscapeAssembler;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 
+/**
+ * Assemble a landscape graph out of a set of flat landscape records.
+ */
 @ApplicationScoped
 public class DefaultLandscapeAssembler implements LandscapeAssembler {
 

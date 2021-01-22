@@ -7,9 +7,12 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+/**
+ * Factory for the client implementation to access the schema registry.
+ */
 @ApplicationScoped
 public class SchemaRegistryClientFactory {
-  
+
   private static final int MAX_NUM_OF_SCHEMAS = 10;
 
   @ConfigProperty(name = "explorviz.schema-registry.url") // NOPMD

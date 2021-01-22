@@ -18,6 +18,11 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
+/**
+ * Kafka stream processors to convert structural runtime information to landscape
+ * records, which are afterwards persisted in a Apache Cassandra Database.
+ */
 @ApplicationScoped
 public class SpanToRecordStream {
 

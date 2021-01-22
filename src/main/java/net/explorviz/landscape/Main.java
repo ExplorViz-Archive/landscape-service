@@ -7,6 +7,9 @@ import javax.inject.Inject;
 import net.explorviz.landscape.kafka.SpanToRecordStream;
 import net.explorviz.landscape.peristence.cassandra.DbHelper;
 
+/**
+ * Entry point for the Quarkus application.
+ */
 @QuarkusMain
 public class Main implements QuarkusApplication {
 

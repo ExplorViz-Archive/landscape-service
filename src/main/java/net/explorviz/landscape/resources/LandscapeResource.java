@@ -21,6 +21,10 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 
+
+/**
+ * HTTP resource to access landscapes.
+ */
 @Path("/v2/landscapes")
 public class LandscapeResource {
 

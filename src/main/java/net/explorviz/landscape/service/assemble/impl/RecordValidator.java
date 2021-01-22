@@ -5,6 +5,9 @@ import net.explorviz.avro.landscape.flat.Application;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.avro.landscape.flat.Node;
 
+/**
+ * Checks the integrity of landscape records.
+ */
 @ApplicationScoped
 public class RecordValidator {
 
