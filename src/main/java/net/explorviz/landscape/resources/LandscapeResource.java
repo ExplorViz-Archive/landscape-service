@@ -38,16 +38,16 @@ public class LandscapeResource {
   @Path("/{token}/structure")
   @Produces(MediaType.APPLICATION_JSON)
   @Operation(summary = "Retrieve a landscape graph",
-      description = "Assembles the (possibly empty) landscape of "
-          + "all spans observed in the given time range")
+             description = "Assembles the (possibly empty) landscape of "
+                 + "all spans observed in the given time range")
   @APIResponses(value = {@APIResponse(responseCode = "200",
-      description = "Success",
-      content = @Content(mediaType = "application/json",
-          schema = @Schema(
-              implementation = Landscape.class)))})
-  public Landscape getLandscape(@PathParam("token") final String token,
-      @QueryParam("from") final Long from,
-      @QueryParam("to") final Long to) {
+                                      description = "Success",
+                                      content = @Content(mediaType = "application/json",
+                                                         schema = @Schema(
+                                                             implementation = Landscape.class)))})
+  public Landscape getLandscape(@PathParam("token") final String token, // NOPMD
+                                @QueryParam("from") final Long from,
+                                @QueryParam("to") final Long to) {
 
     if (token == null || token.length() == 0) {
       throw new BadRequestException("Token is mandatory");

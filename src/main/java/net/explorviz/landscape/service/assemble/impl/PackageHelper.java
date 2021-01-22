@@ -70,7 +70,7 @@ public final class PackageHelper {
             .findFirst()
             .orElse(null);
       } else {
-        current = null;
+        current = null; // NOPMD
       }
     }
     return i;

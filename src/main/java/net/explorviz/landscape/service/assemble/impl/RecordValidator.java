@@ -39,7 +39,7 @@ public class RecordValidator {
     }
   }
 
-  private void validateApplication(final Application app) throws InvalidRecordException {
+  private void validateApplication(final Application app) throws InvalidRecordException { // NOPMD
     if (app == null) {
       throw new InvalidRecordException("Record has no application");
     }

@@ -7,6 +7,8 @@ import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
  */
 public class InvalidRecordException extends LandscapeAssemblyException {
 
+  private static final long serialVersionUID = 1L;
+
   public InvalidRecordException() {
     super();
   }

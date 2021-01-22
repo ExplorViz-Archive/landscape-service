@@ -7,6 +7,8 @@ import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
  */
 public class NoRecordsException extends LandscapeAssemblyException {
 
+  private static final long serialVersionUID = 1L;
+
   public NoRecordsException() {
     this("At least one records must be given");
   }
