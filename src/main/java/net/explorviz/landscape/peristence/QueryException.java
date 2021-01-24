@@ -5,7 +5,7 @@ package net.explorviz.landscape.peristence;
  */
 public class QueryException extends Exception {
 
-  private static final long serialVersionUID = 3092777195562183891L;
+  private static final long serialVersionUID = 3092777195562183891L; // NOPMD
 
   public QueryException() {
     super();
