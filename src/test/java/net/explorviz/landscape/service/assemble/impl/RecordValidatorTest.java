@@ -18,7 +18,7 @@ class RecordValidatorTest {
   @BeforeEach
   void setUp() {
     final Node n = new Node("0.0.0.0", "localhost");
-    final Application app = new Application("sample app", "1234", "java");
+    final Application app = new Application("sample app", 1234L, "java");
     final String pkg = "foo.bar";
     final String clazz = "Foo";
     final Method method = new Method("method", "1234");
@@ -83,18 +83,12 @@ class RecordValidatorTest {
         LandscapeRecord.newBuilder(this.validRecord).setApplication(appBuilder.setName("").build())
             .build();
 
-    final LandscapeRecord emptyPid =
-        LandscapeRecord.newBuilder(this.validRecord).setApplication(appBuilder.setPid("").build())
-            .build();
-
-
     final LandscapeRecord emptyLanguage =
         LandscapeRecord.newBuilder(this.validRecord)
             .setApplication(appBuilder.setLanguage("").build())
             .build();
 
-    for (final LandscapeRecord r : new LandscapeRecord[] {nullApp, emptyAppName, emptyPid,
-        emptyLanguage}) {
+    for (final LandscapeRecord r : new LandscapeRecord[] {nullApp, emptyAppName, emptyLanguage}) {
       Assertions.assertThrows(InvalidRecordException.class, () -> this.validator.validate(r));
     }
   }

@@ -37,11 +37,12 @@ public final class AssemblyUtils {
   /**
    * Searches for an {@link Application} in a node.
    *
-   * @param node the node
-   * @param instanceId  the instance id of the application to search for
+   * @param node       the node
+   * @param instanceId the instance id of the application to search for
    * @return an optional that contains the app if it is included in the node, and is empty otherwise
    */
-  public static Optional<Application> findApplication(final Node node, final String name, final long instanceId) {
+  public static Optional<Application> findApplication(final Node node, final String name,
+                                                      final long instanceId) {
     for (final Application a : node.getApplications()) {
 
       if (a.getInstaceId() == instanceId && a.getName().equals(name)) {

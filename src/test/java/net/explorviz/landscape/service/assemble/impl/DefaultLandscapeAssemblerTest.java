@@ -111,13 +111,13 @@ class DefaultLandscapeAssemblerTest {
     final String hostname = "host";
     final String ip = "0.0.0.0";
     final String appname = "app";
-    final String pid = "1";
+    final Long instanceId = 1L;
     final List<Class> classes = new ArrayList<>(Arrays.asList(new Class("TestClass",
         new ArrayList<>(Collections.singleton(new Method("method", "1234"))))));
 
     final Package rootPkg1 = new Package("net", new ArrayList<>(), classes);
     final List<Application> apps = new ArrayList<>(Collections.singletonList(
-        new Application(appname, "java", pid,
+        new Application(appname, "java", instanceId,
             new ArrayList<>(Collections.singletonList(rootPkg1)))));
     final List<Node> nodes = new ArrayList<>(
         new ArrayList<>(Collections.singletonList(new Node(ip, hostname, apps))));
@@ -131,7 +131,7 @@ class DefaultLandscapeAssemblerTest {
     final Method newMethod = new Method("method", "1234");
     final LandscapeRecord toInsert =
         new LandscapeRecord("tok", 123L, new net.explorviz.avro.landscape.flat.Node(ip, hostname),
-            new net.explorviz.avro.landscape.flat.Application(appname, pid, "java"), newPkg,
+            new net.explorviz.avro.landscape.flat.Application(appname, instanceId, "java"), newPkg,
             newClass,
             newMethod.getName(), newMethod.getHashCode());
 
