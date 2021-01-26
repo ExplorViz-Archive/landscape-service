@@ -23,44 +23,44 @@ public class PackageHelperTest {
 
   @BeforeEach
   void setUp() {
-    Package root = PackageHelper.toHierarchy("net.example.foo".split("\\."));
-    Package examplePkg = root.getSubPackages().get(0);
+    final Package root = PackageHelper.toHierarchy("net.example.foo".split("\\."));
+    final Package examplePkg = root.getSubPackages().get(0);
     examplePkg.getSubPackages().add(new Package("bar", new ArrayList<>(), new ArrayList<>()));
-    app = new Application("App", "java", "pid", Collections.singletonList(root));
+    this.app = new Application("App", "java", "pid", Collections.singletonList(root));
 
-    nodeA = new Node("1.2.3.4", "host1", Collections.singletonList(app));
-    nodeB = new Node("4.5.6.7", "host2", Collections.emptyList());
-    landscape = new Landscape("tok", Arrays.asList(nodeA, nodeB));
+    this.nodeA = new Node("1.2.3.4", "host1", Collections.singletonList(this.app));
+    this.nodeB = new Node("4.5.6.7", "host2", Collections.emptyList());
+    this.landscape = new Landscape("tok", Arrays.asList(this.nodeA, this.nodeB));
   }
 
   @Test
   void lowestPackageIndexFull() {
     // Completely known package path
-    String[] pkgs = "net.example.bar".split("\\.");
-    int got = PackageHelper.lowestPackageIndex(app, pkgs);
+    final String[] pkgs = "net.example.bar".split("\\.");
+    final int got = PackageHelper.lowestPackageIndex(this.app, pkgs);
     Assertions.assertEquals(3, got);
   }
 
   @Test
   void lowestPackageIndexPart() {
     // Partial known package path
-    String[] pkgs = "net.example.new".split("\\.");
-    int got = PackageHelper.lowestPackageIndex(app, pkgs);
+    final String[] pkgs = "net.example.new".split("\\.");
+    final int got = PackageHelper.lowestPackageIndex(this.app, pkgs);
     Assertions.assertEquals(2, got);
   }
 
   @Test
   void lowestPackageIndexNone() {
     // Unknown package path from root on
-    String[] pkgs = "org.foo".split("\\.");
-    int got = PackageHelper.lowestPackageIndex(app, pkgs);
+    final String[] pkgs = "org.foo".split("\\.");
+    final int got = PackageHelper.lowestPackageIndex(this.app, pkgs);
     Assertions.assertEquals(0, got);
   }
 
   @Test
   void toHierarchy() {
-    String[] branch = "net.example.foo.bar".split("\\.");
-    Package p = PackageHelper.toHierarchy(branch);
+    final String[] branch = "net.example.foo.bar".split("\\.");
+    final Package p = PackageHelper.toHierarchy(branch);
 
     Assertions.assertEquals(branch[0], p.getName());
     List<Package> current = p.getSubPackages();
@@ -73,26 +73,27 @@ public class PackageHelperTest {
 
   @Test
   void fromPathExisting() throws LandscapeAssemblyException {
-    String[] toLeaf = "net.example.bar".split("\\.");
-    String[] partial = "net.example".split("\\.");
-    List<String[]> cases = Arrays.asList(partial, toLeaf);
+    final String[] toLeaf = "net.example.bar".split("\\.");
+    final String[] partial = "net.example".split("\\.");
+    final List<String[]> cases = Arrays.asList(partial, toLeaf);
 
-    for (String[] tt : cases) {
-      Package got = PackageHelper.fromPath(app, tt);
+    for (final String[] tt : cases) {
+      final Package got = PackageHelper.fromPath(this.app, tt);
       Assertions.assertEquals(tt[tt.length - 1], got.getName());
     }
   }
 
   @Test
   void fromPathNonExisting() throws LandscapeAssemblyException {
-    String[] unknownRoot = "org.something.bar".split("\\.");
-    String[] tooLong = "net.example.bar.foo.bar2".split("\\.");
-    String[] unknownMiddle = "net.example2.bar".split("\\.");
-    List<String[]> cases = Arrays.asList(unknownRoot, tooLong, unknownMiddle);
+    final String[] unknownRoot = "org.something.bar".split("\\.");
+    final String[] tooLong = "net.example.bar.foo.bar2".split("\\.");
+    final String[] unknownMiddle = "net.example2.bar".split("\\.");
+    final List<String[]> cases = Arrays.asList(unknownRoot, tooLong, unknownMiddle);
 
-    for (String[] tt : cases) {
+    for (final String[] tt : cases) {
       Assertions
-          .assertThrows(LandscapeAssemblyException.class, () -> PackageHelper.fromPath(app, tt));
+          .assertThrows(LandscapeAssemblyException.class,
+              () -> PackageHelper.fromPath(this.app, tt));
     }
   }
 }

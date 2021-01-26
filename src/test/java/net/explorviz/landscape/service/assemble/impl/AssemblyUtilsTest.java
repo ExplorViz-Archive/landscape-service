@@ -24,59 +24,61 @@ class AssemblyUtilsTest {
 
   @BeforeEach
   void setUp() {
-    Package root = PackageHelper.toHierarchy("net.example.foo".split("\\."));
-    Package examplePkg = root.getSubPackages().get(0);
+    final Package root = PackageHelper.toHierarchy("net.example.foo".split("\\."));
+    final Package examplePkg = root.getSubPackages().get(0);
     examplePkg.getSubPackages().add(new Package("bar", new ArrayList<>(), new ArrayList<>()));
-    app = new Application("App", "java", "pid", new ArrayList<>(Collections.singletonList(root)));
-    nodeA = new Node("1.2.3.4", "host1", Collections.singletonList(app));
-    nodeB = new Node("host2", "4.5.6.7", Collections.emptyList());
-    landscape = new Landscape("tok", Arrays.asList(nodeA, nodeB));
+    this.app =
+        new Application("App", "java", "pid", new ArrayList<>(Collections.singletonList(root)));
+    this.nodeA = new Node("1.2.3.4", "host1", Collections.singletonList(this.app));
+    this.nodeB = new Node("host2", "4.5.6.7", Collections.emptyList());
+    this.landscape = new Landscape("tok", Arrays.asList(this.nodeA, this.nodeB));
   }
 
   @Test
   void findNodeExisting() {
-    Optional<Node> got =
-        AssemblyUtils.findNode(landscape, nodeA.getHostName(), nodeA.getIpAddress());
+    final Optional<Node> got =
+        AssemblyUtils.findNode(this.landscape, this.nodeA.getHostName(), this.nodeA.getIpAddress());
     Assertions.assertTrue(got.isPresent());
-    Assertions.assertEquals(nodeA, got.get());
+    Assertions.assertEquals(this.nodeA, got.get());
   }
 
   @Test
   void findNodeNonExisting() {
-    Optional<Node> got =
-        AssemblyUtils.findNode(landscape, nodeA.getHostName(), nodeB.getIpAddress());
+    final Optional<Node> got =
+        AssemblyUtils.findNode(this.landscape, this.nodeA.getHostName(), this.nodeB.getIpAddress());
     Assertions.assertFalse(got.isPresent());
   }
 
   @Test
   void findApplicationExisting() {
-    Application toFind =
-        new Application(app.getName(), app.getLanguage(), app.getPid(), new ArrayList<>());
-    Optional<Application> got = AssemblyUtils
-        .findApplication(nodeA, toFind.getPid());
+    final Application toFind =
+        new Application(this.app.getName(), this.app.getLanguage(), this.app.getPid(),
+            new ArrayList<>());
+    final Optional<Application> got = AssemblyUtils
+        .findApplication(this.nodeA, toFind.getPid());
     Assertions.assertTrue(got.isPresent());
-    Assertions.assertEquals(app, got.get());
+    Assertions.assertEquals(this.app, got.get());
   }
 
 
 
   @Test
   void findClazzExisting() {
-    List<Class> classes =
+    final List<Class> classes =
         Arrays.asList(new Class("A", new ArrayList<>()), new Class("B", new ArrayList<>()));
-    Package p = new Package("foo", new ArrayList<>(), classes);
+    final Package p = new Package("foo", new ArrayList<>(), classes);
 
-    Optional<Class> got = AssemblyUtils.findClazz(p, "A");
+    final Optional<Class> got = AssemblyUtils.findClazz(p, "A");
     Assertions.assertTrue(got.isPresent());
   }
 
   @Test
   void findClazzNonExisting() {
-    List<Class> classes =
+    final List<Class> classes =
         Arrays.asList(new Class("A", new ArrayList<>()), new Class("B", new ArrayList<>()));
-    Package p = new Package("foo", new ArrayList<>(), classes);
+    final Package p = new Package("foo", new ArrayList<>(), classes);
 
-    Optional<Class> got = AssemblyUtils.findClazz(p, "C");
+    final Optional<Class> got = AssemblyUtils.findClazz(p, "C");
     Assertions.assertFalse(got.isPresent());
   }
 }

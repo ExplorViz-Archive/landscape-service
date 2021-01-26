@@ -3,10 +3,7 @@ package net.explorviz.landscape.peristence.cassandra;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
-
 import net.explorviz.avro.landscape.flat.Application;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.avro.landscape.flat.Node;
@@ -19,8 +16,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests for the {@link LandscapeRecordRepository}. The test are run against an in-memory
- * Cassandra database.
+ * Tests for the {@link LandscapeRecordRepository}. The test are run against an in-memory Cassandra
+ * database.
  */
 class LandscapeRecordRepositoryTest extends CassandraTest {
 
@@ -32,43 +29,43 @@ class LandscapeRecordRepositoryTest extends CassandraTest {
   @BeforeEach
   void setUp() {
     this.db.initialize();
-    mapper = new LandscapeRecordMapper(this.db);
+    this.mapper = new LandscapeRecordMapper(this.db);
     this.repository = new LandscapeRecordRepository(this.db, this.mapper);
   }
 
 
   @Test
   void getAll() throws IOException, QueryException {
-    List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
-    for (LandscapeRecord r : records) {
-      InsertLandscapeRecord s = new InsertLandscapeRecord(r, mapper);
-      sess.execute(s.toQuery());
+    final List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
+    for (final LandscapeRecord r : records) {
+      final InsertLandscapeRecord s = new InsertLandscapeRecord(r, this.mapper);
+      this.sess.execute(s.toQuery());
     }
     final String token = records.get(0).getLandscapeToken();
 
 
     // Use hashsets to ignore order when comparing
-    HashSet<LandscapeRecord> forToken =
+    final HashSet<LandscapeRecord> forToken =
         records.stream().filter(r -> token.equals(r.getLandscapeToken()))
             .collect(Collectors.toCollection(HashSet::new));
-    HashSet<LandscapeRecord> got = new HashSet<>(repository.getAll(token));
+    final HashSet<LandscapeRecord> got = new HashSet<>(this.repository.getAll(token));
 
     Assertions.assertEquals(forToken, got);
   }
 
   @Test
   void addNew() throws IOException, QueryException {
-    List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
-    for (LandscapeRecord r : records) {
-      InsertLandscapeRecord s = new InsertLandscapeRecord(r, mapper);
-      sess.execute(s.toQuery());
+    final List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
+    for (final LandscapeRecord r : records) {
+      final InsertLandscapeRecord s = new InsertLandscapeRecord(r, this.mapper);
+      this.sess.execute(s.toQuery());
     }
-    Node node = new Node("0.0.0.0", "localhost");
-    Application app = new Application("SampleApplication", "1234",  "java");
-    String package$ = "net.explorviz.test";
-    String class$ = "SampleClass";
-    String method = "sampleMethod()";
-    LandscapeRecord toAdd = LandscapeRecord.newBuilder()
+    final Node node = new Node("0.0.0.0", "localhost");
+    final Application app = new Application("SampleApplication", "1234", "java");
+    final String package$ = "net.explorviz.test";
+    final String class$ = "SampleClass";
+    final String method = "sampleMethod()";
+    final LandscapeRecord toAdd = LandscapeRecord.newBuilder()
         .setLandscapeToken("test_token")
         .setNode(node)
         .setApplication(app)
@@ -79,29 +76,29 @@ class LandscapeRecordRepositoryTest extends CassandraTest {
         .setHashCode("1234")
         .build();
 
-    repository.add(toAdd);
+    this.repository.add(toAdd);
 
     // Find
-    List<LandscapeRecord> rec = repository.getAll(toAdd.getLandscapeToken());
+    final List<LandscapeRecord> rec = this.repository.getAll(toAdd.getLandscapeToken());
     Assertions.assertEquals(1, rec.size());
     Assertions.assertEquals(toAdd, rec.get(0));
   }
 
   @Test
   void addNewAsync() throws IOException, QueryException {
-    List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
+    final List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
 
-    for (LandscapeRecord r : records) {
-      InsertLandscapeRecord s = new InsertLandscapeRecord(r, mapper);
-      sess.execute(s.toQuery());
+    for (final LandscapeRecord r : records) {
+      final InsertLandscapeRecord s = new InsertLandscapeRecord(r, this.mapper);
+      this.sess.execute(s.toQuery());
     }
 
-    Node node = new Node("0.0.0.0", "localhost");
-    Application app = new Application("SampleApplication", "1234",  "java");
-    String package$ = "net.explorviz.test";
-    String class$ = "SampleClass";
-    String method = "sampleMethod()";
-    LandscapeRecord toAdd = LandscapeRecord.newBuilder()
+    final Node node = new Node("0.0.0.0", "localhost");
+    final Application app = new Application("SampleApplication", "1234", "java");
+    final String package$ = "net.explorviz.test";
+    final String class$ = "SampleClass";
+    final String method = "sampleMethod()";
+    final LandscapeRecord toAdd = LandscapeRecord.newBuilder()
         .setLandscapeToken("test_token")
         .setNode(node)
         .setApplication(app)
@@ -112,22 +109,22 @@ class LandscapeRecordRepositoryTest extends CassandraTest {
         .setHashCode("1234")
         .build();
 
-    repository.addAsync(toAdd).toCompletableFuture().join();
+    this.repository.addAsync(toAdd).toCompletableFuture().join();
 
     // Find
-    List<LandscapeRecord> rec = repository.getAll(toAdd.getLandscapeToken());
+    final List<LandscapeRecord> rec = this.repository.getAll(toAdd.getLandscapeToken());
     Assertions.assertEquals(1, rec.size());
     Assertions.assertEquals(toAdd, rec.get(0));
   }
 
   @Test
   void addWithoutToken() {
-    Node node = new Node("0.0.0.0", "localhost");
-    Application app = new Application("SampleApplication", "1234", "java");
-    String package$ = "net.explorviz.test";
-    String class$ = "SampleClass";
-    String method = "sampleMethod()";
-    LandscapeRecord toAdd = LandscapeRecord.newBuilder()
+    final Node node = new Node("0.0.0.0", "localhost");
+    final Application app = new Application("SampleApplication", "1234", "java");
+    final String package$ = "net.explorviz.test";
+    final String class$ = "SampleClass";
+    final String method = "sampleMethod()";
+    final LandscapeRecord toAdd = LandscapeRecord.newBuilder()
         .setLandscapeToken("")
         .setNode(node)
         .setApplication(app)
@@ -138,23 +135,23 @@ class LandscapeRecordRepositoryTest extends CassandraTest {
         .setHashCode("12345")
         .build();
 
-    Assertions.assertThrows(QueryException.class, () -> repository.add(toAdd));
+    Assertions.assertThrows(QueryException.class, () -> this.repository.add(toAdd));
   }
 
   @Test
   void addExisting() throws IOException, QueryException {
-    List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
-    for (LandscapeRecord r : records) {
-      InsertLandscapeRecord s = new InsertLandscapeRecord(r, mapper);
-      sess.execute(s.toQuery());
+    final List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
+    for (final LandscapeRecord r : records) {
+      final InsertLandscapeRecord s = new InsertLandscapeRecord(r, this.mapper);
+      this.sess.execute(s.toQuery());
     }
 
-    String token = records.get(0).getLandscapeToken();
+    final String token = records.get(0).getLandscapeToken();
 
     // Should not add another record with same specs
-    repository.add(records.get(0));
-    int got = repository.getAll(token).size();
-    long want = records.stream().filter(r -> token.equals(r.getLandscapeToken())).count();
+    this.repository.add(records.get(0));
+    final int got = this.repository.getAll(token).size();
+    final long want = records.stream().filter(r -> token.equals(r.getLandscapeToken())).count();
     Assertions.assertEquals(want, got);
   }
 
@@ -162,27 +159,27 @@ class LandscapeRecordRepositoryTest extends CassandraTest {
   @Test
   void deleteById() throws IOException, QueryException {
 
-    List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
+    final List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
     final String token = records.get(0).getLandscapeToken();
-    for (LandscapeRecord r : records) {
-      InsertLandscapeRecord s = new InsertLandscapeRecord(r, mapper);
-      sess.execute(s.toQuery());
+    for (final LandscapeRecord r : records) {
+      final InsertLandscapeRecord s = new InsertLandscapeRecord(r, this.mapper);
+      this.sess.execute(s.toQuery());
     }
-    repository.deleteAll(token);
+    this.repository.deleteAll(token);
 
-    Assertions.assertEquals(0, repository.getAll(token).size());
+    Assertions.assertEquals(0, this.repository.getAll(token).size());
 
   }
 
   @Test
   void deleteByUnknownId() throws IOException, QueryException {
 
-    List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
+    final List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
     final String token = "unknown";
-    for (LandscapeRecord r : records) {
-      InsertLandscapeRecord s = new InsertLandscapeRecord(r, mapper);
-      sess.execute(s.toQuery());
+    for (final LandscapeRecord r : records) {
+      final InsertLandscapeRecord s = new InsertLandscapeRecord(r, this.mapper);
+      this.sess.execute(s.toQuery());
     }
-    repository.deleteAll(token);
+    this.repository.deleteAll(token);
   }
 }

@@ -7,15 +7,20 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+/**
+ * Factory for the client implementation to access the schema registry.
+ */
 @ApplicationScoped
 public class SchemaRegistryClientFactory {
 
-  @ConfigProperty(name = "explorviz.schema-registry.url")
-  String schemaRegistryUrl;
+  private static final int MAX_NUM_OF_SCHEMAS = 10;
+
+  @ConfigProperty(name = "explorviz.schema-registry.url") // NOPMD
+  /* default */ String schemaRegistryUrl; //NOCS
 
   @Produces
   @DefaultBean
   public SchemaRegistryClient schemaRegistryClient() {
-    return new CachedSchemaRegistryClient(this.schemaRegistryUrl, 10);
+    return new CachedSchemaRegistryClient(this.schemaRegistryUrl, MAX_NUM_OF_SCHEMAS);
   }
 }

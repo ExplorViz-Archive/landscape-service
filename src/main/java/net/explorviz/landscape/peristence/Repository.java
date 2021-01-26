@@ -23,12 +23,13 @@ public interface Repository<T> {
 
   /**
    * Inserts an item into the repository asynchronously.
+   *
    * @return
    */
   CompletionStage<AsyncResultSet> addAsync(T item) throws QueryException;
 
   /**
-   * Queries the collection for a specific subset
+   * Queries the collection for a specific subset.
    *
    * @param spec the specification of the items to retrieve
    * @return a (possibly empty) list containing the queried items
@@ -37,7 +38,8 @@ public interface Repository<T> {
   List<T> query(Specification spec) throws QueryException;
 
   /**
-   * Delete all records for a given token
+   * Delete all records for a given token.
+   *
    * @param token the landscape token
    */
   void deleteAll(String token);

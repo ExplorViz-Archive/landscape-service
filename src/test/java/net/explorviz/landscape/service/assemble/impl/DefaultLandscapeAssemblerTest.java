@@ -36,41 +36,41 @@ class DefaultLandscapeAssemblerTest {
 
   @BeforeEach
   void setUp() {
-    RecordValidator validator = new RecordValidator();
+    final RecordValidator validator = new RecordValidator();
     this.assembler = new DefaultLandscapeAssembler(validator);
   }
 
   @Test
   void assembleFromRecords() throws IOException, LandscapeAssemblyException {
-    List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
-    String tok = records.get(0).getLandscapeToken();
-    List<LandscapeRecord> singleTokenRecords =
+    final List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
+    final String tok = records.get(0).getLandscapeToken();
+    final List<LandscapeRecord> singleTokenRecords =
         records.stream().filter(r -> tok.equals(r.getLandscapeToken()))
             .collect(Collectors.toList());
 
-    Landscape generated = assembler.assembleFromRecords(singleTokenRecords);
+    final Landscape generated = this.assembler.assembleFromRecords(singleTokenRecords);
 
     // Theses stats change if `sampleApplicationRecords.json` is modified!
     Assertions.assertEquals(records.get(0).getLandscapeToken(), generated.getLandscapeToken());
     Assertions.assertEquals(1, generated.getNodes().size());
 
-    Node node = generated.getNodes().stream().findAny().orElseThrow();
-    Assertions.assertEquals(nodeName, node.getHostName());
-    Assertions.assertEquals(nodeIp, node.getIpAddress());
+    final Node node = generated.getNodes().stream().findAny().orElseThrow();
+    Assertions.assertEquals(this.nodeName, node.getHostName());
+    Assertions.assertEquals(this.nodeIp, node.getIpAddress());
     Assertions.assertEquals(1, node.getApplications().size());
 
-    Application app = node.getApplications().stream().findAny().orElseThrow();
-    Assertions.assertEquals(appName, app.getName());
-    //Assertions.assertEquals(appPid, app.getPid());
-    Assertions.assertEquals(appLanguage, app.getLanguage());
+    final Application app = node.getApplications().stream().findAny().orElseThrow();
+    Assertions.assertEquals(this.appName, app.getName());
+    // Assertions.assertEquals(appPid, app.getPid());
+    Assertions.assertEquals(this.appLanguage, app.getLanguage());
 
     // Find classes
-    Package netPkg =
+    final Package netPkg =
         app.getPackages().stream().filter(p -> "net".equals(p.getName())).findAny().orElseThrow();
-    Package explorvizPkg =
+    final Package explorvizPkg =
         netPkg.getSubPackages().stream().filter(p -> "explorviz".equals(p.getName())).findAny()
             .orElseThrow();
-    Package sampleAppPkg =
+    final Package sampleAppPkg =
         explorvizPkg.getSubPackages().stream().filter(p -> "sampleApplication".equals(p.getName()))
             .findAny()
             .orElseThrow();
@@ -83,75 +83,75 @@ class DefaultLandscapeAssemblerTest {
 
   @Test
   void assembleFromRecordsMultipleTokens() throws IOException, LandscapeAssemblyException {
-    List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
-    LandscapeRecord r =
+    final List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
+    final LandscapeRecord r =
         LandscapeRecord.newBuilder(records.get(0)).setLandscapeToken("test").build();
     records.add(r);
     Assertions.assertThrows(LandscapeAssemblyException.class,
-        () -> assembler.assembleFromRecords(records));
+        () -> this.assembler.assembleFromRecords(records));
   }
 
   @Test
   void assembleFromEmptyRecords() throws IOException, LandscapeAssemblyException {
     Assertions.assertThrows(LandscapeAssemblyException.class,
-        () -> assembler.assembleFromRecords(Collections.emptyList()));
+        () -> this.assembler.assembleFromRecords(Collections.emptyList()));
   }
 
 
 
   @Test
   void insertAll() throws IOException, LandscapeAssemblyException {
-    List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
-    String tok = records.get(0).getLandscapeToken();
-    List<LandscapeRecord> singleTokenRecords =
+    final List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
+    final String tok = records.get(0).getLandscapeToken();
+    final List<LandscapeRecord> singleTokenRecords =
         records.stream().filter(r -> tok.equals(r.getLandscapeToken()))
             .collect(Collectors.toList());
 
 
-    String hostname = "host";
-    String ip = "0.0.0.0";
-    String appname = "app";
-    String pid = "1";
-    List<Class> classes = new ArrayList<>(Arrays.asList(new Class("TestClass",
+    final String hostname = "host";
+    final String ip = "0.0.0.0";
+    final String appname = "app";
+    final String pid = "1";
+    final List<Class> classes = new ArrayList<>(Arrays.asList(new Class("TestClass",
         new ArrayList<>(Collections.singleton(new Method("method", "1234"))))));
 
-    Package rootPkg1 = new Package("net", new ArrayList<>(), classes);
-    List<Application> apps = new ArrayList<>(Collections.singletonList(
+    final Package rootPkg1 = new Package("net", new ArrayList<>(), classes);
+    final List<Application> apps = new ArrayList<>(Collections.singletonList(
         new Application(appname, "java", pid,
             new ArrayList<>(Collections.singletonList(rootPkg1)))));
-    List<Node> nodes = new ArrayList<>(
+    final List<Node> nodes = new ArrayList<>(
         new ArrayList<>(Collections.singletonList(new Node(ip, hostname, apps))));
-    Landscape landscape = new Landscape("tok", nodes);
+    final Landscape landscape = new Landscape("tok", nodes);
 
 
     // TODO: Use multiple records...
 
-    String newClass = "TestClass";
-    String newPkg = "net.test";
-    Method newMethod = new Method("method", "1234");
-    LandscapeRecord toInsert =
+    final String newClass = "TestClass";
+    final String newPkg = "net.test";
+    final Method newMethod = new Method("method", "1234");
+    final LandscapeRecord toInsert =
         new LandscapeRecord("tok", 123L, new net.explorviz.avro.landscape.flat.Node(ip, hostname),
             new net.explorviz.avro.landscape.flat.Application(appname, pid, "java"), newPkg,
             newClass,
             newMethod.getName(), newMethod.getHashCode());
 
 
-    assembler.insertAll(landscape, Collections.singleton(toInsert));
+    this.assembler.insertAll(landscape, Collections.singleton(toInsert));
 
     // TODO: Check if inserted
-    Node foundNode = landscape.getNodes().stream().filter(n -> n.getIpAddress().equals(ip))
+    final Node foundNode = landscape.getNodes().stream().filter(n -> n.getIpAddress().equals(ip))
         .filter(n -> n.getHostName().equals(hostname))
         .findAny().orElseThrow();
-    Application foundApp =
+    final Application foundApp =
         foundNode.getApplications().stream().filter(a -> a.getName().equals(appname))
             .filter(a -> a.getLanguage().equals("java")).findAny().orElseThrow();
 
-    Package foundPkg =
+    final Package foundPkg =
         foundApp.getPackages().stream().filter(p -> p.getName().equals("net")).findAny()
             .orElseThrow()
             .getSubPackages().stream().filter(p -> p.getName().equals("test")).findAny()
             .orElseThrow();
-    Class foundClazz =
+    final Class foundClazz =
         foundPkg.getClasses().stream().filter(c -> c.getName().equals(newClass)).findAny()
             .orElseThrow();
     Assertions.assertTrue(foundClazz.getMethods().stream().anyMatch(m -> m.equals(newMethod)));

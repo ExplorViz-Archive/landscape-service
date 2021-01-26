@@ -20,7 +20,7 @@ import net.explorviz.landscape.peristence.cassandra.specifications.InsertLandsca
 public class LandscapeRecordRepository implements Repository<LandscapeRecord> {
 
 
-  private final DBHelper db;
+  private final DbHelper db;
   private final ValueMapper<LandscapeRecord> mapper;
 
   /**
@@ -28,47 +28,48 @@ public class LandscapeRecordRepository implements Repository<LandscapeRecord> {
    *
    * @param db the backing Casandra db
    */
-  public LandscapeRecordRepository(DBHelper db, ValueMapper<LandscapeRecord> mapper) {
+  public LandscapeRecordRepository(final DbHelper db, final ValueMapper<LandscapeRecord> mapper) {
     this.db = db;
     db.initialize();
     this.mapper = mapper;
   }
 
   @Override
-  public List<LandscapeRecord> getAll(String token) {
-    String getAll =
-        QueryBuilder.selectFrom(DBHelper.KEYSPACE_NAME, DBHelper.RECORDS_TABLE_NAME)
+  public List<LandscapeRecord> getAll(final String token) {
+    final String getAll =
+        QueryBuilder.selectFrom(DbHelper.KEYSPACE_NAME, DbHelper.RECORDS_TABLE_NAME)
             .all()
-            .whereColumn(DBHelper.COL_TOKEN)
+            .whereColumn(DbHelper.COL_TOKEN)
             .isEqualTo(QueryBuilder.literal(token))
             .asCql();
-    ResultSet result = db.getSession().execute(getAll);
-    return result.map(mapper::fromRow).all();
+    final ResultSet result = this.db.getSession().execute(getAll); // NOPMD
+    return result.map(this.mapper::fromRow).all();
   }
 
   @Override
-  public void add(LandscapeRecord item) throws QueryException {
-    InsertLandscapeRecord insertSpecification = new InsertLandscapeRecord(item, mapper);
-    query(insertSpecification);
+  public void add(final LandscapeRecord item) throws QueryException {
+    final InsertLandscapeRecord insertSpecification = new InsertLandscapeRecord(item, this.mapper);
+    this.query(insertSpecification);
   }
 
   @Override
-  public CompletionStage<AsyncResultSet> addAsync(LandscapeRecord item) throws QueryException {
-    InsertLandscapeRecord insertSpecification = new InsertLandscapeRecord(item, mapper);
-    return db.getSession().executeAsync(insertSpecification.toQuery());
+  public CompletionStage<AsyncResultSet> addAsync(final LandscapeRecord item)
+      throws QueryException {
+    final InsertLandscapeRecord insertSpecification = new InsertLandscapeRecord(item, this.mapper);
+    return this.db.getSession().executeAsync(insertSpecification.toQuery());
   }
 
   @Override
-  public List<LandscapeRecord> query(Specification spec) throws QueryException {
-    return db.getSession().execute(spec.toQuery()).map(mapper::fromRow).all();
+  public List<LandscapeRecord> query(final Specification spec) throws QueryException {
+    return this.db.getSession().execute(spec.toQuery()).map(this.mapper::fromRow).all();
   }
 
   @Override
   public void deleteAll(final String token) {
-    String deletionQuery =
-        QueryBuilder.deleteFrom(DBHelper.KEYSPACE_NAME, DBHelper.RECORDS_TABLE_NAME)
-            .whereColumn(DBHelper.COL_TOKEN).isEqualTo(QueryBuilder.literal(token)).asCql();
-    db.getSession().execute(deletionQuery);
+    final String deletionQuery =
+        QueryBuilder.deleteFrom(DbHelper.KEYSPACE_NAME, DbHelper.RECORDS_TABLE_NAME)
+            .whereColumn(DbHelper.COL_TOKEN).isEqualTo(QueryBuilder.literal(token)).asCql();
+    this.db.getSession().execute(deletionQuery);
   }
 
 

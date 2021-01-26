@@ -12,9 +12,9 @@ import net.explorviz.avro.landscape.model.Landscape;
 public interface LandscapeAssembler {
 
   /**
-   * Assembles a landscape model out of a collection of {@link LandscapeRecord}s.
-   * The resulting landscape is a hierarchical/tree representation of all records.
-   * All records must have the same token ({@link LandscapeRecord#getLandscapeToken()}).
+   * Assembles a landscape model out of a collection of {@link LandscapeRecord}s. The resulting
+   * landscape is a hierarchical/tree representation of all records. All records must have the same
+   * token ({@link LandscapeRecord#getLandscapeToken()}).
    *
    * @param records the records to build the model out of
    * @return the assembled landscape model
@@ -31,7 +31,7 @@ public interface LandscapeAssembler {
    * @param newRecord the record to insert
    * @throws LandscapeAssemblyException if the record could not be included
    */
-  default void insert(Landscape landscape, LandscapeRecord newRecord)
+  default void insert(final Landscape landscape, final LandscapeRecord newRecord)
       throws LandscapeAssemblyException {
     insertAll(landscape, Collections.singleton(newRecord));
   }
@@ -41,7 +41,7 @@ public interface LandscapeAssembler {
    * are ignored. Every new record must have the same landscape token as the landscape.
    *
    * @param landscape the landscape to insert the records into
-   * @param records   the records to insert
+   * @param records the records to insert
    * @throws LandscapeAssemblyException if at least one record could not be inserted.
    */
   void insertAll(Landscape landscape, Collection<LandscapeRecord> records)

@@ -2,11 +2,15 @@ package net.explorviz.landscape.service.assemble.impl;
 
 import java.util.Optional;
 import net.explorviz.avro.landscape.model.Application;
+import net.explorviz.avro.landscape.model.Class;
 import net.explorviz.avro.landscape.model.Landscape;
 import net.explorviz.avro.landscape.model.Node;
 import net.explorviz.avro.landscape.model.Package;
-import net.explorviz.avro.landscape.model.Class;
 
+/**
+ * Utility class that provides various methods for finding elements in
+ * a landscape graph.
+ */
 public final class AssemblyUtils {
 
   private AssemblyUtils() { /* Utility Class */ }
@@ -20,8 +24,9 @@ public final class AssemblyUtils {
    * @return an optional that contains the node if it is included in the landscape, and is empty
    *     otherwise
    */
-  public static Optional<Node> findNode(Landscape landscape, String hostName, String ipAddress) {
-    for (Node n : landscape.getNodes()) {
+  public static Optional<Node> findNode(final Landscape landscape, final String hostName,
+                                        final String ipAddress) {
+    for (final Node n : landscape.getNodes()) {
       if (n.getHostName().equals(hostName) && n.getIpAddress().equals(ipAddress)) {
         return Optional.of(n);
       }
@@ -34,11 +39,10 @@ public final class AssemblyUtils {
    *
    * @param node the node
    * @param pid  the PID of the application to search for
-   * @return an optional that contains the app if it is included in the node, and is empty
-   *     otherwise
+   * @return an optional that contains the app if it is included in the node, and is empty otherwise
    */
-  public static Optional<Application> findApplication(Node node, String pid) {
-    for (Application a : node.getApplications()) {
+  public static Optional<Application> findApplication(final Node node, final String pid) {
+    for (final Application a : node.getApplications()) {
 
       if (a.getPid().equals(pid)) {
         return Optional.of(a);
@@ -52,10 +56,10 @@ public final class AssemblyUtils {
    *
    * @param pkg       the package to search in
    * @param className the name of the class to search for
-   * @return an optional that contains the class if it is included in the package, and is empty
-   *     *     otherwise
+   * @return an optional that contains the class if it is included in the package, and is empty *
+   *     otherwise
    */
-  public static Optional<Class> findClazz(Package pkg, String className) {
+  public static Optional<Class> findClazz(final Package pkg, final String className) {
     return pkg.getClasses().stream().filter(c -> c.getName().equals(className)).findAny();
   }
 

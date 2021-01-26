@@ -19,13 +19,13 @@ public class CassandraFactory {
 
   @Inject
   public CassandraFactory(
-      @ConfigProperty(name = "explorviz.landscape.cassandra.host") String cassandraHost,
-      @ConfigProperty(name = "explorviz.landscape.cassandra.port") int cassandraPort,
-      @ConfigProperty(name = "explorviz.landscape.cassandra.datacenter") String datacenter,
-      @ConfigProperty(name = "explorviz.landscape.cassandra.username") String username,
-      @ConfigProperty(name = "explorviz.landscape.cassandra.password") String password) {
+      @ConfigProperty(name = "explorviz.landscape.cassandra.host") final String cassandraHost,
+      @ConfigProperty(name = "explorviz.landscape.cassandra.port") final int cassandraPort,
+      @ConfigProperty(name = "explorviz.landscape.cassandra.datacenter") final String datacenter,
+      @ConfigProperty(name = "explorviz.landscape.cassandra.username") final String username,
+      @ConfigProperty(name = "explorviz.landscape.cassandra.password") final String password) {
     // TODO read from config values
-    CqlSessionBuilder builder = CqlSession.builder();
+    final CqlSessionBuilder builder = CqlSession.builder();
     builder.addContactPoint(new InetSocketAddress(cassandraHost, cassandraPort));
     builder.withAuthCredentials(username, password);
     builder.withLocalDatacenter(datacenter);
@@ -33,7 +33,7 @@ public class CassandraFactory {
   }
 
   /**
-   * Return a ready for use {@link CqlSession}
+   * Return a ready for use {@link CqlSession}.
    */
 
   @Produces

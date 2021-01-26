@@ -11,6 +11,10 @@ import org.apache.avro.specific.SpecificRecord;
 import org.apache.kafka.streams.StreamsConfig;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+
+/**
+ * Helper class that contains multiple Kafka configs.
+ */
 @ApplicationScoped
 public class KafkaHelper {
 

@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Implements the use cases
+ * Implements the use cases.
  */
 @ApplicationScoped
 public class LandscapeServiceImpl implements LandscapeService {
@@ -26,35 +26,37 @@ public class LandscapeServiceImpl implements LandscapeService {
   private final LandscapeAssembler assembler;
 
   @Inject
-  public LandscapeServiceImpl(Repository<LandscapeRecord> repo, LandscapeAssembler assembler) {
+  public LandscapeServiceImpl(final Repository<LandscapeRecord> repo,
+      final LandscapeAssembler assembler) {
     this.repo = repo;
     this.assembler = assembler;
   }
 
   @Override
-  public Landscape buildLandscapeBetween(String landscapeToken, long from, long to)
+  public Landscape buildLandscapeBetween(final String landscapeToken, final long from,
+      final long to)
       throws LandscapeAssemblyException, QueryException {
 
 
-    Specification spec = new FindRecordsBetweenTimestamps(landscapeToken, from, to);
+    final Specification spec = new FindRecordsBetweenTimestamps(landscapeToken, from, to);
     List<LandscapeRecord> recordList;
     Landscape buildLandscape;
 
     // Fetch records
-    recordList = repo.query(spec);
+    recordList = this.repo.query(spec);
     if (LOGGER.isInfoEnabled()) {
       LOGGER.info("Found {} records to token {} in time range ({}, {})", recordList.size(),
           landscapeToken, from, to);
     }
 
     // Assemble
-    buildLandscape = assembler.assembleFromRecords(recordList);
+    buildLandscape = this.assembler.assembleFromRecords(recordList);
     return buildLandscape;
   }
 
   @Override
   public void deleteLandscape(final String landscapeToken) {
-    repo.deleteAll(landscapeToken);
+    this.repo.deleteAll(landscapeToken);
   }
 
 

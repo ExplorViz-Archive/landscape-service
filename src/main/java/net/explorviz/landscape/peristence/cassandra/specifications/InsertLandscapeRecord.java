@@ -6,13 +6,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.peristence.cassandra.CassandraSpecification;
-import net.explorviz.landscape.peristence.cassandra.DBHelper;
+import net.explorviz.landscape.peristence.cassandra.DbHelper;
 import net.explorviz.landscape.peristence.cassandra.mapper.ValueMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Specification to insert a {@link LandscapeRecord} into the datasbe
+ * Specification to insert a {@link LandscapeRecord} into the database.
  */
 public class InsertLandscapeRecord implements CassandraSpecification {
 
@@ -24,28 +24,25 @@ public class InsertLandscapeRecord implements CassandraSpecification {
 
 
   /**
-   * Create a new insertion specification for a given record.
-   * Sanitizes the input beforehand.
+   * Create a new insertion specification for a given record. Sanitizes the input beforehand.
    *
    * @param record the record to insert
    */
-  public InsertLandscapeRecord(LandscapeRecord record, ValueMapper<LandscapeRecord> mapper) {
+  public InsertLandscapeRecord(final LandscapeRecord record,
+      final ValueMapper<LandscapeRecord> mapper) {
     this.record = record;
     this.mapper = mapper;
   }
 
-  /**
-   *
-   */
   private void sanitize() throws QueryException {
-    if (record.getLandscapeToken() == null || record.getLandscapeToken().isEmpty()) {
+    if (this.record.getLandscapeToken() == null || this.record.getLandscapeToken().isEmpty()) {
       throw new QueryException("Given record has no landscape token assigned");
     }
-    if (record.getTimestamp() <= 0) {
-      record.setTimestamp(System.currentTimeMillis());
+    if (this.record.getTimestamp() <= 0) {
+      this.record.setTimestamp(System.currentTimeMillis());
       if (LOGGER.isWarnEnabled()) {
         LOGGER.warn("Record to insert had no timestamp assigned, setting timestamp to now ({})",
-            record.getTimestamp());
+            this.record.getTimestamp());
       }
     }
   }
@@ -57,19 +54,19 @@ public class InsertLandscapeRecord implements CassandraSpecification {
    */
   private SimpleStatement createStatement() throws JsonProcessingException {
 
-    return QueryBuilder.insertInto(DBHelper.KEYSPACE_NAME, DBHelper.RECORDS_TABLE_NAME)
-        .values(mapper.toMap(this.record))
+    return QueryBuilder.insertInto(DbHelper.KEYSPACE_NAME, DbHelper.RECORDS_TABLE_NAME)
+        .values(this.mapper.toMap(this.record))
         .build();
   }
 
   @Override
   public String toQuery() throws QueryException {
-    sanitize();
+    this.sanitize();
     // Initialize lazy
     if (this.statement == null) {
       try {
-        this.statement = createStatement();
-      } catch (JsonProcessingException e) {
+        this.statement = this.createStatement();
+      } catch (final JsonProcessingException e) {
         throw new QueryException("Could not serialize entity to JSON", e);
       }
     }

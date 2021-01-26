@@ -3,10 +3,9 @@ package net.explorviz.landscape.service.converter;
 import java.time.Instant;
 import net.explorviz.avro.SpanStructure;
 import net.explorviz.avro.Timestamp;
-
 import net.explorviz.avro.landscape.flat.Application;
-import net.explorviz.avro.landscape.flat.Node;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
+import net.explorviz.avro.landscape.flat.Node;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
