@@ -40,7 +40,7 @@ public class SpanToRecordConverter {
     recordBuilder.setTimestamp(timestamp.toEpochMilli())
         .setNode(new Node(span.getHostIpAddress(), span.getHostname()))
         .setApplication(
-            new Application(span.getAppName(), span.getAppPid(), span.getAppLanguage()));
+            new Application(span.getAppName(), span.getAppInstanceId(), span.getAppLanguage()));
 
 
     /*
