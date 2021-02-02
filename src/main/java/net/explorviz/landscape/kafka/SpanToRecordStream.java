@@ -20,8 +20,8 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Kafka stream processors to convert structural runtime information to landscape
- * records, which are afterwards persisted in a Apache Cassandra Database.
+ * Kafka stream processors to convert structural runtime information to landscape records, which are
+ * afterwards persisted in a Apache Cassandra Database.
  */
 @ApplicationScoped
 public class SpanToRecordStream {
@@ -65,6 +65,11 @@ public class SpanToRecordStream {
     final KStream<String, LandscapeRecord> recordKStream =
         spanStream.map((k, s) -> {
           final LandscapeRecord record = this.converter.toRecord(s);
+
+          if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Received landscape record: {}", record.toString());
+          }
+
           return new KeyValue<>(record.getLandscapeToken(), record);
         });
 
