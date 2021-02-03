@@ -25,7 +25,7 @@ class SpanToRecordConverterTest {
     final String hostname = "Host";
     final String hostIp = "1.2.3.4";
     final String appName = "Test App";
-    final String appPid = "1234";
+    final long instanceId = 1234L;
     final String appLang = "java";
     final String hashCode = "a387988168c607be0b2d886e75c85cb0f2f44ed41d45a1d800cdc857c04e98ae";
 
@@ -38,7 +38,7 @@ class SpanToRecordConverterTest {
         .setHostname(hostname)
         .setHostIpAddress(hostIp)
         .setAppName(appName)
-        .setAppPid(appPid)
+        .setAppInstanceId(instanceId)
         .setAppLanguage(appLang)
         .setFullyQualifiedOperationName("foo.bar.TestClass.testMethod()")
         .setHashCode("12345")
@@ -49,7 +49,7 @@ class SpanToRecordConverterTest {
         .setHashCode(hashCode)
         .setTimestamp(now.toEpochMilli())
         .setNode(new Node(hostIp, hostname))
-        .setApplication(new Application(appName, appPid, appLang))
+        .setApplication(new Application(appName, instanceId, appLang))
         .setPackage$("foo.bar")
         .setClass$("TestClass")
         .setMethod("testMethod()")

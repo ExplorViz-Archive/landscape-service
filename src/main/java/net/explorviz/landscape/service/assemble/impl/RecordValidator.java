@@ -47,9 +47,6 @@ public class RecordValidator {
     if (app.getName() == null || app.getName().length() == 0) {
       throw new InvalidRecordException("Applications must have a name");
     }
-    if (app.getPid() == null || app.getPid().length() == 0) {
-      throw new InvalidRecordException("Applications must have a PID");
-    }
     if (app.getLanguage() == null || app.getLanguage().length() == 0) {
       throw new InvalidRecordException("Applications must have a language");
     }

@@ -28,7 +28,7 @@ class AssemblyUtilsTest {
     final Package examplePkg = root.getSubPackages().get(0);
     examplePkg.getSubPackages().add(new Package("bar", new ArrayList<>(), new ArrayList<>()));
     this.app =
-        new Application("App", "java", "pid", new ArrayList<>(Collections.singletonList(root)));
+        new Application("App", "java", 1L, new ArrayList<>(Collections.singletonList(root)));
     this.nodeA = new Node("1.2.3.4", "host1", Collections.singletonList(this.app));
     this.nodeB = new Node("host2", "4.5.6.7", Collections.emptyList());
     this.landscape = new Landscape("tok", Arrays.asList(this.nodeA, this.nodeB));
@@ -52,10 +52,10 @@ class AssemblyUtilsTest {
   @Test
   void findApplicationExisting() {
     final Application toFind =
-        new Application(this.app.getName(), this.app.getLanguage(), this.app.getPid(),
+        new Application(this.app.getName(), this.app.getLanguage(), this.app.getInstaceId(),
             new ArrayList<>());
     final Optional<Application> got = AssemblyUtils
-        .findApplication(this.nodeA, toFind.getPid());
+        .findApplication(this.nodeA, toFind.getName(), toFind.getInstaceId());
     Assertions.assertTrue(got.isPresent());
     Assertions.assertEquals(this.app, got.get());
   }

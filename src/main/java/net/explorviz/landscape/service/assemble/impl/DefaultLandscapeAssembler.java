@@ -75,15 +75,15 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
 
       // Find application in node or insert new
       final String appName = insertMe.getApplication().getName();
-      final String appPid = insertMe.getApplication().getPid();
+      final long instanceId = insertMe.getApplication().getInstanceId();
       final String appLanguage = insertMe.getApplication().getLanguage();
       Application app;
       final Optional<Application> foundApp =
-          AssemblyUtils.findApplication(node, appPid);
+          AssemblyUtils.findApplication(node, appName, instanceId);
       if (foundApp.isPresent()) {
         app = foundApp.get();
       } else {
-        app = new Application(appName, appLanguage, appPid, new ArrayList<>()); // NOPMD
+        app = new Application(appName, appLanguage, instanceId, new ArrayList<>()); // NOPMD
         node.getApplications().add(app);
       }
 

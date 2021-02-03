@@ -37,7 +37,7 @@ public class DbHelper {
 
   public static final String COL_APP_NAME = "name"; // NOCS
   public static final String COL_APP_LANGUAGE = "language";
-  public static final String COL_APP_PID = "pid";
+  public static final String COL_APP_INSTANCE_ID = "instance_id";
 
   public static final String COL_TIMESTAMP = "timestamp";
   public static final String COL_TOKEN = "landscape_token";
@@ -103,7 +103,7 @@ public class DbHelper {
         .createType(KEYSPACE_NAME, COL_APPLICATION)
         .ifNotExists()
         .withField(COL_APP_NAME, DataTypes.TEXT)
-        .withField(COL_APP_PID, DataTypes.TEXT)
+        .withField(COL_APP_INSTANCE_ID, DataTypes.BIGINT)
         .withField(COL_APP_LANGUAGE, DataTypes.TEXT);
 
     final CreateTable createTable = SchemaBuilder
