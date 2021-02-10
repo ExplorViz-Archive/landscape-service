@@ -45,7 +45,7 @@ public final class AssemblyUtils {
                                                       final long instanceId) {
     for (final Application a : node.getApplications()) {
 
-      if (a.getInstaceId() == instanceId && a.getName().equals(name)) {
+      if (a.getInstanceId() == instanceId && a.getName().equals(name)) {
         return Optional.of(a);
       }
     }
