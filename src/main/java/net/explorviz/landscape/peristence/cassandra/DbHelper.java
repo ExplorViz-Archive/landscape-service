@@ -103,7 +103,7 @@ public class DbHelper {
         .createType(KEYSPACE_NAME, COL_APPLICATION)
         .ifNotExists()
         .withField(COL_APP_NAME, DataTypes.TEXT)
-        .withField(COL_APP_INSTANCE_ID, DataTypes.BIGINT)
+        .withField(COL_APP_INSTANCE_ID, DataTypes.TEXT)
         .withField(COL_APP_LANGUAGE, DataTypes.TEXT);
 
     final CreateTable createTable = SchemaBuilder

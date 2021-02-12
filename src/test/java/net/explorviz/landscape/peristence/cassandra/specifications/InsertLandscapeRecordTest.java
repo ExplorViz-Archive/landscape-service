@@ -25,7 +25,7 @@ class InsertLandscapeRecordTest extends CassandraTest {
   @Test
   void noToken() throws QueryException {
     final Node node = new Node("0.0.0.0", "localhost");
-    final Application app = new Application("SampleApplication", 1234L, "java");
+    final Application app = new Application("SampleApplication", "1234", "java");
     final String package$ = "net.explorviz.test";
     final String class$ = "SampleClass";
     final String method = "sampleMethod()";

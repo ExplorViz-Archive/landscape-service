@@ -18,7 +18,7 @@ class RecordValidatorTest {
   @BeforeEach
   void setUp() {
     final Node n = new Node("0.0.0.0", "localhost");
-    final Application app = new Application("sample app", 1234L, "java");
+    final Application app = new Application("sample app", "1234", "java");
     final String pkg = "foo.bar";
     final String clazz = "Foo";
     final Method method = new Method("method", "1234");

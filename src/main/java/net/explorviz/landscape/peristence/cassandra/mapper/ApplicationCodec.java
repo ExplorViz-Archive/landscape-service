@@ -23,7 +23,7 @@ public class ApplicationCodec extends MappingCodec<UdtValue, Application> {
   protected Application innerToOuter(@Nullable final UdtValue value) {
     final String name = value.getString(DbHelper.COL_APP_NAME);
     final String language = value.getString(DbHelper.COL_APP_LANGUAGE);
-    final long instanceId = value.getLong(DbHelper.COL_APP_INSTANCE_ID);
+    final String instanceId = value.getString(DbHelper.COL_APP_INSTANCE_ID);
     return new Application(name, instanceId, language);
   }
 
@@ -35,7 +35,7 @@ public class ApplicationCodec extends MappingCodec<UdtValue, Application> {
     udtValue.setString(DbHelper.COL_APP_NAME, value.getName());
     udtValue.setString(DbHelper.COL_APP_LANGUAGE, value.getLanguage());
 
-    udtValue.setLong(DbHelper.COL_APP_INSTANCE_ID, value.getInstanceId());
+    udtValue.setString(DbHelper.COL_APP_INSTANCE_ID, value.getInstanceId());
     return udtValue;
   }
 }

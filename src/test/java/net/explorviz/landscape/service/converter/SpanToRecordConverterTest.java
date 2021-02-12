@@ -25,7 +25,7 @@ class SpanToRecordConverterTest {
     final String hostname = "Host";
     final String hostIp = "1.2.3.4";
     final String appName = "Test App";
-    final long instanceId = 1234L;
+    final String instanceId = "1234";
     final String appLang = "java";
     final String hashCode = "a387988168c607be0b2d886e75c85cb0f2f44ed41d45a1d800cdc857c04e98ae";
 

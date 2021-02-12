@@ -111,7 +111,7 @@ class DefaultLandscapeAssemblerTest {
     final String hostname = "host";
     final String ip = "0.0.0.0";
     final String appname = "app";
-    final Long instanceId = 1L;
+    final String instanceId = "1";
     final List<Class> classes = new ArrayList<>(Arrays.asList(new Class("TestClass",
         new ArrayList<>(Collections.singleton(new Method("method", "1234"))))));
 

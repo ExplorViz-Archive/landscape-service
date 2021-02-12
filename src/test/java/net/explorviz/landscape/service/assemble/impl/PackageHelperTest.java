@@ -26,7 +26,7 @@ public class PackageHelperTest {
     final Package root = PackageHelper.toHierarchy("net.example.foo".split("\\."));
     final Package examplePkg = root.getSubPackages().get(0);
     examplePkg.getSubPackages().add(new Package("bar", new ArrayList<>(), new ArrayList<>()));
-    this.app = new Application("App", "java", 1L, Collections.singletonList(root));
+    this.app = new Application("App", "java", "1", Collections.singletonList(root));
 
     this.nodeA = new Node("1.2.3.4", "host1", Collections.singletonList(this.app));
     this.nodeB = new Node("4.5.6.7", "host2", Collections.emptyList());
