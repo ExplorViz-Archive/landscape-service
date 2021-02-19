@@ -12,6 +12,7 @@ import com.datastax.oss.driver.api.querybuilder.schema.CreateIndex;
 import com.datastax.oss.driver.api.querybuilder.schema.CreateKeyspace;
 import com.datastax.oss.driver.api.querybuilder.schema.CreateTable;
 import com.datastax.oss.driver.api.querybuilder.schema.CreateType;
+import com.datastax.oss.quarkus.runtime.api.session.QuarkusCqlSession;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
@@ -50,14 +51,14 @@ public class DbHelper {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DbHelper.class);
 
-  private final CqlSession dbSession;
+  private final QuarkusCqlSession dbSession;
 
   @Inject
-  public DbHelper(final CqlSession session) {
+  public DbHelper(final QuarkusCqlSession session) {
     this.dbSession = session;
   }
 
-  public CqlSession getSession() {
+  public QuarkusCqlSession getSession() {
     return this.dbSession;
   }
 
