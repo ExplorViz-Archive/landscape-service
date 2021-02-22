@@ -42,10 +42,10 @@ public final class AssemblyUtils {
    * @return an optional that contains the app if it is included in the node, and is empty otherwise
    */
   public static Optional<Application> findApplication(final Node node, final String name,
-                                                      final long instanceId) {
+                                                      final String instanceId) {
     for (final Application a : node.getApplications()) {
 
-      if (a.getInstaceId() == instanceId && a.getName().equals(name)) {
+      if (a.getInstaceId().equals(instanceId) && a.getName().equals(name)) {
         return Optional.of(a);
       }
     }

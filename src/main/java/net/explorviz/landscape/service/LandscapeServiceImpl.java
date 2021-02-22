@@ -8,7 +8,6 @@ import net.explorviz.avro.landscape.model.Landscape;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.peristence.Repository;
 import net.explorviz.landscape.peristence.Specification;
-import net.explorviz.landscape.peristence.cassandra.specifications.FindRecordsBetweenTimestamps;
 import net.explorviz.landscape.service.assemble.LandscapeAssembler;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 import org.slf4j.Logger;
@@ -38,20 +37,17 @@ public class LandscapeServiceImpl implements LandscapeService {
       throws LandscapeAssemblyException, QueryException {
 
 
-    final Specification spec = new FindRecordsBetweenTimestamps(landscapeToken, from, to);
-    List<LandscapeRecord> recordList;
-    Landscape buildLandscape;
 
-    // Fetch records
-    recordList = this.repo.query(spec);
+
     if (LOGGER.isInfoEnabled()) {
-      LOGGER.info("Found {} records to token {} in time range ({}, {})", recordList.size(),
-          landscapeToken, from, to);
+      //LOGGER.info("Found {} records to token {} in time range ({}, {})", recordList.size(),
+      //    landscapeToken, from, to);
     }
 
     // Assemble
-    buildLandscape = this.assembler.assembleFromRecords(recordList);
-    return buildLandscape;
+    //buildLandscape = this.assembler.assembleFromRecords(recordList);
+    //return buildLandscape;
+    return null;
   }
 
   @Override
