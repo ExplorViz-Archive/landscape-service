@@ -7,6 +7,7 @@ import net.explorviz.avro.SpanStructure;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.peristence.Repository;
+import net.explorviz.landscape.peristence.cassandra.dao.ReactiveSpanStructureDao;
 import net.explorviz.landscape.service.converter.SpanToRecordConverter;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
@@ -30,20 +31,19 @@ public class SpanToRecordStream {
 
   private final KafkaHelper kafkaHelper;
 
-  private final Repository<LandscapeRecord> recordRepo;
-
   private final KafkaStreams stream;
 
-  private final SpanToRecordConverter converter;
+  private final ReactiveSpanStructureDao spanStructureDao;
+
 
 
   @Inject
   public SpanToRecordStream(final KafkaHelper kafkaHelper,
-      final SpanToRecordConverter converter,
-      final Repository<LandscapeRecord> repository) {
+                            final SpanToRecordConverter converter,
+                            final Repository<LandscapeRecord> repository,
+                            ReactiveSpanStructureDao spanStructureDao) {
     this.kafkaHelper = kafkaHelper;
-    this.converter = converter;
-    this.recordRepo = repository;
+    this.spanStructureDao = spanStructureDao;
     final Topology topology = buildTopology();
     final Properties props = kafkaHelper.newDefaultStreamProperties();
     this.stream = new KafkaStreams(topology, props);
@@ -61,28 +61,10 @@ public class SpanToRecordStream {
         builder.stream(this.kafkaHelper.getTopicSpanStructure(), Consumed
             .with(Serdes.String(), this.kafkaHelper.getAvroValueSerde()));
 
-    // Map to records
-    final KStream<String, LandscapeRecord> recordKStream =
-        spanStream.map((k, s) -> {
-          final LandscapeRecord record = this.converter.toRecord(s);
-
-          if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Received landscape record: {}", record.toString());
-          }
-
-          return new KeyValue<>(record.getLandscapeToken(), record);
-        });
-
-
-    recordKStream.foreach((k, rec) -> {
-      try {
-        this.recordRepo.addAsync(rec);
-      } catch (final QueryException e) {
-        if (LOGGER.isErrorEnabled()) {
-          LOGGER.error("Failed to persist an record: {0}", e);
-        }
-      }
-    });
+    // TODO: How to handle failures in dao? Use insert(...).onFailure() to handle
+    spanStream
+        .mapValues(net.explorviz.landscape.peristence.model.SpanStructure::fromAvro)
+        .foreach((k, rec) -> this.spanStructureDao.insert(rec));
 
     return builder.build();
   }
