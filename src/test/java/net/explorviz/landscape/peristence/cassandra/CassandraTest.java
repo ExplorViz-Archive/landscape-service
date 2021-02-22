@@ -1,6 +1,7 @@
 package net.explorviz.landscape.peristence.cassandra;
 
 import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.quarkus.runtime.api.session.QuarkusCqlSession;
 import java.io.IOException;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.jupiter.api.AfterEach;
@@ -13,7 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 public class CassandraTest {
 
   protected DbHelper db;
-  protected CqlSession sess;
+  protected QuarkusCqlSession sess;
 
 
 
@@ -24,7 +25,8 @@ public class CassandraTest {
 
   @BeforeEach
   void setUpDb() {
-    this.sess = EmbeddedCassandraServerHelper.getSession();
+    this.sess = (QuarkusCqlSession) EmbeddedCassandraServerHelper.getSession();
+
     this.db = new DbHelper(this.sess);
   }
 

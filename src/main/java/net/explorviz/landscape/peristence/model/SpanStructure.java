@@ -15,10 +15,10 @@ public class SpanStructure {
   @PartitionKey
   private String landscapeToken;
 
-  @ClusteringColumn
+  @ClusteringColumn(0)
   private long timestamp;
 
-  @ClusteringColumn
+  @ClusteringColumn(1)
   private long hashCode;
 
   private String hostname;
@@ -83,5 +83,41 @@ public class SpanStructure {
 
   public String getFullyQualifiedOperationName() {
     return fullyQualifiedOperationName;
+  }
+
+  public void setLandscapeToken(final String landscapeToken) {
+    this.landscapeToken = landscapeToken;
+  }
+
+  public void setTimestamp(final long timestamp) {
+    this.timestamp = timestamp;
+  }
+
+  public void setHashCode(final long hashCode) {
+    this.hashCode = hashCode;
+  }
+
+  public void setHostname(final String hostname) {
+    this.hostname = hostname;
+  }
+
+  public void setHostIpAddress(final String hostIpAddress) {
+    this.hostIpAddress = hostIpAddress;
+  }
+
+  public void setApplicationName(final String applicationName) {
+    this.applicationName = applicationName;
+  }
+
+  public void setInstanceId(final String instanceId) {
+    this.instanceId = instanceId;
+  }
+
+  public void setAppLanguage(final String appLanguage) {
+    this.appLanguage = appLanguage;
+  }
+
+  public void setFullyQualifiedOperationName(final String fullyQualifiedOperationName) {
+    this.fullyQualifiedOperationName = fullyQualifiedOperationName;
   }
 }
