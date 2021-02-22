@@ -1,8 +1,10 @@
 package net.explorviz.landscape.peristence.model;
 
 import com.datastax.oss.driver.api.mapper.annotations.ClusteringColumn;
+import com.datastax.oss.driver.api.mapper.annotations.CqlName;
 import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
+import java.time.Instant;
 
 /**
  * Entity that holds structural information.
@@ -19,31 +21,32 @@ public class SpanStructure {
   private long timestamp;
 
   @ClusteringColumn(1)
-  private long hashCode;
+  private String hashCode;
 
-  private String hostname;
+  private String hostName;
   private String hostIpAddress;
 
   private String applicationName;
   private String instanceId;
-  private String appLanguage;
+  private String applicationLanguage;
 
+  @CqlName("method_fqn")
   private String fullyQualifiedOperationName;
 
 
-  public SpanStructure(final String landscapeToken, final long timestamp, final long hashCode,
-                       final String hostname, final String hostIpAddress,
+  public SpanStructure(final String landscapeToken, final long timestamp, final String hashCode,
+                       final String hostName, final String hostIpAddress,
                        final String applicationName,
-                       final String instanceId, final String appLanguage,
+                       final String instanceId, final String applicationLanguage,
                        final String fullyQualifiedOperationName) {
     this.landscapeToken = landscapeToken;
     this.timestamp = timestamp;
     this.hashCode = hashCode;
-    this.hostname = hostname;
+    this.hostName = hostName;
     this.hostIpAddress = hostIpAddress;
     this.applicationName = applicationName;
     this.instanceId = instanceId;
-    this.appLanguage = appLanguage;
+    this.applicationLanguage = applicationLanguage;
     this.fullyQualifiedOperationName = fullyQualifiedOperationName;
   }
 
@@ -57,12 +60,12 @@ public class SpanStructure {
     return timestamp;
   }
 
-  public long getHashCode() {
+  public String getHashCode() {
     return hashCode;
   }
 
-  public String getHostname() {
-    return hostname;
+  public String getHostName() {
+    return hostName;
   }
 
   public String getHostIpAddress() {
@@ -77,8 +80,8 @@ public class SpanStructure {
     return instanceId;
   }
 
-  public String getAppLanguage() {
-    return appLanguage;
+  public String getApplicationLanguage() {
+    return applicationLanguage;
   }
 
   public String getFullyQualifiedOperationName() {
@@ -93,12 +96,12 @@ public class SpanStructure {
     this.timestamp = timestamp;
   }
 
-  public void setHashCode(final long hashCode) {
+  public void setHashCode(final String hashCode) {
     this.hashCode = hashCode;
   }
 
-  public void setHostname(final String hostname) {
-    this.hostname = hostname;
+  public void setHostName(final String hostName) {
+    this.hostName = hostName;
   }
 
   public void setHostIpAddress(final String hostIpAddress) {
@@ -113,11 +116,27 @@ public class SpanStructure {
     this.instanceId = instanceId;
   }
 
-  public void setAppLanguage(final String appLanguage) {
-    this.appLanguage = appLanguage;
+  public void setApplicationLanguage(final String applicationLanguage) {
+    this.applicationLanguage = applicationLanguage;
   }
 
   public void setFullyQualifiedOperationName(final String fullyQualifiedOperationName) {
     this.fullyQualifiedOperationName = fullyQualifiedOperationName;
+  }
+
+  public static SpanStructure fromAvro(net.explorviz.avro.SpanStructure avro) {
+    long timestamp =
+        Instant.ofEpochSecond(avro.getTimestamp().getSeconds(), avro.getTimestamp().getNanoAdjust())
+            .toEpochMilli();
+    return new SpanStructure(
+        avro.getLandscapeToken(),
+        timestamp,
+        avro.getHashCode(),
+        avro.getHostname(),
+        avro.getHostIpAddress(),
+        avro.getAppName(),
+        avro.getAppInstanceId(),
+        avro.getAppLanguage(),
+        avro.getFullyQualifiedOperationName());
   }
 }

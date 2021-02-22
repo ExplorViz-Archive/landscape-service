@@ -37,7 +37,7 @@ public class DBHelperTest extends CassandraTest {
     final List<Row> rows = tables.all();
     Assertions.assertEquals(1, rows.size());
     Assertions.assertEquals(rows.get(0).getString(tableColumnName),
-        DbHelper.RECORDS_TABLE_NAME);
+        DbHelper.SSTRUCTURE_TABLE_NAME);
 
   }
 }

@@ -1,23 +1,14 @@
 package net.explorviz.landscape.peristence.cassandra;
 
-import com.datastax.oss.driver.api.core.CqlSession;
-import com.datastax.oss.driver.api.core.data.UdtValue;
 import com.datastax.oss.driver.api.core.type.DataTypes;
-import com.datastax.oss.driver.api.core.type.UserDefinedType;
-import com.datastax.oss.driver.api.core.type.codec.TypeCodec;
 import com.datastax.oss.driver.api.core.type.codec.registry.CodecRegistry;
-import com.datastax.oss.driver.api.core.type.codec.registry.MutableCodecRegistry;
 import com.datastax.oss.driver.api.querybuilder.SchemaBuilder;
-import com.datastax.oss.driver.api.querybuilder.schema.CreateIndex;
 import com.datastax.oss.driver.api.querybuilder.schema.CreateKeyspace;
 import com.datastax.oss.driver.api.querybuilder.schema.CreateTable;
-import com.datastax.oss.driver.api.querybuilder.schema.CreateType;
 import com.datastax.oss.quarkus.runtime.api.session.QuarkusCqlSession;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
-import net.explorviz.landscape.peristence.cassandra.mapper.ApplicationCodec;
-import net.explorviz.landscape.peristence.cassandra.mapper.NodeCodec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,23 +22,23 @@ import org.slf4j.LoggerFactory;
 public class DbHelper {
 
   public static final String KEYSPACE_NAME = "explorviz";
-  public static final String RECORDS_TABLE_NAME = "records";
+  public static final String SSTRUCTURE_TABLE_NAME = "span_structure";
 
-  public static final String COL_NODE_NAME = "name"; // NOCS
-  public static final String COL_NODE_IP_ADDRESS = "ip_address";
 
-  public static final String COL_APP_NAME = "name"; // NOCS
-  public static final String COL_APP_LANGUAGE = "language";
+  public static final String COL_TOKEN = "landscape_token";
+  public static final String COL_TIMESTAMP = "timestamp";
+  public static final String COL_HASHCODE = "hash_code";
+
+  public static final String COL_HOST_NAME = "host_name"; // NOCS
+  public static final String COL_HOST_IP = "host_ip_address";
+
+  public static final String COL_APP_NAME = "application_name"; // NOCS
+  public static final String COL_APP_LANGUAGE = "application_language";
   public static final String COL_APP_INSTANCE_ID = "instance_id";
 
-  public static final String COL_TIMESTAMP = "timestamp";
-  public static final String COL_TOKEN = "landscape_token";
-  public static final String COL_PACKAGE = "package";
-  public static final String COL_CLASS = "class";
-  public static final String COL_METHOD = "method";
-  public static final String COL_HASHCODE = "hash_code";
-  public static final String COL_NODE = "node";
-  public static final String COL_APPLICATION = "application";
+  public static final String COL_FQN = "method_fqn";
+
+
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DbHelper.class);
 
@@ -69,7 +60,6 @@ public class DbHelper {
   public void initialize() {
     this.createKeySpace();
     this.createLandscapeRecordTable();
-    this.registerCodecs();
   }
 
   /**
@@ -94,73 +84,29 @@ public class DbHelper {
    */
   private void createLandscapeRecordTable() {
 
-    final CreateType createNodeUdt = SchemaBuilder
-        .createType(KEYSPACE_NAME, COL_NODE)
-        .ifNotExists()
-        .withField(COL_NODE_NAME, DataTypes.TEXT)
-        .withField(COL_NODE_IP_ADDRESS, DataTypes.TEXT);
-
-    final CreateType createApplicationUdt = SchemaBuilder
-        .createType(KEYSPACE_NAME, COL_APPLICATION)
-        .ifNotExists()
-        .withField(COL_APP_NAME, DataTypes.TEXT)
-        .withField(COL_APP_INSTANCE_ID, DataTypes.BIGINT)
-        .withField(COL_APP_LANGUAGE, DataTypes.TEXT);
 
     final CreateTable createTable = SchemaBuilder
-        .createTable(KEYSPACE_NAME, RECORDS_TABLE_NAME)
+        .createTable(KEYSPACE_NAME, SSTRUCTURE_TABLE_NAME)
         .ifNotExists()
         .withPartitionKey(COL_TOKEN, DataTypes.TEXT)
-        .withClusteringColumn(COL_NODE, SchemaBuilder.udt(COL_NODE, true))
-        .withClusteringColumn(COL_APPLICATION, SchemaBuilder.udt(COL_APPLICATION, true))
-        .withClusteringColumn(COL_PACKAGE, DataTypes.TEXT)
-        .withClusteringColumn(COL_CLASS, DataTypes.TEXT)
-        .withClusteringColumn(COL_METHOD, DataTypes.TEXT)
+        .withClusteringColumn(COL_TIMESTAMP, DataTypes.BIGINT)
         .withClusteringColumn(COL_HASHCODE, DataTypes.TEXT)
-        .withColumn(COL_TIMESTAMP, DataTypes.BIGINT);
+        .withColumn(COL_HOST_NAME, DataTypes.TEXT)
+        .withColumn(COL_HOST_IP, DataTypes.TEXT)
+        .withColumn(COL_APP_NAME, DataTypes.TEXT)
+        .withColumn(COL_APP_INSTANCE_ID, DataTypes.TEXT)
+        .withColumn(COL_APP_LANGUAGE, DataTypes.TEXT)
+        .withColumn(COL_FQN, DataTypes.TEXT);
 
 
-    // Create index on timestamps for efficient querying
-    final CreateIndex createTsindex = SchemaBuilder.createIndex("timestamp_index")
-        .ifNotExists()
-        .onTable(KEYSPACE_NAME, RECORDS_TABLE_NAME)
-        .andColumn(COL_TIMESTAMP);
-
-
-    this.dbSession.execute(createNodeUdt.asCql());
-    this.dbSession.execute(createApplicationUdt.asCql());
     this.dbSession.execute(createTable.asCql());
-    this.dbSession.execute(createTsindex.asCql());
+
 
     if (LOGGER.isInfoEnabled()) {
-      LOGGER.info("Created records table and associated types");
+      LOGGER.info("Created spans structure table");
     }
 
   }
 
-  private void registerCodecs() {
-    final CodecRegistry codecRegistry = this.getCodecRegistry();
-
-    // Register Node coded
-    final UserDefinedType nodeUdt =
-        this.dbSession.getMetadata().getKeyspace(KEYSPACE_NAME)
-            .flatMap(ks -> ks.getUserDefinedType(COL_NODE))
-            .orElseThrow(IllegalStateException::new);
-    final TypeCodec<UdtValue> nodeUdtCodec = codecRegistry.codecFor(nodeUdt);
-    final NodeCodec nodeCodec = new NodeCodec(nodeUdtCodec);
-    ((MutableCodecRegistry) codecRegistry).register(nodeCodec);
-
-    // Register Application codec
-    final UserDefinedType applicationUdt = this.dbSession.getMetadata().getKeyspace(KEYSPACE_NAME)
-        .flatMap(ks -> ks.getUserDefinedType(COL_APPLICATION))
-        .orElseThrow(IllegalStateException::new);
-    final TypeCodec<UdtValue> appUdtCodec = codecRegistry.codecFor(applicationUdt);
-    final ApplicationCodec applicationCodec = new ApplicationCodec(appUdtCodec);
-    ((MutableCodecRegistry) codecRegistry).register(applicationCodec);
-
-    if (LOGGER.isInfoEnabled()) {
-      LOGGER.info("Registered codecs");
-    }
-  }
 
 }
