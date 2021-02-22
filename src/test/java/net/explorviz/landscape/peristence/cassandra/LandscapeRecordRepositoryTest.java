@@ -8,7 +8,6 @@ import net.explorviz.avro.landscape.flat.Application;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.avro.landscape.flat.Node;
 import net.explorviz.landscape.helper.SampleLoader;
-import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.peristence.cassandra.mapper.LandscapeRecordMapper;
 import net.explorviz.landscape.peristence.cassandra.specifications.InsertLandscapeRecord;
 import org.junit.jupiter.api.Assertions;
@@ -30,12 +29,12 @@ class LandscapeRecordRepositoryTest extends CassandraTest {
   void setUp() {
     this.db.initialize();
     this.mapper = new LandscapeRecordMapper(this.db);
-    this.repository = new LandscapeRecordRepository(this.db, this.mapper);
+    this.repository = new LandscapeRecordRepository();
   }
 
 
   @Test
-  void getAll() throws IOException, QueryException {
+  void getAll() throws IOException {
     final List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
     for (final LandscapeRecord r : records) {
       final InsertLandscapeRecord s = new InsertLandscapeRecord(r, this.mapper);

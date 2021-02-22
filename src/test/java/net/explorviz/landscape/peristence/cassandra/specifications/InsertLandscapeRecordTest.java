@@ -3,7 +3,6 @@ package net.explorviz.landscape.peristence.cassandra.specifications;
 import net.explorviz.avro.landscape.flat.Application;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.avro.landscape.flat.Node;
-import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.peristence.cassandra.CassandraTest;
 import net.explorviz.landscape.peristence.cassandra.mapper.LandscapeRecordMapper;
 import net.explorviz.landscape.peristence.cassandra.mapper.ValueMapper;

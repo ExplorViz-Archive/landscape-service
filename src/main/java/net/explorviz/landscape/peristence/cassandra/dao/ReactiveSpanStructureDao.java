@@ -1,6 +1,7 @@
 package net.explorviz.landscape.peristence.cassandra.dao;
 
 import com.datastax.oss.driver.api.mapper.annotations.Dao;
+import com.datastax.oss.driver.api.mapper.annotations.Delete;
 import com.datastax.oss.driver.api.mapper.annotations.Insert;
 import com.datastax.oss.driver.api.mapper.annotations.Select;
 import com.datastax.oss.quarkus.runtime.api.reactive.mapper.MutinyMappedReactiveResultSet;
@@ -13,7 +14,15 @@ public interface ReactiveSpanStructureDao {
   @Select
   MutinyMappedReactiveResultSet<SpanStructure> findByToken(String landscapeToken);
 
+
+  @Select(customWhereClause = "landscape_token = :landscapeToken and timestamp >= :fromTs and timestamp <= toTs")
+  MutinyMappedReactiveResultSet<SpanStructure> findBetweenInterval(String landscapeToken,
+                                                                   long fromTs,
+                                                                   long toTs);
   @Insert
   Uni<Void> insert(SpanStructure structure);
+
+  @Delete(entityClass = SpanStructure.class, customWhereClause = "landscape_token = :landscapeToken")
+  Uni<Void> deleteByToken(String landscapeToken);
 
 }

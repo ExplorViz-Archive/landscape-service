@@ -1,7 +1,6 @@
 package net.explorviz.landscape.service;
 
 import net.explorviz.avro.landscape.model.Landscape;
-import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 
 /**
@@ -16,7 +15,7 @@ public interface LandscapeService {
    * @return the landscape assembled out of all records associated to the given token
    */
   default Landscape buildLandscape(final String landscapeToken)
-      throws QueryException, LandscapeAssemblyException {
+      throws LandscapeAssemblyException {
     return this.buildLandscapeBetween(landscapeToken, 0, System.currentTimeMillis());
   }
 
@@ -32,7 +31,7 @@ public interface LandscapeService {
    *         constraint
    */
   default Landscape buildLandscapeFrom(final String landscapeToken, final long fromTimestamp)
-      throws QueryException, LandscapeAssemblyException {
+      throws  LandscapeAssemblyException {
     return this
         .buildLandscapeBetween(landscapeToken, fromTimestamp, System.currentTimeMillis());
   }
@@ -48,7 +47,7 @@ public interface LandscapeService {
    *         constraint
    */
   default Landscape buildLandscapeTo(final String landscapeToken, final long toTimestamp)
-      throws QueryException, LandscapeAssemblyException {
+      throws  LandscapeAssemblyException {
     return this.buildLandscapeBetween(landscapeToken, 0, toTimestamp);
   }
 
@@ -65,7 +64,7 @@ public interface LandscapeService {
    *         constraint
    */
   Landscape buildLandscapeBetween(String landscapeToken, long from, long to)
-      throws LandscapeAssemblyException, QueryException;
+      throws LandscapeAssemblyException;
 
 
   /**

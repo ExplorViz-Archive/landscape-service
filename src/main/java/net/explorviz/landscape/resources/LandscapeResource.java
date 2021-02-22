@@ -11,7 +11,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import net.explorviz.avro.landscape.model.Landscape;
-import net.explorviz.landscape.peristence.QueryException;
 import net.explorviz.landscape.service.LandscapeService;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 import net.explorviz.landscape.service.assemble.impl.NoRecordsException;
@@ -72,8 +71,6 @@ public class LandscapeResource {
         default:
           throw new InternalServerErrorException("Failed query");
       }
-    } catch (final QueryException e) {
-      throw new InternalServerErrorException("Could not dispatch query", e);
     } catch (final NoRecordsException e) {
       throw new NotFoundException("No landscape with such token " + token, e);
     } catch (final LandscapeAssemblyException e) {
