@@ -36,12 +36,10 @@ dependencies {
 
   implementation group: 'io.quarkus', name: 'quarkus-smallrye-reactive-messaging-kafka'
 
-
-
   annotationProcessor group: 'com.datastax.oss', name: 'java-driver-mapper-processor', version: '4.10.0'
   implementation group: 'com.datastax.oss', name: 'java-driver-mapper-runtime', version: '4.10.0'
   implementation 'com.datastax.oss.quarkus:cassandra-quarkus-client'
-
+  testImplementation 'com.datastax.oss.quarkus:cassandra-quarkus-test-framework'
 
   implementation 'io.quarkus:quarkus-kafka-streams'
   implementation 'io.quarkus:quarkus-kafka-client'
@@ -52,6 +50,10 @@ dependencies {
   testImplementation 'io.quarkus:quarkus-junit5'
   testImplementation "org.mockito:mockito-core:2.+"
   testImplementation 'io.rest-assured:rest-assured'
+
+  implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
+
+  testImplementation "org.testcontainers:kafka:1.15.2"
 
 
   // https://stackoverflow.com/questions/59118223/problem-with-eclipse-when-using-java-11-and-cassandra-spring-unit-possibly-along

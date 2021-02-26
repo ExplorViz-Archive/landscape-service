@@ -54,7 +54,8 @@ public class SpanToRecordStream {
 
     // TODO: How to handle failures in dao? Use insert(...).onFailure() to handle
     spanStream
-        .mapValues(net.explorviz.landscape.peristence.model.SpanStructure::fromAvro)
+        .mapValues(avro -> new net.explorviz.landscape.peristence.model.SpanStructure.Builder()
+            .fromAvro(avro).build())
         .foreach((k, rec) -> this.repository.add(rec));
 
     return builder.build();
