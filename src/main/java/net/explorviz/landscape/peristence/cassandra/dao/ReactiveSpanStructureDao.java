@@ -15,7 +15,7 @@ public interface ReactiveSpanStructureDao {
   MutinyMappedReactiveResultSet<SpanStructure> findByToken(String landscapeToken);
 
 
-  @Select(customWhereClause = "landscape_token = :landscapeToken and timestamp >= :fromTs and timestamp <= toTs")
+  @Select(customWhereClause = "landscape_token = :landscapeToken and timestamp >= :fromTs and timestamp <= :toTs")
   MutinyMappedReactiveResultSet<SpanStructure> findBetweenInterval(String landscapeToken,
                                                                    long fromTs,
                                                                    long toTs);

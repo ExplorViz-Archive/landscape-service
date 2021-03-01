@@ -5,6 +5,7 @@ import com.datastax.oss.quarkus.test.CassandraTestResource;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
+import io.smallrye.mutiny.Uni;
 import javax.inject.Inject;
 import net.explorviz.landscape.KafkaTestResource;
 import net.explorviz.landscape.peristence.model.SpanStructure;
@@ -12,9 +13,7 @@ import net.explorviz.landscape.testhelper.SpanStructureHelper;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests for the {@link net.explorviz.landscape.peristence.SpanStructureRepositoy}. The test are run
- * against an in-memory Cassandra
- * database.
+ * Tests for the {@link ReactiveSpanStructureRepositoryImpl}.
  */
 @QuarkusTest
 @QuarkusTestResource(CassandraTestResource.class)
@@ -33,7 +32,6 @@ class ReactiveSpanStructureRepositoryTest {
       final ReactiveSpanStructureRepositoryImpl repository, QuarkusCqlSession session) {
     this.repository = repository;
     this.session = session;
-
   }
 
   /**
@@ -43,7 +41,8 @@ class ReactiveSpanStructureRepositoryTest {
   void insertNew() {
     SpanStructure ss = SpanStructureHelper.randomSpanStructure();
     System.out.println(ss);
-    repository.add(ss).await().indefinitely();
+    Uni<?> s = repository.add(ss);
+    s.await().indefinitely();
   }
 
   /**
@@ -67,7 +66,7 @@ class ReactiveSpanStructureRepositoryTest {
    */
   @Test
   void getByToken() {
-
+    repository.getAll("Token");
   }
 
   /**

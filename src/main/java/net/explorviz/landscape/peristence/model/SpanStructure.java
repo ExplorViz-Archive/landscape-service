@@ -4,6 +4,7 @@ import com.datastax.oss.driver.api.mapper.annotations.ClusteringColumn;
 import com.datastax.oss.driver.api.mapper.annotations.CqlName;
 import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
+import com.datastax.oss.driver.api.mapper.annotations.Transient;
 import java.time.Instant;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -18,10 +19,10 @@ public class SpanStructure {
   @PartitionKey
   private String landscapeToken;
 
-  @ClusteringColumn(0)
+  @ClusteringColumn(1)
   private long timestamp;
 
-  @ClusteringColumn(1)
+  @ClusteringColumn(2)
   private String hashCode;
 
 
@@ -126,6 +127,7 @@ public class SpanStructure {
     this.fullyQualifiedOperationName = fullyQualifiedOperationName;
   }
 
+
   @Override
   public String toString() {
     return new ToStringBuilder(this)
@@ -140,6 +142,7 @@ public class SpanStructure {
         .append("fullyQualifiedOperationName", fullyQualifiedOperationName)
         .toString();
   }
+
 
   public static class Builder {
 
