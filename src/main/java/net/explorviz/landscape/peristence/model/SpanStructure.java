@@ -6,6 +6,8 @@ import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
 import com.datastax.oss.driver.api.mapper.annotations.Transient;
 import java.time.Instant;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
@@ -143,6 +145,30 @@ public class SpanStructure {
         .toString();
   }
 
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o)
+      return true;
+
+    if (o == null || getClass() != o.getClass())
+      return false;
+
+    final SpanStructure that = (SpanStructure) o;
+
+    return new EqualsBuilder().append(timestamp, that.timestamp)
+        .append(landscapeToken, that.landscapeToken).append(hashCode, that.hashCode)
+        .append(hostName, that.hostName).append(hostIpAddress, that.hostIpAddress)
+        .append(applicationName, that.applicationName).append(instanceId, that.instanceId)
+        .append(applicationLanguage, that.applicationLanguage)
+        .append(fullyQualifiedOperationName, that.fullyQualifiedOperationName).isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37).append(landscapeToken).append(timestamp).append(hashCode)
+        .append(hostName).append(hostIpAddress).append(applicationName).append(instanceId)
+        .append(applicationLanguage).append(fullyQualifiedOperationName).toHashCode();
+  }
 
   public static class Builder {
 

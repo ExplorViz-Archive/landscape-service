@@ -5,11 +5,12 @@ import com.datastax.oss.quarkus.test.CassandraTestResource;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
-import io.smallrye.mutiny.Uni;
+import java.util.List;
 import javax.inject.Inject;
 import net.explorviz.landscape.KafkaTestResource;
 import net.explorviz.landscape.peristence.model.SpanStructure;
 import net.explorviz.landscape.testhelper.SpanStructureHelper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -38,11 +39,16 @@ class ReactiveSpanStructureRepositoryTest {
    * Insert a new SpanStructure into the database.
    */
   @Test
-  void insertNew() {
+  void insertNewRetrieve() {
     SpanStructure ss = SpanStructureHelper.randomSpanStructure();
     System.out.println(ss);
-    Uni<?> s = repository.add(ss);
-    s.await().indefinitely();
+    repository.add(ss).await().indefinitely();
+
+    // Retrieve
+    SpanStructure got =
+        repository.getAll(ss.getLandscapeToken()).collectItems().first().await().indefinitely();
+
+    Assertions.assertEquals(ss, got);
   }
 
   /**
@@ -50,7 +56,16 @@ class ReactiveSpanStructureRepositoryTest {
    */
   @Test
   void insertDuplicate() {
+    SpanStructure ss = SpanStructureHelper.randomSpanStructure();
+    System.out.println(ss);
+    repository.add(ss).await().indefinitely();
+    repository.add(ss).await().indefinitely();
 
+    // Retrieve
+    SpanStructure got =
+        repository.getAll(ss.getLandscapeToken()).collectItems().first().await().indefinitely();
+
+    Assertions.assertEquals(ss, got);
   }
 
   /**
@@ -58,15 +73,18 @@ class ReactiveSpanStructureRepositoryTest {
    */
   @Test
   void update() {
+    SpanStructure ss = SpanStructureHelper.randomSpanStructure();
+    System.out.println(ss);
+    repository.add(ss).await().indefinitely();
 
-  }
+    ss.setApplicationLanguage("New App name");
+    repository.add(ss).await().indefinitely();
 
-  /**
-   * Find all SpanStructures given a landscape token.
-   */
-  @Test
-  void getByToken() {
-    repository.getAll("Token");
+    // Retrieve
+    SpanStructure got =
+        repository.getAll(ss.getLandscapeToken()).collectItems().first().await().indefinitely();
+
+    Assertions.assertEquals(ss, got);
   }
 
   /**
@@ -74,7 +92,9 @@ class ReactiveSpanStructureRepositoryTest {
    */
   @Test
   void getByUnknownToken() {
-
+    SpanStructure got =
+        repository.getAll("unknown").collectItems().first().await().indefinitely();
+    Assertions.assertNull(got);
   }
 
   /**
@@ -82,6 +102,19 @@ class ReactiveSpanStructureRepositoryTest {
    */
   @Test
   void getByTokenBetween() {
+    List<SpanStructure> spanstrs = SpanStructureHelper.randomSpanStructures(20, true, true);
+    spanstrs.forEach(s -> repository.add(s).await().indefinitely());
+
+    // Retrieve all but the first an the last in the list
+    String tok = spanstrs.get(0).getLandscapeToken();
+    long startTs = spanstrs.get(1).getTimestamp();
+    long endTs = spanstrs.get(18).getTimestamp();
+
+    List<SpanStructure> got =
+        repository.getBetween(tok, startTs, endTs).collectItems().asList().await().indefinitely();
+
+    Assertions.assertEquals(18, got.size());
+
 
   }
 
@@ -91,7 +124,18 @@ class ReactiveSpanStructureRepositoryTest {
    */
   @Test
   void getByTokenBetweenEmpty() {
+    List<SpanStructure> spanstrs = SpanStructureHelper.randomSpanStructures(20, true, true);
+    spanstrs.forEach(s -> repository.add(s).await().indefinitely());
 
+    // Retrieve all but the first an the last in the list
+    String tok = spanstrs.get(0).getLandscapeToken();
+    long startTs = spanstrs.get(19).getTimestamp()+1;
+    long endTs = startTs + 20;
+
+    List<SpanStructure> got =
+        repository.getBetween(tok, startTs, endTs).collectItems().asList().await().indefinitely();
+
+    Assertions.assertEquals(0, got.size());
   }
 
 
@@ -100,7 +144,17 @@ class ReactiveSpanStructureRepositoryTest {
    */
   @Test
   void deleteByToken() {
+    List<SpanStructure> spanstrs = SpanStructureHelper.randomSpanStructures(20, true, true);
+    spanstrs.forEach(s -> repository.add(s).await().indefinitely());
 
+    // Retrieve all but the first an the last in the list
+    String tok = spanstrs.get(0).getLandscapeToken();
+    repository.deleteAll(tok).await().indefinitely();
+
+    List<SpanStructure> got =
+        repository.getAll(tok).collectItems().asList().await().indefinitely();
+
+    Assertions.assertEquals(0, got.size());
   }
 
 

@@ -1,8 +1,12 @@
 package net.explorviz.landscape.testhelper;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.IntStream;
 import net.explorviz.landscape.peristence.model.SpanStructure;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 
 public final class SpanStructureHelper {
 
@@ -16,7 +20,7 @@ public final class SpanStructureHelper {
   public static SpanStructure randomSpanStructure() {
     SpanStructure.Builder builder = new SpanStructure.Builder();
     builder.setLandscapeToken(RandomStringUtils.randomAlphanumeric(32))
-        .setTimestamp(System.currentTimeMillis())
+        .setTimestamp(RandomUtils.nextInt(1614591055, 1714591055))
         .setHostIpAddress(randomIp())
         .setHostName(RandomStringUtils.randomAlphabetic(10))
         .setApplicationName(RandomStringUtils.randomAlphabetic(10))
@@ -26,6 +30,37 @@ public final class SpanStructureHelper {
         .setFqn(randomFqn());
 
     return builder.build();
+  }
+
+
+  /**
+   * Generates multiple span structures with increasing timestamp
+   *
+   * @param count      the amount to create
+   * @param equalToken if true, all SpanStructures will have the same landscape token
+   * @param increasingTime if true, timestamps will be in increasing order
+   * @return a list of span structures
+   */
+  public static List<SpanStructure> randomSpanStructures(int count, boolean equalToken,
+                                                         boolean increasingTime) {
+
+    List<SpanStructure> strs = new ArrayList<>(count);
+    if (count <= 0) {
+      return strs;
+    }
+    SpanStructure fss = randomSpanStructure();
+    strs.add(fss);
+    for (int i = 0; i < count-1; i++) {
+      SpanStructure ss = randomSpanStructure();
+      if (equalToken) {
+        ss.setLandscapeToken(fss.getLandscapeToken());
+      }
+      if(increasingTime) {
+        ss.setTimestamp(fss.getTimestamp()+i+1);
+      }
+      strs.add(ss);
+    }
+    return strs;
   }
 
   private static String randomIp() {
