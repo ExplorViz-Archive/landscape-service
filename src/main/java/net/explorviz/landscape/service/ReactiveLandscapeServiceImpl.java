@@ -17,18 +17,18 @@ import org.slf4j.LoggerFactory;
  * Implements the use cases.
  */
 @ApplicationScoped
-public class LandscapeServiceImpl implements LandscapeService {
+public class ReactiveLandscapeServiceImpl implements ReactiveLandscapeService {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(LandscapeServiceImpl.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ReactiveLandscapeServiceImpl.class);
 
   private final SpanStructureRepositoy repo;
   private final LandscapeAssembler assembler;
   private final SpanToRecordConverter converter;
 
   @Inject
-  public LandscapeServiceImpl(final SpanStructureRepositoy repo,
-                              final LandscapeAssembler assembler,
-                              final SpanToRecordConverter converter) {
+  public ReactiveLandscapeServiceImpl(final SpanStructureRepositoy repo,
+                                      final LandscapeAssembler assembler,
+                                      final SpanToRecordConverter converter) {
     this.repo = repo;
     this.assembler = assembler;
     this.converter = converter;
@@ -36,7 +36,7 @@ public class LandscapeServiceImpl implements LandscapeService {
 
   @Override
   public Uni<Landscape> buildLandscapeBetween(final String landscapeToken, final long from,
-                                         final long to)
+                                              final long to)
       throws LandscapeAssemblyException {
 
 
@@ -46,13 +46,18 @@ public class LandscapeServiceImpl implements LandscapeService {
             .asList();
 
 
-    return recordsList.onItem().invoke(assembler::assembleFromRecords);
+    recordsList.onItem().invoke(recs -> {
+      if (LOGGER.isInfoEnabled()) {
+        LOGGER.info("Found {} records for landscape with token {}", recs.size(), landscapeToken);
+      }
+    });
+    return recordsList.onItem().transform(assembler::assembleFromRecords);
 
   }
 
   @Override
-  public void deleteLandscape(final String landscapeToken) {
-    this.repo.deleteAll(landscapeToken);
+  public Uni<Void> deleteLandscape(final String landscapeToken) {
+    return this.repo.deleteAll(landscapeToken);
   }
 
 

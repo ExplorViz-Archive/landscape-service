@@ -3,10 +3,10 @@ package net.explorviz.landscape.service.converter;
 import java.time.Instant;
 import java.util.Arrays;
 import javax.enterprise.context.ApplicationScoped;
-import net.explorviz.avro.SpanStructure;
 import net.explorviz.avro.landscape.flat.Application;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.avro.landscape.flat.Node;
+import net.explorviz.landscape.peristence.model.SpanStructure;
 
 /**
  * Maps {@link SpanStructure} objects to {@link LandscapeRecord} objects by extracting the data.
@@ -29,18 +29,18 @@ public class SpanToRecordConverter {
         LandscapeRecord.newBuilder().setLandscapeToken(span.getLandscapeToken());
 
     // Use start time as timestamp
-    final Instant timestamp = Instant
-        .ofEpochSecond(span.getTimestamp().getSeconds(), span.getTimestamp().getNanoAdjust());
-    recordBuilder.setTimestamp(timestamp.toEpochMilli());
+    final long timestamp = span.getTimestamp();
 
     // set hash code
     recordBuilder.setHashCode(span.getHashCode());
 
     // Set node and application
-    recordBuilder.setTimestamp(timestamp.toEpochMilli())
-        .setNode(new Node(span.getHostIpAddress(), span.getHostname()))
+    recordBuilder.setTimestamp(timestamp)
+        .setNode(new Node(span.getHostIpAddress(), span.getHostName()))
         .setApplication(
-            new Application(span.getAppName(), span.getAppInstanceId(), span.getAppLanguage()));
+            new Application(span.getApplicationName(), span.getInstanceId(),
+                span.getApplicationLanguage())
+        );
 
 
     /*

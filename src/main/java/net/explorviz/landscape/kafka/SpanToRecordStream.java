@@ -56,7 +56,10 @@ public class SpanToRecordStream {
     spanStream
         .mapValues(avro -> new net.explorviz.landscape.peristence.model.SpanStructure.Builder()
             .fromAvro(avro).build())
-        .foreach((k, rec) -> this.repository.add(rec));
+        .foreach((k, rec) -> {
+          System.out.println("Span: " + rec.getLandscapeToken());
+          this.repository.add(rec).subscribeAsCompletionStage();
+        });
 
     return builder.build();
   }

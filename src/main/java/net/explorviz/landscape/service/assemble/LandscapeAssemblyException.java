@@ -3,7 +3,7 @@ package net.explorviz.landscape.service.assemble;
 /**
  * Thrown if a landscape could not be assembled.
  */
-public class LandscapeAssemblyException extends Exception {
+public class LandscapeAssemblyException extends RuntimeException {
 
   private static final long serialVersionUID = -5122287416640668604L; // NOPMD
 

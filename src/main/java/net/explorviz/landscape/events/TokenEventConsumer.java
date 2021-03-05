@@ -4,7 +4,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import net.explorviz.avro.EventType;
 import net.explorviz.avro.TokenEvent;
-import net.explorviz.landscape.service.LandscapeService;
+import net.explorviz.landscape.service.ReactiveLandscapeService;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +20,10 @@ public class TokenEventConsumer {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TokenEventConsumer.class);
 
-  private final LandscapeService service;
+  private final ReactiveLandscapeService service;
 
   @Inject
-  public TokenEventConsumer(final LandscapeService service) {
+  public TokenEventConsumer(final ReactiveLandscapeService service) {
     this.service = service;
   }
 
