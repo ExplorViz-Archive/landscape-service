@@ -1,11 +1,15 @@
 package net.explorviz.landscape.service;
 
+import io.smallrye.mutiny.Uni;
+import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.avro.landscape.model.Landscape;
 import net.explorviz.landscape.peristence.SpanStructureRepositoy;
 import net.explorviz.landscape.service.assemble.LandscapeAssembler;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
+import net.explorviz.landscape.service.converter.SpanToRecordConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,31 +23,31 @@ public class LandscapeServiceImpl implements LandscapeService {
 
   private final SpanStructureRepositoy repo;
   private final LandscapeAssembler assembler;
+  private final SpanToRecordConverter converter;
 
   @Inject
   public LandscapeServiceImpl(final SpanStructureRepositoy repo,
-      final LandscapeAssembler assembler) {
+                              final LandscapeAssembler assembler,
+                              final SpanToRecordConverter converter) {
     this.repo = repo;
     this.assembler = assembler;
+    this.converter = converter;
   }
 
   @Override
-  public Landscape buildLandscapeBetween(final String landscapeToken, final long from,
-      final long to)
+  public Uni<Landscape> buildLandscapeBetween(final String landscapeToken, final long from,
+                                         final long to)
       throws LandscapeAssemblyException {
 
 
+    Uni<List<LandscapeRecord>> recordsList =
+        repo.getBetween(landscapeToken, from, to).map(converter::toRecord)
+            .collectItems()
+            .asList();
 
 
-    if (LOGGER.isInfoEnabled()) {
-      //LOGGER.info("Found {} records to token {} in time range ({}, {})", recordList.size(),
-      //    landscapeToken, from, to);
-    }
+    return recordsList.onItem().invoke(assembler::assembleFromRecords);
 
-    // Assemble
-    //buildLandscape = this.assembler.assembleFromRecords(recordList);
-    //return buildLandscape;
-    return null;
   }
 
   @Override
