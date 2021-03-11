@@ -1,7 +1,9 @@
 package net.explorviz.landscape.peristence.cassandra;
 
+import com.datastax.oss.quarkus.runtime.api.session.QuarkusCqlSession;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
+import java.io.StringReader;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import net.explorviz.landscape.peristence.SpanStructureRepositoy;
@@ -16,8 +18,9 @@ public class ReactiveSpanStructureRepositoryImpl implements SpanStructureReposit
 
   @Inject
   public ReactiveSpanStructureRepositoryImpl(
-      final ReactiveSpanStructureDao dao) {
+      final ReactiveSpanStructureDao dao, QuarkusCqlSession session) {
     this.dao = dao;
+
   }
 
   @Override

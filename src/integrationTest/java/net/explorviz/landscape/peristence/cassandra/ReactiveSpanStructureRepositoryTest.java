@@ -7,9 +7,8 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import java.util.List;
 import javax.inject.Inject;
-import net.explorviz.landscape.KafkaTestResource;
 import net.explorviz.landscape.peristence.model.SpanStructure;
-import net.explorviz.landscape.testhelper.SpanStructureHelper;
+import net.explorviz.landscape.utils.testhelper.SpanStructureHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -129,7 +128,7 @@ class ReactiveSpanStructureRepositoryTest {
 
     // Retrieve all but the first an the last in the list
     String tok = spanstrs.get(0).getLandscapeToken();
-    long startTs = spanstrs.get(19).getTimestamp()+1;
+    long startTs = spanstrs.get(19).getTimestamp() + 1;
     long endTs = startTs + 20;
 
     List<SpanStructure> got =

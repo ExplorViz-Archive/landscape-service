@@ -1,4 +1,4 @@
-package net.explorviz.landscape;
+package net.explorviz.landscape.peristence.cassandra;
 
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 import java.util.Arrays;

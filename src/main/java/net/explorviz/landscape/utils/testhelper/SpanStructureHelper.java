@@ -1,8 +1,7 @@
-package net.explorviz.landscape.testhelper;
+package net.explorviz.landscape.utils.testhelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.IntStream;
 import net.explorviz.landscape.peristence.model.SpanStructure;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -36,8 +35,8 @@ public final class SpanStructureHelper {
   /**
    * Generates multiple span structures with increasing timestamp
    *
-   * @param count      the amount to create
-   * @param equalToken if true, all SpanStructures will have the same landscape token
+   * @param count          the amount to create
+   * @param equalToken     if true, all SpanStructures will have the same landscape token
    * @param increasingTime if true, timestamps will be in increasing order
    * @return a list of span structures
    */
@@ -50,13 +49,13 @@ public final class SpanStructureHelper {
     }
     SpanStructure fss = randomSpanStructure();
     strs.add(fss);
-    for (int i = 0; i < count-1; i++) {
+    for (int i = 0; i < count - 1; i++) {
       SpanStructure ss = randomSpanStructure();
       if (equalToken) {
         ss.setLandscapeToken(fss.getLandscapeToken());
       }
-      if(increasingTime) {
-        ss.setTimestamp(fss.getTimestamp()+i+1);
+      if (increasingTime) {
+        ss.setTimestamp(fss.getTimestamp() + i + 1);
       }
       strs.add(ss);
     }

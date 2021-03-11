@@ -1,11 +1,10 @@
 package net.explorviz.landscape.service.converter;
 
-import java.time.Instant;
 import net.explorviz.avro.landscape.flat.Application;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.avro.landscape.flat.Node;
 import net.explorviz.landscape.peristence.model.SpanStructure;
-import net.explorviz.landscape.testhelper.SpanStructureHelper;
+import net.explorviz.landscape.utils.testhelper.SpanStructureHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
