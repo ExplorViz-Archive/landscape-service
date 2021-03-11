@@ -47,7 +47,7 @@ configurations {
 
 
 // Add generated avro sources to main source sets
-sourceSets.main.java.srcDirs = ['build/generated-main-avro-java', 'src/main/java']
+sourceSets.main.java.srcDirs = ['build/generated-main-avro-java', 'src/main/java', 'build/generated/sources/annotationProcessor/java/main']
 
 // Fix: com.datastax.oss:* uses old, mandatory Groovy version
 configurations.all {
