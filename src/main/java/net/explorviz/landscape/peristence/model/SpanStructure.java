@@ -4,7 +4,6 @@ import com.datastax.oss.driver.api.mapper.annotations.ClusteringColumn;
 import com.datastax.oss.driver.api.mapper.annotations.CqlName;
 import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
-import com.datastax.oss.driver.api.mapper.annotations.Transient;
 import java.time.Instant;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -21,12 +20,11 @@ public class SpanStructure {
   @PartitionKey
   private String landscapeToken;
 
-  @ClusteringColumn(1)
-  private long timestamp;
-
-  @ClusteringColumn(2)
+  @ClusteringColumn
   private String hashCode;
 
+
+  private long timestamp;
 
   private String hostName;
   private String hostIpAddress;
