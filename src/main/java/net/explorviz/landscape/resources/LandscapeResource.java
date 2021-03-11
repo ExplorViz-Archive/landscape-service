@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import net.explorviz.avro.landscape.model.Landscape;
 import net.explorviz.landscape.service.ReactiveLandscapeService;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
+import net.explorviz.landscape.service.assemble.impl.InvalidRecordException;
 import net.explorviz.landscape.service.assemble.impl.NoRecordsException;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
@@ -78,7 +79,14 @@ public class LandscapeResource {
       throw new InternalServerErrorException(e.getMessage(), e);
     }
 
-    return buildLandscape;
+    // Return empty landscape if no records found
+    return buildLandscape
+        .onFailure(NoRecordsException.class)
+        .transform(t -> new NotFoundException())
+        .onFailure(LandscapeAssemblyException.class)
+        .transform(t -> new InternalServerErrorException(t.getMessage()));
+
+
   }
 
 
