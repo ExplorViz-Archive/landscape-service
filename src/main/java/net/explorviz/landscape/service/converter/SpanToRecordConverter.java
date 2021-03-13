@@ -1,6 +1,5 @@
 package net.explorviz.landscape.service.converter;
 
-import java.time.Instant;
 import java.util.Arrays;
 import javax.enterprise.context.ApplicationScoped;
 import net.explorviz.avro.landscape.flat.Application;
@@ -39,8 +38,7 @@ public class SpanToRecordConverter {
         .setNode(new Node(span.getHostIpAddress(), span.getHostName()))
         .setApplication(
             new Application(span.getApplicationName(), span.getInstanceId(),
-                span.getApplicationLanguage())
-        );
+                span.getApplicationLanguage()));
 
 
     /*

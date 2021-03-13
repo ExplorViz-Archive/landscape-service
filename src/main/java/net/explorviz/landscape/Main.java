@@ -13,7 +13,7 @@ import net.explorviz.landscape.kafka.SpanToRecordStream;
 public class Main implements QuarkusApplication {
 
   private final SpanToRecordStream stream;
-  
+
   @Inject
   public Main(final SpanToRecordStream stream) {
     this.stream = stream;

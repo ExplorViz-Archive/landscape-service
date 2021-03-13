@@ -27,8 +27,8 @@ public class ReactiveLandscapeServiceImpl implements ReactiveLandscapeService {
 
   @Inject
   public ReactiveLandscapeServiceImpl(final SpanStructureRepositoy repo,
-                                      final LandscapeAssembler assembler,
-                                      final SpanToRecordConverter converter) {
+      final LandscapeAssembler assembler,
+      final SpanToRecordConverter converter) {
     this.repo = repo;
     this.assembler = assembler;
     this.converter = converter;
@@ -36,12 +36,12 @@ public class ReactiveLandscapeServiceImpl implements ReactiveLandscapeService {
 
   @Override
   public Uni<Landscape> buildLandscapeBetween(final String landscapeToken, final long from,
-                                              final long to)
+      final long to)
       throws LandscapeAssemblyException {
 
 
-    Uni<List<LandscapeRecord>> recordsList =
-        repo.getBetween(landscapeToken, from, to).map(converter::toRecord)
+    final Uni<List<LandscapeRecord>> recordsList =
+        this.repo.getBetween(landscapeToken, from, to).map(this.converter::toRecord)
             .collectItems()
             .asList();
 
@@ -51,7 +51,7 @@ public class ReactiveLandscapeServiceImpl implements ReactiveLandscapeService {
         LOGGER.info("Found {} records for landscape with token {}", recs.size(), landscapeToken);
       }
     });
-    return recordsList.onItem().transform(assembler::assembleFromRecords);
+    return recordsList.onItem().transform(this.assembler::assembleFromRecords);
 
   }
 

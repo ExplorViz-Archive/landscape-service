@@ -4,7 +4,6 @@ import net.explorviz.avro.landscape.flat.Application;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.avro.landscape.flat.Node;
 import net.explorviz.landscape.peristence.model.SpanStructure;
-import net.explorviz.landscape.utils.testhelper.SpanStructureHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,22 +22,22 @@ class SpanToRecordConverterTest {
 
     this.span = SpanStructureHelper.randomSpanStructure();
 
-    String pkg = "foo.bar";
-    String cls = "Test";
-    String mthd = "test";
+    final String pkg = "foo.bar";
+    final String cls = "Test";
+    final String mthd = "test";
     this.span.setFullyQualifiedOperationName(String.join(".", pkg, cls, mthd));
 
     this.record = LandscapeRecord.newBuilder()
-        .setLandscapeToken(span.getLandscapeToken())
-        .setHashCode(span.getHashCode())
-        .setTimestamp(span.getTimestamp())
-        .setNode(new Node(span.getHostIpAddress(), span.getHostName()))
-        .setApplication(new Application(span.getApplicationName(), span.getInstanceId(),
-            span.getApplicationLanguage()))
+        .setLandscapeToken(this.span.getLandscapeToken())
+        .setHashCode(this.span.getHashCode())
+        .setTimestamp(this.span.getTimestamp())
+        .setNode(new Node(this.span.getHostIpAddress(), this.span.getHostName()))
+        .setApplication(new Application(this.span.getApplicationName(), this.span.getInstanceId(),
+            this.span.getApplicationLanguage()))
         .setPackage$(pkg)
         .setClass$(cls)
         .setMethod(mthd)
-        .setHashCode(span.getHashCode())
+        .setHashCode(this.span.getHashCode())
         .build();
 
   }
