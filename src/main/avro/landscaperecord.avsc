@@ -29,7 +29,7 @@
         "type": "record",
         "fields": [
           {"name": "name", "type": "string"},
-          {"name": "instanceId", "type": "long"},
+          {"name": "instanceId", "type": "string"},
           {"name": "language", "type": "string", "default": "java"}
         ]
       }

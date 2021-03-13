@@ -4,19 +4,13 @@ import java.util.Properties;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import net.explorviz.avro.SpanStructure;
-import net.explorviz.avro.landscape.flat.LandscapeRecord;
-import net.explorviz.landscape.peristence.QueryException;
-import net.explorviz.landscape.peristence.Repository;
-import net.explorviz.landscape.service.converter.SpanToRecordConverter;
+import net.explorviz.landscape.peristence.SpanStructureRepositoy;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
-import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -26,25 +20,18 @@ import org.slf4j.LoggerFactory;
 @ApplicationScoped
 public class SpanToRecordStream {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SpanToRecordStream.class);
-
   private final KafkaHelper kafkaHelper;
-
-  private final Repository<LandscapeRecord> recordRepo;
 
   private final KafkaStreams stream;
 
-  private final SpanToRecordConverter converter;
-
+  private final SpanStructureRepositoy repository;
 
   @Inject
   public SpanToRecordStream(final KafkaHelper kafkaHelper,
-      final SpanToRecordConverter converter,
-      final Repository<LandscapeRecord> repository) {
+      final SpanStructureRepositoy repository) {
     this.kafkaHelper = kafkaHelper;
-    this.converter = converter;
-    this.recordRepo = repository;
-    final Topology topology = buildTopology();
+    this.repository = repository;
+    final Topology topology = this.buildTopology();
     final Properties props = kafkaHelper.newDefaultStreamProperties();
     this.stream = new KafkaStreams(topology, props);
   }
@@ -61,28 +48,14 @@ public class SpanToRecordStream {
         builder.stream(this.kafkaHelper.getTopicSpanStructure(), Consumed
             .with(Serdes.String(), this.kafkaHelper.getAvroValueSerde()));
 
-    // Map to records
-    final KStream<String, LandscapeRecord> recordKStream =
-        spanStream.map((k, s) -> {
-          final LandscapeRecord record = this.converter.toRecord(s);
-
-          if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Received landscape record: {}", record.toString());
-          }
-
-          return new KeyValue<>(record.getLandscapeToken(), record);
+    // TODO: How to handle failures in dao? Use insert(...).onFailure() to handle
+    spanStream
+        .mapValues(avro -> new net.explorviz.landscape.peristence.model.SpanStructure.Builder()
+            .fromAvro(avro).build())
+        .foreach((k, rec) -> {
+          // System.out.println("Span: " + rec.getLandscapeToken());
+          this.repository.add(rec).subscribeAsCompletionStage();
         });
-
-
-    recordKStream.foreach((k, rec) -> {
-      try {
-        this.recordRepo.addAsync(rec);
-      } catch (final QueryException e) {
-        if (LOGGER.isErrorEnabled()) {
-          LOGGER.error("Failed to persist an record: {0}", e);
-        }
-      }
-    });
 
     return builder.build();
   }

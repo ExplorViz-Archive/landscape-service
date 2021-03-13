@@ -1,6 +1,6 @@
 package net.explorviz.landscape.resources;
 
-import java.util.ArrayList;
+import io.smallrye.mutiny.Uni;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
@@ -11,8 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import net.explorviz.avro.landscape.model.Landscape;
-import net.explorviz.landscape.peristence.QueryException;
-import net.explorviz.landscape.service.LandscapeService;
+import net.explorviz.landscape.service.ReactiveLandscapeService;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 import net.explorviz.landscape.service.assemble.impl.NoRecordsException;
 import org.eclipse.microprofile.openapi.annotations.Operation;
@@ -28,9 +27,9 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 @Path("/v2/landscapes")
 public class LandscapeResource {
 
-  private final LandscapeService landscapeService;
+  private final ReactiveLandscapeService landscapeService;
 
-  public LandscapeResource(final LandscapeService landscapeService) {
+  public LandscapeResource(final ReactiveLandscapeService landscapeService) {
     this.landscapeService = landscapeService;
   }
 
@@ -38,23 +37,23 @@ public class LandscapeResource {
   @Path("/{token}/structure")
   @Produces(MediaType.APPLICATION_JSON)
   @Operation(summary = "Retrieve a landscape graph",
-             description = "Assembles the (possibly empty) landscape of "
-                 + "all spans observed in the given time range")
+      description = "Assembles the (possibly empty) landscape of "
+          + "all spans observed in the given time range")
   @APIResponses(value = {@APIResponse(responseCode = "200",
-                                      description = "Success",
-                                      content = @Content(mediaType = "application/json",
-                                                         schema = @Schema(
-                                                             implementation = Landscape.class)))})
-  public Landscape getLandscape(@PathParam("token") final String token, // NOPMD
-                                @QueryParam("from") final Long from,
-                                @QueryParam("to") final Long to) {
+      description = "Success",
+      content = @Content(mediaType = "application/json",
+          schema = @Schema(
+              implementation = Landscape.class)))})
+  public Uni<Landscape> getLandscape(@PathParam("token") final String token, // NOPMD
+      @QueryParam("from") final Long from,
+      @QueryParam("to") final Long to) {
 
     if (token == null || token.length() == 0) {
       throw new BadRequestException("Token is mandatory");
     }
 
     final int c = (from == null ? 0 : 1) + (to == null ? 0 : 2);
-    Landscape buildLandscape = new Landscape(token, new ArrayList<>());
+    Uni<Landscape> buildLandscape;
     try {
       switch (c) {
         case 0: // Both null
@@ -72,8 +71,6 @@ public class LandscapeResource {
         default:
           throw new InternalServerErrorException("Failed query");
       }
-    } catch (final QueryException e) {
-      throw new InternalServerErrorException("Could not dispatch query", e);
     } catch (final NoRecordsException e) {
       throw new NotFoundException("No landscape with such token " + token, e);
     } catch (final LandscapeAssemblyException e) {
@@ -81,8 +78,14 @@ public class LandscapeResource {
       throw new InternalServerErrorException(e.getMessage(), e);
     }
 
+    // Return empty landscape if no records found
+    return buildLandscape
+        .onFailure(NoRecordsException.class)
+        .transform(t -> new NotFoundException())
+        .onFailure(LandscapeAssemblyException.class)
+        .transform(t -> new InternalServerErrorException(t.getMessage()));
 
-    return buildLandscape;
+
   }
 
 
