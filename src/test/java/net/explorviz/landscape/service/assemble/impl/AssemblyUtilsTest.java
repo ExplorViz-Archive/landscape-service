@@ -52,10 +52,10 @@ class AssemblyUtilsTest {
   @Test
   void findApplicationExisting() {
     final Application toFind =
-        new Application(this.app.getName(), this.app.getLanguage(), this.app.getInstanceId(),
+        new Application(this.app.getName(), this.app.getLanguage(), this.app.getInstaceId(),
             new ArrayList<>());
     final Optional<Application> got = AssemblyUtils
-        .findApplication(this.nodeA, toFind.getName(), toFind.getInstanceId());
+        .findApplication(this.nodeA, toFind.getName(), toFind.getInstaceId());
     Assertions.assertTrue(got.isPresent());
     Assertions.assertEquals(this.app, got.get());
   }
