@@ -5,7 +5,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import net.explorviz.avro.SpanStructure;
 import net.explorviz.landscape.peristence.SpanStructureRepositoy;
-import net.explorviz.landscape.service.converter.SpanToRecordConverter;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -25,17 +24,14 @@ public class SpanToRecordStream {
 
   private final KafkaStreams stream;
 
-
   private final SpanStructureRepositoy repository;
-
 
   @Inject
   public SpanToRecordStream(final KafkaHelper kafkaHelper,
-                            final SpanToRecordConverter converter,
-                            final SpanStructureRepositoy repository) {
+      final SpanStructureRepositoy repository) {
     this.kafkaHelper = kafkaHelper;
     this.repository = repository;
-    final Topology topology = buildTopology();
+    final Topology topology = this.buildTopology();
     final Properties props = kafkaHelper.newDefaultStreamProperties();
     this.stream = new KafkaStreams(topology, props);
   }
@@ -57,7 +53,7 @@ public class SpanToRecordStream {
         .mapValues(avro -> new net.explorviz.landscape.peristence.model.SpanStructure.Builder()
             .fromAvro(avro).build())
         .foreach((k, rec) -> {
-          System.out.println("Span: " + rec.getLandscapeToken());
+          // System.out.println("Span: " + rec.getLandscapeToken());
           this.repository.add(rec).subscribeAsCompletionStage();
         });
 

@@ -11,9 +11,8 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Wait for and reacts to token-events dispatches by the User-Service.
- * Such events are read from a corresponding Kafka topic and contain
- * information about changes to tokens (e.g. deletions).
+ * Wait for and reacts to token-events dispatches by the User-Service. Such events are read from a
+ * corresponding Kafka topic and contain information about changes to tokens (e.g. deletions).
  */
 @ApplicationScoped
 public class TokenEventConsumer {
@@ -28,8 +27,8 @@ public class TokenEventConsumer {
   }
 
   /**
-   * Processes token-events in a background, called by reactive messaging framework.
-   * If a token was deleted, all corresponding entries are removed from the database.
+   * Processes token-events in a background, called by reactive messaging framework. If a token was
+   * deleted, all corresponding entries are removed from the database.
    *
    * @param event the token-event
    */

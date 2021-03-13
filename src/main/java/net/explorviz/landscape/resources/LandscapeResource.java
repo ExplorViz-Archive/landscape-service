@@ -13,7 +13,6 @@ import javax.ws.rs.core.MediaType;
 import net.explorviz.avro.landscape.model.Landscape;
 import net.explorviz.landscape.service.ReactiveLandscapeService;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
-import net.explorviz.landscape.service.assemble.impl.InvalidRecordException;
 import net.explorviz.landscape.service.assemble.impl.NoRecordsException;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
@@ -38,16 +37,16 @@ public class LandscapeResource {
   @Path("/{token}/structure")
   @Produces(MediaType.APPLICATION_JSON)
   @Operation(summary = "Retrieve a landscape graph",
-             description = "Assembles the (possibly empty) landscape of "
-                 + "all spans observed in the given time range")
+      description = "Assembles the (possibly empty) landscape of "
+          + "all spans observed in the given time range")
   @APIResponses(value = {@APIResponse(responseCode = "200",
-                                      description = "Success",
-                                      content = @Content(mediaType = "application/json",
-                                                         schema = @Schema(
-                                                             implementation = Landscape.class)))})
+      description = "Success",
+      content = @Content(mediaType = "application/json",
+          schema = @Schema(
+              implementation = Landscape.class)))})
   public Uni<Landscape> getLandscape(@PathParam("token") final String token, // NOPMD
-                                     @QueryParam("from") final Long from,
-                                     @QueryParam("to") final Long to) {
+      @QueryParam("from") final Long from,
+      @QueryParam("to") final Long to) {
 
     if (token == null || token.length() == 0) {
       throw new BadRequestException("Token is mandatory");

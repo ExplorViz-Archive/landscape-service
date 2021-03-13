@@ -1,4 +1,4 @@
-package net.explorviz.landscape.utils.testhelper;
+package net.explorviz.landscape.peristence.cassandra;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,9 @@ import org.apache.commons.lang3.RandomUtils;
 
 public final class SpanStructureHelper {
 
-
+  private SpanStructureHelper() {
+    // utility class
+  }
 
   /**
    * Creates a {@link SpanStructure} with completely random attributes.
@@ -17,16 +19,16 @@ public final class SpanStructureHelper {
    * @return a random SpanStructure
    */
   public static SpanStructure randomSpanStructure() {
-    SpanStructure.Builder builder = new SpanStructure.Builder();
-    builder.setLandscapeToken(RandomStringUtils.randomAlphanumeric(32))
-        .setTimestamp(RandomUtils.nextInt(1614591055, 1714591055))
-        .setHostIpAddress(randomIp())
-        .setHostName(RandomStringUtils.randomAlphabetic(10))
-        .setApplicationName(RandomStringUtils.randomAlphabetic(10))
-        .setInstanceId(RandomStringUtils.randomNumeric(3))
-        .setHashCode(RandomStringUtils.randomAlphanumeric(32))
-        .setApplicationLanguage(RandomStringUtils.randomAlphabetic(5))
-        .setFqn(randomFqn());
+    final SpanStructure.Builder builder = new SpanStructure.Builder();
+    builder.withLandscapeToken(RandomStringUtils.randomAlphanumeric(32))
+        .withTimestamp(RandomUtils.nextInt(1_614_591_055, 1_714_591_055))
+        .withHostIpAddress(randomIp())
+        .withHostName(RandomStringUtils.randomAlphabetic(10))
+        .withApplicationName(RandomStringUtils.randomAlphabetic(10))
+        .withInstanceId(RandomStringUtils.randomNumeric(3))
+        .withHashCode(RandomStringUtils.randomAlphanumeric(32))
+        .withApplicationLanguage(RandomStringUtils.randomAlphabetic(5))
+        .withFqn(randomFqn());
 
     return builder.build();
   }
@@ -35,22 +37,22 @@ public final class SpanStructureHelper {
   /**
    * Generates multiple span structures with increasing timestamp
    *
-   * @param count          the amount to create
-   * @param equalToken     if true, all SpanStructures will have the same landscape token
+   * @param count the amount to create
+   * @param equalToken if true, all SpanStructures will have the same landscape token
    * @param increasingTime if true, timestamps will be in increasing order
    * @return a list of span structures
    */
-  public static List<SpanStructure> randomSpanStructures(int count, boolean equalToken,
-                                                         boolean increasingTime) {
+  public static List<SpanStructure> randomSpanStructures(final int count, final boolean equalToken,
+      final boolean increasingTime) {
 
-    List<SpanStructure> strs = new ArrayList<>(count);
+    final List<SpanStructure> strs = new ArrayList<>(count);
     if (count <= 0) {
       return strs;
     }
-    SpanStructure fss = randomSpanStructure();
+    final SpanStructure fss = randomSpanStructure();
     strs.add(fss);
     for (int i = 0; i < count - 1; i++) {
-      SpanStructure ss = randomSpanStructure();
+      final SpanStructure ss = randomSpanStructure();
       if (equalToken) {
         ss.setLandscapeToken(fss.getLandscapeToken());
       }
@@ -63,13 +65,13 @@ public final class SpanStructureHelper {
   }
 
   private static String randomIp() {
-    String[] parts = new String[4];
+    final String[] parts = new String[4];
     IntStream.rangeClosed(0, 3).forEach(i -> parts[i] = RandomStringUtils.randomNumeric(1, 4));
     return String.join(".", parts);
   }
 
   private static String randomFqn() {
-    String[] parts = new String[3];
+    final String[] parts = new String[3];
     IntStream.rangeClosed(0, 2).forEach(i -> parts[i] = RandomStringUtils.randomAlphabetic(1, 10));
     return String.join(".", parts);
   }

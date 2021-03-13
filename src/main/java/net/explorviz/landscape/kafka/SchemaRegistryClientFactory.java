@@ -15,8 +15,9 @@ public class SchemaRegistryClientFactory {
 
   private static final int MAX_NUM_OF_SCHEMAS = 10;
 
-  @ConfigProperty(name = "explorviz.schema-registry.url") // NOPMD
-  /* default */ String schemaRegistryUrl; //NOCS
+  @SuppressWarnings("PMD.DefaultPackage")
+  @ConfigProperty(name = "explorviz.schema-registry.url")
+  /* default */ String schemaRegistryUrl; // NOCS
 
   @Produces
   @DefaultBean

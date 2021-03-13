@@ -20,7 +20,7 @@ public final class PackageHelper {
    * application. This means {@code i} is the index of the first element in the package array that
    * is not present in the hierarchy. A return value of 0 thus means that there is no root package
    * in the application matching {@code packages[0]}.
-   * 
+   *
    * <p>
    * E.g. if the application has the following package structure
    *

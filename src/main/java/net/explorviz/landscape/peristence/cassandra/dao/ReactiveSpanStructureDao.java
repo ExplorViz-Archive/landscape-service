@@ -8,6 +8,9 @@ import com.datastax.oss.quarkus.runtime.api.reactive.mapper.MutinyMappedReactive
 import io.smallrye.mutiny.Uni;
 import net.explorviz.landscape.peristence.model.SpanStructure;
 
+/**
+ * TODO.
+ */
 @Dao
 public interface ReactiveSpanStructureDao {
 
@@ -16,17 +19,18 @@ public interface ReactiveSpanStructureDao {
 
 
   @Select(
-      customWhereClause = "landscape_token = :landscapeToken and timestamp >= :fromTs and timestamp <= :toTs",
+      customWhereClause = "landscape_token = :landscapeToken and "
+          + "timestamp >= :fromTs and timestamp <= :toTs",
       allowFiltering = true)
   MutinyMappedReactiveResultSet<SpanStructure> findBetweenInterval(String landscapeToken,
-                                                                   long fromTs,
-                                                                   long toTs);
+      long fromTs,
+      long toTs);
 
   @Insert()
   Uni<Void> insert(SpanStructure structure);
 
   @Delete(entityClass = SpanStructure.class,
-          customWhereClause = "landscape_token = :landscapeToken")
+      customWhereClause = "landscape_token = :landscapeToken")
   Uni<Void> deleteByToken(String landscapeToken);
 
 }

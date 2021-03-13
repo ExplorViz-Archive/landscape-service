@@ -1,15 +1,16 @@
 package net.explorviz.landscape.peristence.cassandra;
 
-import com.datastax.oss.quarkus.runtime.api.session.QuarkusCqlSession;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
-import java.io.StringReader;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import net.explorviz.landscape.peristence.SpanStructureRepositoy;
 import net.explorviz.landscape.peristence.cassandra.dao.ReactiveSpanStructureDao;
 import net.explorviz.landscape.peristence.model.SpanStructure;
 
+/**
+ * TODO.
+ */
 @ApplicationScoped
 public class ReactiveSpanStructureRepositoryImpl implements SpanStructureRepositoy {
 
@@ -18,30 +19,30 @@ public class ReactiveSpanStructureRepositoryImpl implements SpanStructureReposit
 
   @Inject
   public ReactiveSpanStructureRepositoryImpl(
-      final ReactiveSpanStructureDao dao, QuarkusCqlSession session) {
+      final ReactiveSpanStructureDao dao) {
     this.dao = dao;
 
   }
 
   @Override
   public Multi<SpanStructure> getAll(final String landscapeToken) {
-    return dao.findByToken(landscapeToken);
+    return this.dao.findByToken(landscapeToken);
   }
 
   @Override
   public Multi<SpanStructure> getBetween(final String landscapeToken, final long tsFrom,
-                                         final long tsTo) {
-    return dao.findBetweenInterval(landscapeToken, tsFrom, tsTo);
+      final long tsTo) {
+    return this.dao.findBetweenInterval(landscapeToken, tsFrom, tsTo);
   }
 
   @Override
   public Uni<Void> add(final SpanStructure item) {
     // TODO: Validate?
-    return dao.insert(item);
+    return this.dao.insert(item);
   }
 
   @Override
   public Uni<Void> deleteAll(final String token) {
-    return dao.deleteByToken(token);
+    return this.dao.deleteByToken(token);
   }
 }

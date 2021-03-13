@@ -5,22 +5,25 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Produces;
 
+/**
+ * TODO.
+ */
 @ApplicationScoped
 public class SpanStructureDaoProducer {
 
   private final ReactiveSpanStructureDao reactiveSpanStructureDao;
 
   @Inject
-  public SpanStructureDaoProducer(QuarkusCqlSession session) {
-    SpanStructureMapper mapper = new SpanStructureMapperBuilder(session).build();
-    reactiveSpanStructureDao = mapper.reactiveSpanStructureDao();
+  public SpanStructureDaoProducer(final QuarkusCqlSession session) {
+    final SpanStructureMapper mapper = new SpanStructureMapperBuilder(session).build();
+    this.reactiveSpanStructureDao = mapper.reactiveSpanStructureDao();
   }
 
 
   @Produces
   @ApplicationScoped
   public ReactiveSpanStructureDao produceReactiveSpanStructureDao() {
-    return reactiveSpanStructureDao;
+    return this.reactiveSpanStructureDao;
   }
 
 }

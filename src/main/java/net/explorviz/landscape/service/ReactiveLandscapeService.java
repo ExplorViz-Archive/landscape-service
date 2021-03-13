@@ -32,7 +32,7 @@ public interface ReactiveLandscapeService {
    *         constraint
    */
   default Uni<Landscape> buildLandscapeFrom(final String landscapeToken, final long fromTimestamp)
-      throws  LandscapeAssemblyException {
+      throws LandscapeAssemblyException {
     return this
         .buildLandscapeBetween(landscapeToken, fromTimestamp, System.currentTimeMillis());
   }
@@ -48,7 +48,7 @@ public interface ReactiveLandscapeService {
    *         constraint
    */
   default Uni<Landscape> buildLandscapeTo(final String landscapeToken, final long toTimestamp)
-      throws  LandscapeAssemblyException {
+      throws LandscapeAssemblyException {
     return this.buildLandscapeBetween(landscapeToken, 0, toTimestamp);
   }
 
