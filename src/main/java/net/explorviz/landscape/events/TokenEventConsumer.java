@@ -38,6 +38,11 @@ public class TokenEventConsumer {
     if (event.getType() == EventType.DELETED) {
       LOGGER.info("Deleting landscape with token {}", event.getToken());
       this.service.deleteLandscape(event.getToken());
+    } else if (event.getType() == EventType.CLONED) {
+      this.service.cloneLandscape(event.getToken(), event.getClonedToken()).subscribe().with(
+        item -> LOGGER.info("Duplicated " + item.getLandscapeToken()),
+        failure -> LOGGER.error("Failed to duplicate", failure),
+        () -> LOGGER.info("Duplication complete"));
     }
   }
 
