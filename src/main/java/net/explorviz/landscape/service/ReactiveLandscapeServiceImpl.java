@@ -63,8 +63,10 @@ public class ReactiveLandscapeServiceImpl implements ReactiveLandscapeService {
   }
 
   @Override
-  public Multi<SpanStructure> cloneLandscape(final String landscapeToken, final String clonedLandscapeToken) {
-    return this.repo.getAll(clonedLandscapeToken).invoke(x -> x.setLandscapeToken(landscapeToken)).invoke(this.repo::add);
+  public Multi<SpanStructure> cloneLandscape(final String landscapeToken,
+      final String clonedLandscapeToken) {
+    return this.repo.getAll(clonedLandscapeToken)
+        .invoke(x -> x.setLandscapeToken(landscapeToken)).call(this.repo::add);
   }
 
 

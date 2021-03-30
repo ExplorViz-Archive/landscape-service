@@ -1,5 +1,6 @@
 package net.explorviz.landscape.events;
 
+import io.smallrye.mutiny.infrastructure.Infrastructure;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import net.explorviz.avro.EventType;
@@ -39,10 +40,13 @@ public class TokenEventConsumer {
       LOGGER.info("Deleting landscape with token {}", event.getToken());
       this.service.deleteLandscape(event.getToken());
     } else if (event.getType() == EventType.CLONED) {
-      this.service.cloneLandscape(event.getToken(), event.getClonedToken()).subscribe().with(
-        item -> LOGGER.info("Duplicated " + item.getLandscapeToken()),
-        failure -> LOGGER.error("Failed to duplicate", failure),
-        () -> LOGGER.info("Duplication complete"));
+      LOGGER.info("Cloning landscapes for token {}", event.getToken());
+      this.service.cloneLandscape(event.getToken(), event.getClonedToken())
+          .runSubscriptionOn(Infrastructure.getDefaultWorkerPool())
+          .subscribe().with(
+            item -> LOGGER.debug("Cloned landscape for {}", item.getLandscapeToken()),
+            failure -> LOGGER.error("Failed to duplicate", failure),
+            () -> LOGGER.info("Cloned all landscapes for {}", event.getToken()));
     }
   }
 
