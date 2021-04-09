@@ -37,7 +37,7 @@ public class TokenEventConsumer {
     LOGGER.info("Received event {}", event);
     if (event.getType() == EventType.DELETED) {
       LOGGER.info("Deleting landscape with token {}", event.getToken());
-      this.service.deleteLandscape(event.getToken());
+      this.service.deleteLandscape(event.getToken().getValue());
     }
   }
 
