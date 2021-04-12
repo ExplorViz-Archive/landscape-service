@@ -1,8 +1,6 @@
 #!/bin/bash
 
-./gradlew quarkusBuild
-
-docker build -f src/main/docker/Dockerfile.jvm -t explorviz/landscape-service-jvm .
+./gradlew clean assemble -Dquarkus.container-image.build=true -Dquarkus.container-image.image=explorviz/landscape-service-jvm:latest
 
 kind load docker-image --name explorviz-dev explorviz/landscape-service-jvm:latest
 

@@ -1,7 +1,9 @@
 package net.explorviz.landscape.service;
 
+import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import net.explorviz.avro.landscape.model.Landscape;
+import net.explorviz.landscape.peristence.model.SpanStructure;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 
 /**
@@ -76,5 +78,7 @@ public interface ReactiveLandscapeService {
    * @return
    */
   Uni<Void> deleteLandscape(String landscapeToken);
+
+  Multi<SpanStructure> cloneLandscape(String landscapeToken, String clonedLandscapeToken);
 
 }

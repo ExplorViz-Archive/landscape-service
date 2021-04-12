@@ -1,5 +1,6 @@
 package net.explorviz.landscape.service;
 
+import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
@@ -7,6 +8,7 @@ import javax.inject.Inject;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.avro.landscape.model.Landscape;
 import net.explorviz.landscape.peristence.SpanStructureRepositoy;
+import net.explorviz.landscape.peristence.model.SpanStructure;
 import net.explorviz.landscape.service.assemble.LandscapeAssembler;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 import net.explorviz.landscape.service.converter.SpanToRecordConverter;
@@ -60,6 +62,12 @@ public class ReactiveLandscapeServiceImpl implements ReactiveLandscapeService {
     return this.repo.deleteAll(landscapeToken);
   }
 
+  @Override
+  public Multi<SpanStructure> cloneLandscape(final String landscapeToken,
+      final String clonedLandscapeToken) {
+    return this.repo.getAll(clonedLandscapeToken)
+        .invoke(x -> x.setLandscapeToken(landscapeToken)).call(this.repo::add);
+  }
 
 
 }
