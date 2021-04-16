@@ -4,7 +4,6 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheStats;
 import io.quarkus.scheduler.Scheduled;
-import java.time.Duration;
 import javax.enterprise.context.ApplicationScoped;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -29,8 +28,8 @@ public class SpanCache {
   /**
    * Creates a new cache.
    *
-   * @param maxSize                 the maximum number of span id to cache
-   * @param logstats                if true, logs cache's stats every 10 seconds
+   * @param maxSize  the maximum number of span id to cache
+   * @param logstats if true, logs cache's stats every 10 seconds
    */
   public SpanCache(
       @ConfigProperty(name = "explorviz.landscape.cache.maxsize") int maxSize,
