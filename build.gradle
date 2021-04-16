@@ -62,6 +62,7 @@ dependencies {
 
   // Base
   implementation 'io.quarkus:quarkus-resteasy'
+  implementation 'io.quarkus:quarkus-scheduler'
   implementation 'io.quarkus:quarkus-resteasy-jackson'
   implementation 'io.quarkus:quarkus-smallrye-openapi'
   implementation 'io.quarkus:quarkus-resteasy-mutiny'
@@ -82,7 +83,7 @@ dependencies {
 
   // Utility
   implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
-
+  implementation group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'
 
   // Tests
   testImplementation 'io.quarkus:quarkus-junit5'

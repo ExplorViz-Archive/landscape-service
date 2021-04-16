@@ -40,13 +40,17 @@ public class SpanToRecordStream {
 
   private final Topology topology;
 
+  private final SpanCache cache;
+
   @Inject
   public SpanToRecordStream(final KafkaHelper kafkaHelper,
-      final SpanStructureRepositoy repository) {
+                            final SpanStructureRepositoy repository, final SpanCache cache) {
     this.kafkaHelper = kafkaHelper;
     this.repository = repository;
     this.topology = this.buildTopology();
     this.props = kafkaHelper.newDefaultStreamProperties();
+    this.cache = cache;
+
   }
 
   /* default */ void onStart(@Observes final StartupEvent event) { // NOPMD
@@ -73,13 +77,20 @@ public class SpanToRecordStream {
         builder.stream(this.kafkaHelper.getTopicSpanStructure(), Consumed
             .with(Serdes.String(), this.kafkaHelper.getAvroValueSerde()));
 
+    // Check the cache, newSpanStream only contains spans that have not been seen recently
+    final KStream<String, SpanStructure> newSpanStream =
+        spanStream.filter((k, v) -> !cache.exists(v.getHashCode()));
+
     // TODO: How to handle failures in dao? Use insert(...).onFailure() to handle
-    spanStream
+    newSpanStream
         .mapValues(avro -> new net.explorviz.landscape.peristence.model.SpanStructure.Builder()
             .fromAvro(avro).build())
         .foreach((k, rec) -> {
           // System.out.println("Span: " + rec.getLandscapeToken());
           this.repository.add(rec).subscribeAsCompletionStage();
+
+          // Add to cache
+          cache.put(rec.getHashCode());
         });
 
     return builder.build();
