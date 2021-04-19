@@ -21,7 +21,7 @@ public class SpanCache {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SpanCache.class);
 
-  private Cache<String, Boolean> cache;
+  private final Cache<String, Boolean> cache;
 
   private final boolean log;
 
@@ -32,9 +32,9 @@ public class SpanCache {
    * @param logstats if true, logs cache's stats every 10 seconds
    */
   public SpanCache(
-      @ConfigProperty(name = "explorviz.landscape.cache.maxsize") int maxSize,
+      @ConfigProperty(name = "explorviz.landscape.cache.maxsize")  final int maxSize,
       @ConfigProperty(name = "explorviz.landscape.cache.logstats", defaultValue = "1")
-          boolean logstats
+          final boolean logstats
   ) {
     this.cache = CacheBuilder.newBuilder()
         .maximumSize(maxSize)
@@ -49,7 +49,7 @@ public class SpanCache {
    * @param fingerprint the hashcode of the span
    * @return {@code true} iff the fingerprint is in the cache.
    */
-  public boolean exists(String fingerprint) {
+  public boolean exists(final String fingerprint) {
     return cache.getIfPresent(fingerprint) != null;
   }
 
@@ -59,13 +59,17 @@ public class SpanCache {
    *
    * @param fingerprint the hash code
    */
-  public void put(String fingerprint) {
+  public void put(final String fingerprint) {
     cache.put(fingerprint, true);
   }
 
 
-  @Scheduled(every = "10s")
-  void logStats() {
+  /**
+   * Emits a status log about the cache's performance every 10s.
+   * Must be package-private.
+   */
+  @Scheduled(every = "10s") // NOPMD
+  /* default */void logStats() {
     if (log) {
       LOGGER.info(this.toString());
     }
@@ -74,7 +78,7 @@ public class SpanCache {
 
   @Override
   public String toString() {
-    CacheStats stats = cache.stats();
+    final CacheStats stats = cache.stats();
     return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
         .append("avg load penalty", stats.averageLoadPenalty())
         .append("hit count", stats.hitCount())
