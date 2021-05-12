@@ -49,8 +49,8 @@ public class ReactiveLandscapeServiceImpl implements ReactiveLandscapeService {
 
 
     recordsList.onItem().invoke(recs -> {
-      if (LOGGER.isInfoEnabled()) {
-        LOGGER.info("Found {} records for landscape with token {}", recs.size(), landscapeToken);
+      if (LOGGER.isTraceEnabled()) {
+        LOGGER.trace("Found {} records for landscape with token {}", recs.size(), landscapeToken);
       }
     });
     return recordsList.onItem().transform(this.assembler::assembleFromRecords);
