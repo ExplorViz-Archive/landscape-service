@@ -27,7 +27,7 @@
                   "fields": [
                     {"name": "name", "type": "string"},
                     {"name": "language", "type": "string"},
-                    {"name": "instaceId", "type": "string"},
+                    {"name": "instanceId", "type": "string"},
                     {
                       "name": "packages",
                       "type": {
