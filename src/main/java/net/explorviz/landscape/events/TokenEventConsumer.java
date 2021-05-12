@@ -42,17 +42,17 @@ public class TokenEventConsumer {
       if (LOGGER.isTraceEnabled()) {
         LOGGER.trace("Deleting landscape with token {}", event.getToken());
       }
-      this.service.deleteLandscape(event.getToken());
+      this.service.deleteLandscape(event.getToken().getValue());
     } else if (event.getType() == EventType.CLONED) {
       if (LOGGER.isTraceEnabled()) {
         LOGGER.trace("Cloning landscapes for token {}", event.getToken());
       }
-      this.service.cloneLandscape(event.getToken(), event.getClonedToken())
+      this.service.cloneLandscape(event.getToken().getValue(), event.getClonedToken())
           .runSubscriptionOn(Infrastructure.getDefaultWorkerPool())
           .subscribe().with(
-              item -> LOGGER.trace("Cloned landscape for {}", item.getLandscapeToken()),
-              failure -> LOGGER.error("Failed to duplicate", failure),
-              () -> LOGGER.trace("Cloned all landscapes for {}", event.getToken()));
+            item -> LOGGER.trace("Cloned landscape for {}", item.getLandscapeToken()),
+            failure -> LOGGER.error("Failed to duplicate", failure),
+            () -> LOGGER.trace("Cloned all landscapes for {}", event.getToken()));
     }
   }
 
