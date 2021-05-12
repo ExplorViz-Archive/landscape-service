@@ -12,9 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Caches whether a span has already been seen, based on its hash code.
- * Does not actually cache Spans, but only the hash codes.
- * Backed by Guava Caches.
+ * Caches whether a span has already been seen, based on its hash code. Does not actually cache
+ * Spans, but only the hash codes. Backed by Guava Caches.
  */
 @ApplicationScoped
 public class SpanCache {
@@ -28,14 +27,12 @@ public class SpanCache {
   /**
    * Creates a new cache.
    *
-   * @param maxSize  the maximum number of span id to cache
+   * @param maxSize the maximum number of span id to cache
    * @param logstats if true, logs cache's stats every 10 seconds
    */
   public SpanCache(
-      @ConfigProperty(name = "explorviz.landscape.cache.maxsize")  final int maxSize,
-      @ConfigProperty(name = "explorviz.landscape.cache.logstats", defaultValue = "1")
-          final boolean logstats
-  ) {
+      @ConfigProperty(name = "explorviz.landscape.cache.maxsize") final int maxSize,
+      @ConfigProperty(name = "explorviz.landscape.cache.logstats") final boolean logstats) {
     this.cache = CacheBuilder.newBuilder()
         .maximumSize(maxSize)
         .recordStats()
@@ -50,35 +47,34 @@ public class SpanCache {
    * @return {@code true} iff the fingerprint is in the cache.
    */
   public boolean exists(final String fingerprint) {
-    return cache.getIfPresent(fingerprint) != null;
+    return this.cache.getIfPresent(fingerprint) != null;
   }
 
   /**
-   * Put a span's hashcode in the cache.
-   * Subsequent calls to {@link #exists(String)} will return {@code true} for this hash code.
+   * Put a span's hashcode in the cache. Subsequent calls to {@link #exists(String)} will return
+   * {@code true} for this hash code.
    *
    * @param fingerprint the hash code
    */
   public void put(final String fingerprint) {
-    cache.put(fingerprint, true);
+    this.cache.put(fingerprint, true);
   }
 
 
   /**
-   * Emits a status log about the cache's performance every 10s.
-   * Must be package-private.
+   * Emits a status log about the cache's performance every 10s. Must be package-private.
    */
   @Scheduled(every = "10s") // NOPMD
   /* default */void logStats() {
-    if (log) {
-      LOGGER.info(this.toString());
+    if (this.log && LOGGER.isTraceEnabled()) {
+      LOGGER.trace(this.toString());
     }
   }
 
 
   @Override
   public String toString() {
-    final CacheStats stats = cache.stats();
+    final CacheStats stats = this.cache.stats();
     return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
         .append("avg load penalty", stats.averageLoadPenalty())
         .append("hit count", stats.hitCount())
