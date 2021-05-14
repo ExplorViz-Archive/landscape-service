@@ -1,4 +1,7 @@
-[![Build Status](https://travis-ci.org/ExplorViz/landscape-service.svg?branch=master)](https://travis-ci.org/ExplorViz/landscape-service)
+[![pipeline status](https://git.se.informatik.uni-kiel.de/ExplorViz/code/landscape-service/badges/master/pipeline.svg)](https://git.se.informatik.uni-kiel.de/ExplorViz/code/landscape-service/-/commits/master) 
+
+[![coverage report](https://git.se.informatik.uni-kiel.de/ExplorViz/code/landscape-service/badges/master/coverage.svg)](https://git.se.informatik.uni-kiel.de/ExplorViz/code/landscape-service/-/commits/master)
+
 
 # landscape-service
 
