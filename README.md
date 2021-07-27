@@ -13,8 +13,8 @@ Service that processes and provides structural data of monitored landscapes.
 
 The service serves two purposes
 
-1. passively processing and persisting structural information, and
-2. assembling and delivering structural information of the observed landscape(s) to the clients.
+1. it passively processes and persists structural data of monitored landscapes, and
+2. assembles and delivers the composition of the software hierarchy of the observed landscape(s) to clients.
 
 ### Processing Structural Information
 
@@ -32,9 +32,12 @@ Each record is transformed into an internal data structure ([LandscapeRecord](sr
 
 ### Providing Landscape Graphs
 
-The representation of the structure/topology of a monitored landscape is delivered to the user as a directed graph, the *landscape graph*.
-Upon client requests, the service gathers all relevant records from the database and assembles the graph.
-It is delivered to the requesting client in json format. 
+The representation of the structure of a monitored landscape is delivered to the user as a directed graph, the *landscape graph*.
+This graph embodies the composition of structural entities (hosts, applicatoins, packages, ...) 
+within the landscape, as observed by the monitoring stack.
+Upon client requests, the service gathers all relevant records from the database and assembles this graph.
+It is then delivered to the requesting client in json format. 
+
 For example, the following is the landscape graph for the [fibonacci example application](https://git.se.informatik.uni-kiel.de/ExplorViz/code/deployment/-/tree/master/example-applications/fibonacci).
 
 <details>
@@ -146,7 +149,7 @@ For example, the following is the landscape graph for the [fibonacci example app
 ```
 </details>
 
-It corresponds to the following landscape graph.
+It corresponds to the following directed graph.
 
 ![fibonacci landscape](.docs/fibo_graph.png)
 
@@ -154,12 +157,12 @@ The structure of landscape graphs is defined as follows:
 
 ![landsacpe graph](.docs/landscape_graph.png)
 
-The landscape token, which uniquely identifies the landscape, is the root of the tree.
+The landscape token, which uniquely identifies a landscape, is the root of the tree.
 On requests, the user has to specify at least the token to retrieve the corresponding graph. 
 On the topmost level, the landscape consists of one to many hosts, each of which running multiple applications.
 Applications contain their respective package structure and classes. 
-The leaves of the graph are the methods. 
-Each leaf is marked with a fingerprint, that uniquely identifies it.
+The leaves of the graph correspond to methods. 
+Each leaf contains a fingerprint, that uniquely identifies it.
 These fingerprints are needed to map traces, which are retrieved separately, onto the corresponding methods unambiguously.
 
 See the [avro schema](src/main/avro/landscape.avsc) for further details.
