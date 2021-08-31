@@ -67,6 +67,8 @@ dependencies {
   implementation 'io.quarkus:quarkus-smallrye-openapi'
   implementation 'io.quarkus:quarkus-resteasy-mutiny'
 
+  implementation 'io.quarkus:quarkus-micrometer-registry-prometheus'
+
   // Cassandra
   annotationProcessor group: 'com.datastax.oss', name: 'java-driver-mapper-processor', version: '4.10.0'
   implementation group: 'com.datastax.oss', name: 'java-driver-mapper-runtime', version: '4.10.0'
