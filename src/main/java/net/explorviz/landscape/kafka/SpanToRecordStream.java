@@ -66,7 +66,7 @@ public class SpanToRecordStream {
 
     this.streams.start();
 
-    KafkaStreamsMetrics ksm = new KafkaStreamsMetrics(this.streams);
+    final KafkaStreamsMetrics ksm = new KafkaStreamsMetrics(this.streams);
     ksm.bindTo(meterRegistry);
   }
 
