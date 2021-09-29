@@ -1,5 +1,7 @@
 package net.explorviz.landscape.kafka;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.binder.kafka.KafkaStreamsMetrics;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
@@ -30,7 +32,11 @@ public class SpanToRecordStream {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SpanToRecordStream.class);
 
+  @Inject // NOPMD
+  /* default */ MeterRegistry meterRegistry; // NOPMD NOCS
+
   private final KafkaHelper kafkaHelper;
+
 
   private KafkaStreams streams;
 
@@ -59,6 +65,9 @@ public class SpanToRecordStream {
     this.streams.setStateListener(new ErrorStateListener());
 
     this.streams.start();
+
+    final KafkaStreamsMetrics ksm = new KafkaStreamsMetrics(this.streams);
+    ksm.bindTo(meterRegistry);
   }
 
   /* default */ void onStop(@Observes final ShutdownEvent event) { // NOPMD
