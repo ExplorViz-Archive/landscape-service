@@ -5,7 +5,7 @@
 
 # ExplorViz Landscape-Service
 
-Service that processes and provides structural data of monitored landscapes.
+Scalable service that processes and provides structural data of monitored applications. Applications are grouped in an encompassing software landscape (abbr. landscape). This landscape can contain one or multiple monitored applications, depending on the initial instrumentation settings for the monitored application.
 
 ## Features
 
@@ -13,13 +13,13 @@ Service that processes and provides structural data of monitored landscapes.
 
 The service serves two purposes
 
-1. it passively processes and persists structural data of monitored landscapes, and
-2. assembles and delivers the composition of the software hierarchy of the observed landscape(s) to clients.
+1. it persists structural data of monitored applications.
+2. assembles and delivers the composition of the software hierarchy of the requested landscape to clients.
 
 ### Processing Structural Information
 
 The service consumes `SpanStructure` records from a Kafka topic. 
-These records consist of the parts of spans that contain information relating to structural/topological information of monitored applications:
+These records consist of the parts of spans that contain information that are related to structural/topological information of monitored applications:
 
 - Host name and address
 - Application name and language
@@ -27,8 +27,8 @@ These records consist of the parts of spans that contain information relating to
 - Package structures
 - Classes and methods
 
-Structural information are in contrast to dynamical information describing call-relationships between entities.
-Each record is transformed into an internal data structure ([LandscapeRecord](src/main/avro/landscaperecord.avsc)) and persisted into a Cassandra database for further access.
+In contrast to dynamical information, structural information describe relationships between structural entities.
+Each incoming `SpanStructure` is transformed into an internal data structure ([LandscapeRecord](src/main/avro/landscaperecord.avsc)) and persisted into a Cassandra database.
 
 ### Providing Landscape Graphs
 
@@ -38,7 +38,7 @@ within the landscape, as observed by the monitoring stack.
 Upon client requests, the service gathers all relevant records from the database and assembles this graph.
 It is then delivered to the requesting client in json format. 
 
-For example, the following is the landscape graph for the [fibonacci example application](https://git.se.informatik.uni-kiel.de/ExplorViz/code/deployment/-/tree/master/example-applications/fibonacci).
+For example, the following JSON and image depict the landscape graph for our [custom-example-application](https://git.se.informatik.uni-kiel.de/ExplorViz/code/deployment/-/tree/master/example-applications/custom-app-demo).
 
 <details>
 <summary>Fibonacci Landscape JSON</summary>
@@ -153,7 +153,7 @@ It corresponds to the following directed graph.
 
 ![fibonacci landscape](.docs/fibo_graph.png)
 
-The structure of landscape graphs is defined as follows:
+The general structure of landscape graphs is defined as follows:
 
 ![landsacpe graph](.docs/landscape_graph.png)
 
