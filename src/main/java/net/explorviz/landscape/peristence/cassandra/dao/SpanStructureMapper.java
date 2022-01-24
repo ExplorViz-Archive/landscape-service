@@ -9,7 +9,6 @@ import com.datastax.oss.driver.api.mapper.annotations.Mapper;
 @Mapper
 public interface SpanStructureMapper {
 
-
   @DaoFactory
   ReactiveSpanStructureDao reactiveSpanStructureDao();
 

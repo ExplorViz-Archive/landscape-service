@@ -17,14 +17,10 @@ public interface ReactiveSpanStructureDao {
   @Select
   MutinyMappedReactiveResultSet<SpanStructure> findByToken(String landscapeToken);
 
-
-  @Select(
-      customWhereClause = "landscape_token = :landscapeToken and "
-          + "timestamp >= :fromTs and timestamp <= :toTs",
-      allowFiltering = true)
+  @Select(customWhereClause = "landscape_token = :landscapeToken and "
+      + "timestamp >= :fromTs and timestamp <= :toTs", allowFiltering = true)
   MutinyMappedReactiveResultSet<SpanStructure> findBetweenInterval(String landscapeToken,
-      long fromTs,
-      long toTs);
+      long fromTs, long toTs);
 
   @Insert()
   Uni<Void> insert(SpanStructure structure);

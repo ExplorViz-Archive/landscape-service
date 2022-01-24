@@ -14,7 +14,6 @@ import net.explorviz.avro.landscape.model.Method;
 import net.explorviz.avro.landscape.model.Node;
 import net.explorviz.avro.landscape.model.Package;
 import net.explorviz.landscape.service.assemble.LandscapeAssembler;
-import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 
 /**
  * Assemble a landscape graph out of a set of flat landscape records.
@@ -30,12 +29,10 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
   }
 
   @Override
-  public Landscape assembleFromRecords(final Collection<LandscapeRecord> records)
-      throws LandscapeAssemblyException {
+  public Landscape assembleFromRecords(final Collection<LandscapeRecord> records) {
 
-    final String token = records.stream().findFirst()
-        .orElseThrow(NoRecordsException::new)
-        .getLandscapeToken();
+    final String token =
+        records.stream().findFirst().orElseThrow(NoRecordsException::new).getLandscapeToken();
 
     // Create empty landscape and insert all records
     final Landscape landscape = new Landscape(token, new ArrayList<>());
@@ -45,8 +42,7 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
   }
 
   @Override
-  public void insertAll(final Landscape landscape, final Collection<LandscapeRecord> records)
-      throws LandscapeAssemblyException {
+  public void insertAll(final Landscape landscape, final Collection<LandscapeRecord> records) { // NOPMD // NOCS
 
     final String token = landscape.getLandscapeToken();
 
@@ -89,8 +85,7 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
 
       // Merge package structure
       final String[] pkgs = insertMe.getPackage$().split("\\.");
-      final int unknownPkgIndex =
-          PackageHelper.lowestPackageIndex(app, pkgs);
+      final int unknownPkgIndex = PackageHelper.lowestPackageIndex(app, pkgs);
 
       if (unknownPkgIndex < pkgs.length) {
 

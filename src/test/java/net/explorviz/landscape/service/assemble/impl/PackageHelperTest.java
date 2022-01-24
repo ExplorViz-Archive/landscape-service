@@ -91,9 +91,8 @@ public class PackageHelperTest {
     final List<String[]> cases = Arrays.asList(unknownRoot, tooLong, unknownMiddle);
 
     for (final String[] tt : cases) {
-      Assertions
-          .assertThrows(LandscapeAssemblyException.class,
-              () -> PackageHelper.fromPath(this.app, tt));
+      Assertions.assertThrows(LandscapeAssemblyException.class,
+          () -> PackageHelper.fromPath(this.app, tt));
     }
   }
 }

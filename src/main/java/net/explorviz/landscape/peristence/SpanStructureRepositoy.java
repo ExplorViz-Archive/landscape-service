@@ -28,7 +28,6 @@ public interface SpanStructureRepositoy {
    */
   Uni<Void> add(SpanStructure item);
 
-
   /**
    * Delete all records for a given token.
    *

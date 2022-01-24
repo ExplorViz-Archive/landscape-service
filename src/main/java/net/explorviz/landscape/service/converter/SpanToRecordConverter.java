@@ -13,7 +13,6 @@ import net.explorviz.landscape.peristence.model.SpanStructure;
 @ApplicationScoped
 public class SpanToRecordConverter {
 
-
   /**
    * Converts a {@link SpanStructure} to a {@link LandscapeRecord} using the structural information
    * given in the span.
@@ -36,10 +35,8 @@ public class SpanToRecordConverter {
     // Set node and application
     recordBuilder.setTimestamp(timestamp)
         .setNode(new Node(span.getHostIpAddress(), span.getHostName()))
-        .setApplication(
-            new Application(span.getApplicationName(), span.getInstanceId(),
-                span.getApplicationLanguage()));
-
+        .setApplication(new Application(span.getApplicationName(), span.getInstanceId(),
+            span.getApplicationLanguage()));
 
     /*
      * By definition getFullyQualifiedOperationName().split("."): Last entry is method name, next to
@@ -47,22 +44,17 @@ public class SpanToRecordConverter {
      */
     final String[] operationFqnSplit = span.getFullyQualifiedOperationName().split("\\.");
 
-
     final String pkgName =
         String.join(".", Arrays.copyOf(operationFqnSplit, operationFqnSplit.length - 2));
     final String className = operationFqnSplit[operationFqnSplit.length - 2];
     final String methodName = operationFqnSplit[operationFqnSplit.length - 1];
 
-
     recordBuilder.setPackage$(pkgName);
     recordBuilder.setClass$(className);
     recordBuilder.setMethod(methodName);
 
-
     return recordBuilder.build();
 
   }
-
-
 
 }

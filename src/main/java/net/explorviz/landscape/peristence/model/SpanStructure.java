@@ -34,10 +34,8 @@ public class SpanStructure {
   @CqlName("method_fqn")
   private String fullyQualifiedOperationName;
 
-
   public SpanStructure(final String landscapeToken, final long timestamp, final String hashCode,
-      final String hostName, final String hostIpAddress,
-      final String applicationName,
+      final String hostName, final String hostIpAddress, final String applicationName,
       final String instanceId, final String applicationLanguage,
       final String fullyQualifiedOperationName) {
     this.landscapeToken = landscapeToken;
@@ -51,7 +49,9 @@ public class SpanStructure {
     this.fullyQualifiedOperationName = fullyQualifiedOperationName;
   }
 
-  public SpanStructure() { /* Object-Mapper required */ }
+  public SpanStructure() {
+    /* Object-Mapper required */
+  }
 
   public String getLandscapeToken() {
     return this.landscapeToken;
@@ -125,20 +125,14 @@ public class SpanStructure {
     this.fullyQualifiedOperationName = fullyQualifiedOperationName;
   }
 
-
   @Override
   public String toString() {
-    return new ToStringBuilder(this)
-        .append("landscapeToken", this.landscapeToken)
-        .append("timestamp", this.timestamp)
-        .append("hashCode", this.hashCode)
-        .append("hostName", this.hostName)
-        .append("hostIpAddress", this.hostIpAddress)
-        .append("applicationName", this.applicationName)
-        .append("instanceId", this.instanceId)
+    return new ToStringBuilder(this).append("landscapeToken", this.landscapeToken)
+        .append("timestamp", this.timestamp).append("hashCode", this.hashCode)
+        .append("hostName", this.hostName).append("hostIpAddress", this.hostIpAddress)
+        .append("applicationName", this.applicationName).append("instanceId", this.instanceId)
         .append("applicationLanguage", this.applicationLanguage)
-        .append("fullyQualifiedOperationName", this.fullyQualifiedOperationName)
-        .toString();
+        .append("fullyQualifiedOperationName", this.fullyQualifiedOperationName).toString();
   }
 
   @Override
@@ -164,10 +158,9 @@ public class SpanStructure {
   @Override
   public int hashCode() {
     return new HashCodeBuilder(17, 37).append(this.landscapeToken).append(this.timestamp) // NOCS
-        .append(this.hashCode)
-        .append(this.hostName).append(this.hostIpAddress).append(this.applicationName)
-        .append(this.instanceId)
-        .append(this.applicationLanguage).append(this.fullyQualifiedOperationName).toHashCode();
+        .append(this.hashCode).append(this.hostName).append(this.hostIpAddress)
+        .append(this.applicationName).append(this.instanceId).append(this.applicationLanguage)
+        .append(this.fullyQualifiedOperationName).toHashCode();
   }
 
   /**
@@ -186,10 +179,9 @@ public class SpanStructure {
     private String fqn;
 
     public Builder fromAvro(final net.explorviz.avro.SpanStructure avro) {
-      this.timestamp =
-          Instant
-              .ofEpochSecond(avro.getTimestamp().getSeconds(), avro.getTimestamp().getNanoAdjust())
-              .toEpochMilli();
+      this.timestamp = Instant
+          .ofEpochSecond(avro.getTimestamp().getSeconds(), avro.getTimestamp().getNanoAdjust())
+          .toEpochMilli();
 
       this.landscapeToken = avro.getLandscapeToken();
       this.hashCode = avro.getHashCode();
@@ -249,11 +241,10 @@ public class SpanStructure {
 
     public SpanStructure build() {
       return new SpanStructure(this.landscapeToken, this.timestamp, this.hashCode, this.hostName,
-          this.hostIpAddress,
-          this.applicationName, this.instanceId, this.applicationLanguage, this.fqn);
+          this.hostIpAddress, this.applicationName, this.instanceId, this.applicationLanguage,
+          this.fqn);
     }
 
   }
-
 
 }

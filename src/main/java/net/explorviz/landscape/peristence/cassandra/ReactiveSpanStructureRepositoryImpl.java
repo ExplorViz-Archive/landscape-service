@@ -14,12 +14,10 @@ import net.explorviz.landscape.peristence.model.SpanStructure;
 @ApplicationScoped
 public class ReactiveSpanStructureRepositoryImpl implements SpanStructureRepositoy {
 
-
   private final ReactiveSpanStructureDao dao;
 
   @Inject
-  public ReactiveSpanStructureRepositoryImpl(
-      final ReactiveSpanStructureDao dao) {
+  public ReactiveSpanStructureRepositoryImpl(final ReactiveSpanStructureDao dao) {
     this.dao = dao;
 
   }

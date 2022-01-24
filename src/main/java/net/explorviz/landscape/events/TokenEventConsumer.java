@@ -10,7 +10,6 @@ import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * Wait for and reacts to token-events dispatches by the User-Service. Such events are read from a
  * corresponding Kafka topic and contain information about changes to tokens (e.g. deletions).
@@ -48,13 +47,11 @@ public class TokenEventConsumer {
         LOGGER.trace("Cloning landscapes for token {}", event.getToken());
       }
       this.service.cloneLandscape(event.getToken().getValue(), event.getClonedToken())
-          .runSubscriptionOn(Infrastructure.getDefaultWorkerPool())
-          .subscribe().with(
-            item -> LOGGER.trace("Cloned landscape for {}", item.getLandscapeToken()),
-            failure -> LOGGER.error("Failed to duplicate", failure),
-            () -> LOGGER.trace("Cloned all landscapes for {}", event.getToken()));
+          .runSubscriptionOn(Infrastructure.getDefaultWorkerPool()).subscribe()
+          .with(item -> LOGGER.trace("Cloned landscape for {}", item.getLandscapeToken()),
+              failure -> LOGGER.error("Failed to duplicate", failure),
+              () -> LOGGER.trace("Cloned all landscapes for {}", event.getToken()));
     }
   }
-
 
 }

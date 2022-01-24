@@ -10,7 +10,6 @@ import net.explorviz.avro.landscape.model.Landscape;
 import net.explorviz.landscape.peristence.SpanStructureRepositoy;
 import net.explorviz.landscape.peristence.model.SpanStructure;
 import net.explorviz.landscape.service.assemble.LandscapeAssembler;
-import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 import net.explorviz.landscape.service.converter.SpanToRecordConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +28,7 @@ public class ReactiveLandscapeServiceImpl implements ReactiveLandscapeService {
 
   @Inject
   public ReactiveLandscapeServiceImpl(final SpanStructureRepositoy repo,
-      final LandscapeAssembler assembler,
-      final SpanToRecordConverter converter) {
+      final LandscapeAssembler assembler, final SpanToRecordConverter converter) {
     this.repo = repo;
     this.assembler = assembler;
     this.converter = converter;
@@ -38,15 +36,10 @@ public class ReactiveLandscapeServiceImpl implements ReactiveLandscapeService {
 
   @Override
   public Uni<Landscape> buildLandscapeBetween(final String landscapeToken, final long from,
-      final long to)
-      throws LandscapeAssemblyException {
+      final long to) {
 
-
-    final Uni<List<LandscapeRecord>> recordsList =
-        this.repo.getBetween(landscapeToken, from, to).map(this.converter::toRecord)
-            .collectItems()
-            .asList();
-
+    final Uni<List<LandscapeRecord>> recordsList = this.repo.getBetween(landscapeToken, from, to)
+        .map(this.converter::toRecord).collectItems().asList();
 
     recordsList.onItem().invoke(recs -> {
       if (LOGGER.isTraceEnabled()) {
@@ -65,9 +58,8 @@ public class ReactiveLandscapeServiceImpl implements ReactiveLandscapeService {
   @Override
   public Multi<SpanStructure> cloneLandscape(final String landscapeToken,
       final String clonedLandscapeToken) {
-    return this.repo.getAll(clonedLandscapeToken)
-        .invoke(x -> x.setLandscapeToken(landscapeToken)).call(this.repo::add);
+    return this.repo.getAll(clonedLandscapeToken).invoke(x -> x.setLandscapeToken(landscapeToken))
+        .call(this.repo::add);
   }
-
 
 }
