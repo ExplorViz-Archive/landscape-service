@@ -22,13 +22,11 @@ public final class SpanStructureHelper {
     final SpanStructure.Builder builder = new SpanStructure.Builder();
     builder.withLandscapeToken(RandomStringUtils.randomAlphanumeric(32))
         .withTimestamp(RandomUtils.nextInt(1_614_591_055, 1_714_591_055))
-        .withHostIpAddress(randomIp())
-        .withHostName(RandomStringUtils.randomAlphabetic(10))
+        .withHostIpAddress(randomIp()).withHostName(RandomStringUtils.randomAlphabetic(10))
         .withApplicationName(RandomStringUtils.randomAlphabetic(10))
         .withInstanceId(RandomStringUtils.randomNumeric(3))
         .withHashCode(RandomStringUtils.randomAlphanumeric(32))
-        .withApplicationLanguage(RandomStringUtils.randomAlphabetic(5))
-        .withFqn(randomFqn());
+        .withApplicationLanguage(RandomStringUtils.randomAlphabetic(5)).withFqn(randomFqn());
 
     return builder.build();
   }

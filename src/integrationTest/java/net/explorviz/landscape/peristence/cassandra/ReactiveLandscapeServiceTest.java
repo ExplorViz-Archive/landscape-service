@@ -8,7 +8,6 @@ import io.quarkus.test.junit.TestProfile;
 import java.util.List;
 import javax.inject.Inject;
 import net.explorviz.landscape.peristence.model.SpanStructure;
-import net.explorviz.landscape.service.ReactiveLandscapeService;
 import net.explorviz.landscape.service.ReactiveLandscapeServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -46,7 +45,8 @@ class ReactiveLandscapeServiceTest {
 
     this.service.cloneLandscape(anotherToken, tok).collectItems().asList().await().indefinitely();
 
-    final List<SpanStructure> got = this.repository.getAll(anotherToken).collectItems().asList().await().indefinitely();
+    final List<SpanStructure> got =
+        this.repository.getAll(anotherToken).collectItems().asList().await().indefinitely();
 
     Assertions.assertEquals(20, got.size());
   }

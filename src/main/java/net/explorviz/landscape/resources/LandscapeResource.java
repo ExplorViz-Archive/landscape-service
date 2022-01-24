@@ -20,7 +20,6 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 
-
 /**
  * HTTP resource to access landscapes.
  */
@@ -39,14 +38,11 @@ public class LandscapeResource {
   @Operation(summary = "Retrieve a landscape graph",
       description = "Assembles the (possibly empty) landscape of "
           + "all spans observed in the given time range")
-  @APIResponses(value = {@APIResponse(responseCode = "200",
-      description = "Success",
+  @APIResponses(value = {@APIResponse(responseCode = "200", description = "Success",
       content = @Content(mediaType = "application/json",
-          schema = @Schema(
-              implementation = Landscape.class)))})
+          schema = @Schema(implementation = Landscape.class)))})
   public Uni<Landscape> getLandscape(@PathParam("token") final String token, // NOPMD
-      @QueryParam("from") final Long from,
-      @QueryParam("to") final Long to) {
+      @QueryParam("from") final Long from, @QueryParam("to") final Long to) {
 
     if (token == null || token.length() == 0) {
       throw new BadRequestException("Token is mandatory");
@@ -79,14 +75,10 @@ public class LandscapeResource {
     }
 
     // Return empty landscape if no records found
-    return buildLandscape
-        .onFailure(NoRecordsException.class)
-        .transform(t -> new NotFoundException())
-        .onFailure(LandscapeAssemblyException.class)
+    return buildLandscape.onFailure(NoRecordsException.class)
+        .transform(t -> new NotFoundException()).onFailure(LandscapeAssemblyException.class)
         .transform(t -> new InternalServerErrorException(t.getMessage()));
 
-
   }
-
 
 }

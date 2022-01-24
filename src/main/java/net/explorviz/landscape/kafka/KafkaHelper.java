@@ -11,7 +11,6 @@ import org.apache.avro.specific.SpecificRecord;
 import org.apache.kafka.streams.StreamsConfig;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-
 /**
  * Helper class that contains multiple Kafka configs.
  */
@@ -26,8 +25,6 @@ public class KafkaHelper {
 
   // Topic to write/read records from/to
   private final String topicSpanStructure;
-
-
 
   private final SchemaRegistryClient registry;
   private final String schemaRegistryUrl;
@@ -55,7 +52,6 @@ public class KafkaHelper {
   public String getApplicationId() {
     return this.applicationId;
   }
-
 
   public String getTopicSpanStructure() {
     return this.topicSpanStructure;

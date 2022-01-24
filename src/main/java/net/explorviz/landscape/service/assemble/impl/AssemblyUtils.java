@@ -12,7 +12,9 @@ import net.explorviz.avro.landscape.model.Package;
  */
 public final class AssemblyUtils {
 
-  private AssemblyUtils() { /* Utility Class */ }
+  private AssemblyUtils() {
+    /* Utility Class */
+  }
 
   /**
    * Searches for a {@link Node} in a landscape.
@@ -62,6 +64,5 @@ public final class AssemblyUtils {
   public static Optional<Class> findClazz(final Package pkg, final String className) {
     return pkg.getClasses().stream().filter(c -> c.getName().equals(className)).findAny();
   }
-
 
 }

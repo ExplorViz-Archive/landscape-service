@@ -30,13 +30,9 @@ public class SpanCache {
    * @param maxSize the maximum number of span id to cache
    * @param logstats if true, logs cache's stats every 10 seconds
    */
-  public SpanCache(
-      @ConfigProperty(name = "explorviz.landscape.cache.maxsize") final int maxSize,
+  public SpanCache(@ConfigProperty(name = "explorviz.landscape.cache.maxsize") final int maxSize,
       @ConfigProperty(name = "explorviz.landscape.cache.logstats") final boolean logstats) {
-    this.cache = CacheBuilder.newBuilder()
-        .maximumSize(maxSize)
-        .recordStats()
-        .build();
+    this.cache = CacheBuilder.newBuilder().maximumSize(maxSize).recordStats().build();
     this.log = logstats;
   }
 
@@ -60,27 +56,23 @@ public class SpanCache {
     this.cache.put(fingerprint, true);
   }
 
-
   /**
    * Emits a status log about the cache's performance every 10s. Must be package-private.
    */
-  @Scheduled(every = "10s") // NOPMD
+  @Scheduled(every = "10s")
+  // NOPMD
   /* default */void logStats() {
     if (this.log && LOGGER.isTraceEnabled()) {
       LOGGER.trace(this.toString());
     }
   }
 
-
   @Override
   public String toString() {
     final CacheStats stats = this.cache.stats();
     return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
         .append("avg load penalty", stats.averageLoadPenalty())
-        .append("hit count", stats.hitCount())
-        .append("hit rate", stats.hitRate())
-        .toString();
+        .append("hit count", stats.hitCount()).append("hit rate", stats.hitRate()).toString();
   }
-
 
 }

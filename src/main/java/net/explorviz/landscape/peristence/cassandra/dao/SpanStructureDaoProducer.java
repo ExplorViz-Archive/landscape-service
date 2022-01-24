@@ -19,7 +19,6 @@ public class SpanStructureDaoProducer {
     this.reactiveSpanStructureDao = mapper.reactiveSpanStructureDao();
   }
 
-
   @Produces
   @ApplicationScoped
   public ReactiveSpanStructureDao produceReactiveSpanStructureDao() {

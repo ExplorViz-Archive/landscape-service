@@ -12,8 +12,7 @@ public class CassandraTestProfile implements QuarkusTestProfile {
 
   @Override
   public Map<String, String> getConfigOverrides() {
-    return Collections.singletonMap(
-        "quarkus.cassandra.contact-points",
+    return Collections.singletonMap("quarkus.cassandra.contact-points",
         "${quarkus.cassandra.docker_host}:${quarkus.cassandra.docker_port}");
   }
 

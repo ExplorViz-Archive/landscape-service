@@ -11,7 +11,9 @@ import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
  */
 public final class PackageHelper {
 
-  private PackageHelper() { /* Utility class */ }
+  private PackageHelper() {
+    /* Utility class */
+  }
 
   /**
    * Matches the packages given in {@code packages} with the package hierarchy in the given
@@ -52,10 +54,8 @@ public final class PackageHelper {
   public static int lowestPackageIndex(final Application app, final String[] packages) {
     int i = 0;
     final int finalI1 = i; // Must be final for lambda expression
-    Package current = app.getPackages().stream()
-        .filter(p -> p.getName().equals(packages[finalI1]))
-        .findFirst()
-        .orElse(null);
+    Package current = app.getPackages().stream().filter(p -> p.getName().equals(packages[finalI1]))
+        .findFirst().orElse(null);
     if (current == null) {
       return 0;
     }
@@ -66,16 +66,13 @@ public final class PackageHelper {
       final int finalI = i; // Must be final for lambda expression
       if (finalI < packages.length) {
         current = current.getSubPackages().stream()
-            .filter(p -> p.getName().equals(packages[finalI]))
-            .findFirst()
-            .orElse(null);
+            .filter(p -> p.getName().equals(packages[finalI])).findFirst().orElse(null);
       } else {
         current = null; // NOPMD
       }
     }
     return i;
   }
-
 
   /**
    * Creates a hierarchy of {@link Package}s out of a branch given as an array of package names.
@@ -106,23 +103,20 @@ public final class PackageHelper {
    * @return The lowest {@link Package} of the path
    * @throws LandscapeAssemblyException if there is no such path in the package hierarchy
    */
-  public static Package fromPath(final Application app, final String[] path)
-      throws LandscapeAssemblyException {
+  public static Package fromPath(final Application app, final String[] path) {
     if (path == null || path.length == 0) {
       throw new LandscapeAssemblyException("Path must a least contain a root");
     }
     final LandscapeAssemblyException noSuchPathException =
         new LandscapeAssemblyException("No such path in given application");
 
-    Package current =
-        app.getPackages().stream().filter(p -> p.getName().equals(path[0])).findFirst()
-            .orElseThrow(() -> noSuchPathException);
+    Package current = app.getPackages().stream().filter(p -> p.getName().equals(path[0]))
+        .findFirst().orElseThrow(() -> noSuchPathException);
 
     for (int i = 1; i < path.length; i++) {
       final int finalI = i;
       current = current.getSubPackages().stream().filter(p -> p.getName().equals(path[finalI]))
-          .findFirst()
-          .orElseThrow(() -> noSuchPathException);
+          .findFirst().orElseThrow(() -> noSuchPathException);
     }
     return current;
   }
