@@ -1,6 +1,5 @@
 package net.explorviz.landscape.peristence.cassandra;
 
-import com.datastax.oss.quarkus.runtime.api.session.QuarkusCqlSession;
 import com.datastax.oss.quarkus.test.CassandraTestResource;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
@@ -25,14 +24,11 @@ class ReactiveLandscapeServiceTest {
 
   private final ReactiveSpanStructureRepositoryImpl repository;
 
-  private final QuarkusCqlSession session;
-
   @Inject
   public ReactiveLandscapeServiceTest(final ReactiveSpanStructureRepositoryImpl repository,
-      final ReactiveLandscapeServiceImpl service, final QuarkusCqlSession session) {
+      final ReactiveLandscapeServiceImpl service) {
     this.repository = repository;
     this.service = service;
-    this.session = session;
   }
 
   @Test
@@ -43,12 +39,27 @@ class ReactiveLandscapeServiceTest {
     final String tok = spanstrs.get(0).getLandscapeToken();
     final String anotherToken = "123abc";
 
-    this.service.cloneLandscape(anotherToken, tok).collectItems().asList().await().indefinitely();
+    this.service.cloneLandscape(anotherToken, tok).collect().asList().await().indefinitely();
 
     final List<SpanStructure> got =
-        this.repository.getAll(anotherToken).collectItems().asList().await().indefinitely();
+        this.repository.getAll(anotherToken).collect().asList().await().indefinitely();
 
     Assertions.assertEquals(20, got.size());
+  }
+
+  @Test
+  void deleteToken() {
+    final List<SpanStructure> spanstrs = SpanStructureHelper.randomSpanStructures(20, true, true);
+    spanstrs.forEach(s -> this.repository.add(s).await().indefinitely());
+
+    final String tok = spanstrs.get(0).getLandscapeToken();
+
+    this.service.deleteLandscape(tok).await().indefinitely();
+
+    final List<SpanStructure> got =
+        this.repository.getAll(tok).collect().asList().await().indefinitely();
+
+    Assertions.assertEquals(0, got.size());
   }
 
 }

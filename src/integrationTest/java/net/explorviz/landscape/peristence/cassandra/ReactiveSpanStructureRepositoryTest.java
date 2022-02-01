@@ -1,6 +1,5 @@
 package net.explorviz.landscape.peristence.cassandra;
 
-import com.datastax.oss.quarkus.runtime.api.session.QuarkusCqlSession;
 import com.datastax.oss.quarkus.test.CassandraTestResource;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
@@ -23,14 +22,10 @@ class ReactiveSpanStructureRepositoryTest {
 
   private final ReactiveSpanStructureRepositoryImpl repository;
 
-  private final QuarkusCqlSession session;
-
 
   @Inject
-  public ReactiveSpanStructureRepositoryTest(final ReactiveSpanStructureRepositoryImpl repository,
-      final QuarkusCqlSession session) {
+  public ReactiveSpanStructureRepositoryTest(final ReactiveSpanStructureRepositoryImpl repository) {
     this.repository = repository;
-    this.session = session;
   }
 
   /**
@@ -43,8 +38,8 @@ class ReactiveSpanStructureRepositoryTest {
     this.repository.add(ss).await().indefinitely();
 
     // Retrieve
-    final SpanStructure got = this.repository.getAll(ss.getLandscapeToken()).collectItems().first()
-        .await().indefinitely();
+    final SpanStructure got =
+        this.repository.getAll(ss.getLandscapeToken()).collect().first().await().indefinitely();
 
     Assertions.assertEquals(ss, got);
   }
@@ -60,8 +55,8 @@ class ReactiveSpanStructureRepositoryTest {
     this.repository.add(ss).await().indefinitely();
 
     // Retrieve
-    final SpanStructure got = this.repository.getAll(ss.getLandscapeToken()).collectItems().first()
-        .await().indefinitely();
+    final SpanStructure got =
+        this.repository.getAll(ss.getLandscapeToken()).collect().first().await().indefinitely();
 
     Assertions.assertEquals(ss, got);
   }
@@ -79,8 +74,8 @@ class ReactiveSpanStructureRepositoryTest {
     this.repository.add(ss).await().indefinitely();
 
     // Retrieve
-    final SpanStructure got = this.repository.getAll(ss.getLandscapeToken()).collectItems().first()
-        .await().indefinitely();
+    final SpanStructure got =
+        this.repository.getAll(ss.getLandscapeToken()).collect().first().await().indefinitely();
 
     Assertions.assertEquals(ss, got);
   }
@@ -91,7 +86,7 @@ class ReactiveSpanStructureRepositoryTest {
   @Test
   void getByUnknownToken() {
     final SpanStructure got =
-        this.repository.getAll("unknown").collectItems().first().await().indefinitely();
+        this.repository.getAll("unknown").collect().first().await().indefinitely();
     Assertions.assertNull(got);
   }
 
@@ -108,8 +103,8 @@ class ReactiveSpanStructureRepositoryTest {
     final long startTs = spanstrs.get(1).getTimestamp();
     final long endTs = spanstrs.get(18).getTimestamp();
 
-    final List<SpanStructure> got = this.repository.getBetween(tok, startTs, endTs).collectItems()
-        .asList().await().indefinitely();
+    final List<SpanStructure> got =
+        this.repository.getBetween(tok, startTs, endTs).collect().asList().await().indefinitely();
 
     Assertions.assertEquals(18, got.size());
 
@@ -130,8 +125,8 @@ class ReactiveSpanStructureRepositoryTest {
     final long startTs = spanstrs.get(19).getTimestamp() + 1;
     final long endTs = startTs + 20;
 
-    final List<SpanStructure> got = this.repository.getBetween(tok, startTs, endTs).collectItems()
-        .asList().await().indefinitely();
+    final List<SpanStructure> got =
+        this.repository.getBetween(tok, startTs, endTs).collect().asList().await().indefinitely();
 
     Assertions.assertEquals(0, got.size());
   }
@@ -150,7 +145,7 @@ class ReactiveSpanStructureRepositoryTest {
     this.repository.deleteAll(tok).await().indefinitely();
 
     final List<SpanStructure> got =
-        this.repository.getAll(tok).collectItems().asList().await().indefinitely();
+        this.repository.getAll(tok).collect().asList().await().indefinitely();
 
     Assertions.assertEquals(0, got.size());
   }
