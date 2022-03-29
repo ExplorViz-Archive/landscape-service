@@ -16,6 +16,10 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Builds a KafkaStream topology instance with all its transformers. Entry point of the stream
+ * analysis.
+ */
 public class TopologyProducer {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TopologyProducer.class);
