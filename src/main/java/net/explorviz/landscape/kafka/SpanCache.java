@@ -39,21 +39,21 @@ public class SpanCache {
   /**
    * Checks whether a hashcode is in the cache, i.e., has already been seen recently.
    *
-   * @param fingerprint the hashcode of the span
+   * @param hashCode the hashcode of the span
    * @return {@code true} iff the fingerprint is in the cache.
    */
-  public boolean exists(final String fingerprint) {
-    return this.cache.getIfPresent(fingerprint) != null;
+  public boolean exists(final String hashCode) {
+    return this.cache.getIfPresent(hashCode) != null;
   }
 
   /**
    * Put a span's hashcode in the cache. Subsequent calls to {@link #exists(String)} will return
    * {@code true} for this hash code.
    *
-   * @param fingerprint the hash code
+   * @param hashCode the hash code
    */
-  public void put(final String fingerprint) {
-    this.cache.put(fingerprint, true);
+  public void put(final String hashCode) {
+    this.cache.put(hashCode, true);
   }
 
   /**

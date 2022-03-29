@@ -27,9 +27,6 @@ public class TopologyProducer {
   @ConfigProperty(name = "explorviz.kafka-streams.topics.in")
   /* default */ String inTopic; // NOCS
 
-  @ConfigProperty(name = "explorviz.kafka-streams.topics.out.structure")
-  /* default */ String structureOutTopic; // NOCS
-
   @Inject
   /* default */ SpecificAvroSerde<SpanStructure> structureAvroSerde; // NOCS
 
