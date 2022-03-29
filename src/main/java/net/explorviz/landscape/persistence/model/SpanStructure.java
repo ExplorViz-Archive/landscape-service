@@ -1,4 +1,4 @@
-package net.explorviz.landscape.peristence.model;
+package net.explorviz.landscape.persistence.model;
 
 import com.datastax.oss.driver.api.mapper.annotations.ClusteringColumn;
 import com.datastax.oss.driver.api.mapper.annotations.CqlName;

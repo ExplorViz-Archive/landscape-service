@@ -1,4 +1,4 @@
-package net.explorviz.landscape.peristence.cassandra.dao;
+package net.explorviz.landscape.persistence.cassandra.dao;
 
 import com.datastax.oss.driver.api.mapper.annotations.Dao;
 import com.datastax.oss.driver.api.mapper.annotations.Delete;
@@ -6,7 +6,7 @@ import com.datastax.oss.driver.api.mapper.annotations.Insert;
 import com.datastax.oss.driver.api.mapper.annotations.Select;
 import com.datastax.oss.quarkus.runtime.api.reactive.mapper.MutinyMappedReactiveResultSet;
 import io.smallrye.mutiny.Uni;
-import net.explorviz.landscape.peristence.model.SpanStructure;
+import net.explorviz.landscape.persistence.model.SpanStructure;
 
 /**
  * TODO.

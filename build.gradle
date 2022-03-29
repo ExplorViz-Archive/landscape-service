@@ -1,8 +1,7 @@
 plugins {
   id 'java'
   id 'io.quarkus'
-  id 'com.adarshr.test-logger' version '2.1.0'
-  id 'com.github.davidmc24.gradle.plugin.avro' version '1.2.0'
+  id 'com.adarshr.test-logger' version '3.2.0'
 }
 
 apply from: 'buildscripts/code-analysis.gradle'
@@ -47,7 +46,7 @@ configurations {
 
 
 // Add generated avro sources to main source sets
-sourceSets.main.java.srcDirs = ['build/generated-main-avro-java', 'src/main/java', 'build/generated/sources/annotationProcessor/java/main']
+sourceSets.main.java.srcDirs = ['build/classes/java/quarkus-generated-sources/avdl', 'src/main/java', 'build/generated/sources/annotationProcessor/java/main']
 
 // Fix: com.datastax.oss:* uses old, mandatory Groovy version
 configurations.all {
@@ -70,22 +69,22 @@ dependencies {
   implementation 'io.quarkus:quarkus-micrometer-registry-prometheus'
 
   // Cassandra
-  annotationProcessor group: 'com.datastax.oss', name: 'java-driver-mapper-processor', version: '4.10.0'
-  implementation group: 'com.datastax.oss', name: 'java-driver-mapper-runtime', version: '4.10.0'
+  annotationProcessor group: 'com.datastax.oss', name: 'java-driver-mapper-processor', version: '4.14.0'
+  implementation group: 'com.datastax.oss', name: 'java-driver-mapper-runtime', version: '4.14.0'
   implementation 'com.datastax.oss.quarkus:cassandra-quarkus-client'
   testImplementation 'com.datastax.oss.quarkus:cassandra-quarkus-test-framework'
 
   // Kafka
   implementation 'io.quarkus:quarkus-kafka-streams'
   implementation 'io.quarkus:quarkus-kafka-client'
-  implementation group: 'io.confluent', name: 'kafka-avro-serializer', version: '5.5.0'
-  implementation group: 'io.confluent', name: 'kafka-streams-avro-serde', version: '5.5.0'
+  implementation group: 'io.confluent', name: 'kafka-avro-serializer', version: '7.0.1'
+  implementation group: 'io.confluent', name: 'kafka-streams-avro-serde', version: '7.0.1'
   implementation 'io.quarkus:quarkus-avro'
   implementation group: 'io.quarkus', name: 'quarkus-smallrye-reactive-messaging-kafka'
 
   // Utility
-  implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
-  implementation group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'
+  implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+  implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
 
   // Tests
   testImplementation 'io.quarkus:quarkus-junit5'

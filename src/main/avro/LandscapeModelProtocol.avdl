@@ -1,0 +1,37 @@
+@namespace("net.explorviz.avro.landscape.model")
+protocol LandscapeModelProtocol {
+	
+	record Method {
+		string name;
+		string hashCode;	
+	}
+	
+	record Class {
+		string name;		
+		array<Method> methods;
+	}
+		
+	record Package {
+		string name;		
+		array<Package> subPackages;
+		array<Class> classes;
+	}
+	
+	record Application {
+		string name;
+		string language;
+		string instanceId;
+		array<Package> packages;
+	}
+	
+	record Node {
+		string ipAddress;
+		string hostName;
+		array<Application> applications;
+	}
+	
+	record Landscape {
+		string landscapeToken;
+		array<Node> nodes;
+	}	
+}

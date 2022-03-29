@@ -1,8 +1,8 @@
-package net.explorviz.landscape.peristence;
+package net.explorviz.landscape.persistence;
 
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
-import net.explorviz.landscape.peristence.model.SpanStructure;
+import net.explorviz.landscape.persistence.model.SpanStructure;
 
 /**
  * Manages persistent access to a {@link SpanStructure} entities in a reactive manner.

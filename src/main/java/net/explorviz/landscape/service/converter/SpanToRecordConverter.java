@@ -5,7 +5,7 @@ import javax.enterprise.context.ApplicationScoped;
 import net.explorviz.avro.landscape.flat.Application;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.avro.landscape.flat.Node;
-import net.explorviz.landscape.peristence.model.SpanStructure;
+import net.explorviz.landscape.persistence.model.SpanStructure;
 
 /**
  * Maps {@link SpanStructure} objects to {@link LandscapeRecord} objects by extracting the data.

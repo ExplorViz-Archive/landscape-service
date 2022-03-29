@@ -3,7 +3,7 @@ package net.explorviz.landscape.service;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import net.explorviz.avro.landscape.model.Landscape;
-import net.explorviz.landscape.peristence.model.SpanStructure;
+import net.explorviz.landscape.persistence.model.SpanStructure;
 
 /**
  * Service for building landscape graphs out of a set of flat records.

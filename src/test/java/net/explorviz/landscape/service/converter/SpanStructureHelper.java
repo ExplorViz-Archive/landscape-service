@@ -3,7 +3,7 @@ package net.explorviz.landscape.service.converter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
-import net.explorviz.landscape.peristence.model.SpanStructure;
+import net.explorviz.landscape.persistence.model.SpanStructure;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 

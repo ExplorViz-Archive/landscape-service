@@ -1,22 +1,22 @@
-package net.explorviz.landscape.kafka;
+package net.explorviz.landscape.injection;
 
 import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
 import io.quarkus.arc.DefaultBean;
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 /**
- * Factory for the client implementation to access the schema registry.
+ * Returns a {@link SchemaRegistryClient} that is used by this application with a maximum number of
+ * 10 schemas.
  */
-@ApplicationScoped
-public class SchemaRegistryClientFactory {
+@Dependent
+public class SchemaRegistryClientProducer {
 
   private static final int MAX_NUM_OF_SCHEMAS = 10;
 
-  @SuppressWarnings("PMD.DefaultPackage")
-  @ConfigProperty(name = "explorviz.schema-registry.url")
+  @ConfigProperty(name = "quarkus.kafka-streams.schema-registry-url")
   /* default */ String schemaRegistryUrl; // NOCS
 
   @Produces
