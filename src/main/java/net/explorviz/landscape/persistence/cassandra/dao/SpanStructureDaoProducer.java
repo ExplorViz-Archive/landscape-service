@@ -1,4 +1,4 @@
-package net.explorviz.landscape.peristence.cassandra.dao;
+package net.explorviz.landscape.persistence.cassandra.dao;
 
 import com.datastax.oss.quarkus.runtime.api.session.QuarkusCqlSession;
 import javax.enterprise.context.ApplicationScoped;

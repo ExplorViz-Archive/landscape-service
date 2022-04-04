@@ -42,8 +42,7 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
   }
 
   @Override
-  public void insertAll(final Landscape landscape, final Collection<LandscapeRecord> records) { // NOPMD // NOCS
-
+  public void insertAll(final Landscape landscape, final Collection<LandscapeRecord> records) { // NOPMD NOCS
     final String token = landscape.getLandscapeToken();
 
     // Check if all records belong to the same landscape (i.e. check token)

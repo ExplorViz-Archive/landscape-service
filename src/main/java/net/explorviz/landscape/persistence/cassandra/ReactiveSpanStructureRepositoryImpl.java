@@ -1,12 +1,12 @@
-package net.explorviz.landscape.peristence.cassandra;
+package net.explorviz.landscape.persistence.cassandra;
 
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import net.explorviz.landscape.peristence.SpanStructureRepositoy;
-import net.explorviz.landscape.peristence.cassandra.dao.ReactiveSpanStructureDao;
-import net.explorviz.landscape.peristence.model.SpanStructure;
+import net.explorviz.landscape.persistence.SpanStructureRepositoy;
+import net.explorviz.landscape.persistence.cassandra.dao.ReactiveSpanStructureDao;
+import net.explorviz.landscape.persistence.model.SpanStructure;
 
 /**
  * TODO.

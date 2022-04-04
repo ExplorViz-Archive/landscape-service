@@ -7,8 +7,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
 import net.explorviz.avro.landscape.model.Landscape;
-import net.explorviz.landscape.peristence.SpanStructureRepositoy;
-import net.explorviz.landscape.peristence.model.SpanStructure;
+import net.explorviz.landscape.persistence.SpanStructureRepositoy;
+import net.explorviz.landscape.persistence.model.SpanStructure;
 import net.explorviz.landscape.service.assemble.LandscapeAssembler;
 import net.explorviz.landscape.service.converter.SpanToRecordConverter;
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ public class ReactiveLandscapeServiceImpl implements ReactiveLandscapeService {
       final long to) {
 
     final Uni<List<LandscapeRecord>> recordsList = this.repo.getBetween(landscapeToken, from, to)
-        .map(this.converter::toRecord).collectItems().asList();
+        .map(this.converter::toRecord).collect().asList();
 
     recordsList.onItem().invoke(recs -> {
       if (LOGGER.isTraceEnabled()) {
