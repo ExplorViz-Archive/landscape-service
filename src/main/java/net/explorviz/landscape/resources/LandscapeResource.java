@@ -19,12 +19,16 @@ import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * HTTP resource to access landscapes.
  */
 @Path("/v2/landscapes")
 public class LandscapeResource {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(LandscapeResource.class);
 
   private final ReactiveLandscapeService landscapeService;
 
@@ -72,6 +76,10 @@ public class LandscapeResource {
     } catch (final LandscapeAssemblyException e) {
       // Never caused by the user
       throw new InternalServerErrorException(e.getMessage(), e);
+    }
+
+    if (LOGGER.isTraceEnabled()) {
+      LOGGER.trace("Requested {} from {} to {}, return value: {}", token, from, to, buildLandscape);
     }
 
     // Return empty landscape if no records found
