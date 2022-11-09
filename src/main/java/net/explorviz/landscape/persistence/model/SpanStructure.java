@@ -180,7 +180,7 @@ public class SpanStructure {
 
     public Builder fromAvro(final net.explorviz.avro.SpanStructure avro) {
       this.timestamp = Instant
-          .ofEpochSecond(avro.getTimestamp().getSeconds(), avro.getTimestamp().getNanoAdjust())
+          .ofEpochMilli(avro.getTimestamp().getEpochMillisecondsWithNanoAdjust())
           .toEpochMilli();
 
       this.landscapeToken = avro.getLandscapeToken();

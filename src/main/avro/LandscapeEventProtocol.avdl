@@ -24,8 +24,7 @@ protocol LandscapeEventProtocol {
 	}
 	
 	record Timestamp {
-		long seconds;
-		int nanoAdjust;
+		long epochMillisecondsWithNanoAdjust;
 	}	
 	
 	record SpanStructure {
