@@ -11,8 +11,6 @@ import net.explorviz.landscape.persistence.SpanStructureRepositoy;
 import net.explorviz.landscape.persistence.model.SpanStructure;
 import net.explorviz.landscape.service.assemble.LandscapeAssembler;
 import net.explorviz.landscape.service.converter.SpanToRecordConverter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Implements the use cases.
@@ -20,7 +18,7 @@ import org.slf4j.LoggerFactory;
 @ApplicationScoped
 public class ReactiveLandscapeServiceImpl implements ReactiveLandscapeService {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ReactiveLandscapeServiceImpl.class);
+  //private static final Logger LOGGER = LoggerFactory.getLogger(ReactiveLandscapeServiceImpl.class);
 
   private final SpanStructureRepositoy repo;
   private final LandscapeAssembler assembler;
@@ -41,11 +39,6 @@ public class ReactiveLandscapeServiceImpl implements ReactiveLandscapeService {
     final Uni<List<LandscapeRecord>> recordsList = this.repo.getBetween(landscapeToken, from, to)
         .map(this.converter::toRecord).collect().asList();
 
-    recordsList.onItem().invoke(recs -> {
-      if (LOGGER.isTraceEnabled()) {
-        LOGGER.trace("Found {} records for landscape with token {}", recs.size(), landscapeToken);
-      }
-    });
     return recordsList.onItem().transform(this.assembler::assembleFromRecords);
 
   }

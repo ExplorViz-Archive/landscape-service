@@ -2,6 +2,7 @@ package net.explorviz.landscape.service;
 
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
+import java.time.Instant;
 import net.explorviz.avro.landscape.model.Landscape;
 import net.explorviz.landscape.persistence.model.SpanStructure;
 
@@ -17,7 +18,7 @@ public interface ReactiveLandscapeService {
    * @return the landscape assembled out of all records associated to the given token
    */
   default Uni<Landscape> buildLandscape(final String landscapeToken) {
-    return this.buildLandscapeBetween(landscapeToken, 0, System.currentTimeMillis());
+    return this.buildLandscapeBetween(landscapeToken, 0, Instant.now().toEpochMilli());
   }
 
   /**
