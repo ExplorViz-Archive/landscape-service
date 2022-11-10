@@ -10,7 +10,6 @@ import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import javax.inject.Inject;
 import net.explorviz.avro.SpanStructure;
-import net.explorviz.avro.Timestamp;
 import net.explorviz.landscape.persistence.SpanStructureRepositoy;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsConfig;
@@ -76,7 +75,7 @@ class TopologyTest {
 
     return SpanStructure.newBuilder().setSpanId("testSpanId")
         .setLandscapeToken("testLandscapeToken")
-        .setTimestamp(Timestamp.newBuilder().setEpochMillisecondsWithNanoAdjust(123L).build())
+        .setTimestampInEpochMilli(123L)
         .setHashCode("testHashcode").setHostname("testHost").setHostIpAddress("testIp")
         .setAppName("testAppName").setAppInstanceId("testAppInstanceId")
         .setFullyQualifiedOperationName("testFqn").setAppLanguage("testAppLanguage").build();

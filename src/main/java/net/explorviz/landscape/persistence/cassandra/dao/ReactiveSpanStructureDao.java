@@ -22,7 +22,7 @@ public interface ReactiveSpanStructureDao {
   MutinyMappedReactiveResultSet<SpanStructure> findBetweenInterval(String landscapeToken,
       long fromTs, long toTs);
 
-  @Insert()
+  @Insert(ifNotExists = true)
   Uni<Void> insert(SpanStructure structure);
 
   @Delete(entityClass = SpanStructure.class,
