@@ -18,7 +18,8 @@ import net.explorviz.landscape.service.converter.SpanToRecordConverter;
 @ApplicationScoped
 public class ReactiveLandscapeServiceImpl implements ReactiveLandscapeService {
 
-  //private static final Logger LOGGER = LoggerFactory.getLogger(ReactiveLandscapeServiceImpl.class);
+  //private static final Logger LOGGER =
+  // LoggerFactory.getLogger(ReactiveLandscapeServiceImpl.class);
 
   private final SpanStructureRepositoy repo;
   private final LandscapeAssembler assembler;
