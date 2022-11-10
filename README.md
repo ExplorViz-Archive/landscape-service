@@ -168,9 +168,10 @@ These fingerprints are needed to map traces, which are retrieved separately, ont
 See the [avro schema](src/main/avro/landscape.avsc) for further details.
 
 
-## Instructions
+## Prerequisites
 
-Run the ExplorViz software stack, see [ExplorViz/deployment](https://git.se.informatik.uni-kiel.de/ExplorViz/code/deployment).
+- Java 11 or higher
+- Make sure to run the [ExplorViz software stack](https://git.se.informatik.uni-kiel.de/ExplorViz/code/deployment) before starting the service.
 
 ### Running the application in dev mode
 
