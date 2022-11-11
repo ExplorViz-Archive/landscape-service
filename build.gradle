@@ -90,7 +90,6 @@ dependencies {
 
   // Utility
   implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
-  implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
 
   // Tests
   testImplementation 'io.quarkus:quarkus-junit5'
@@ -104,9 +103,7 @@ dependencies {
   integrationTestImplementation "org.testcontainers:kafka:1.17.5"
   integrationTestImplementation 'io.quarkus:quarkus-junit5'
   integrationTestImplementation 'org.mockito:mockito-junit-jupiter'
-  integrationTestImplementation group: 'org.apache.kafka', name: 'kafka-streams-test-utils', version: '3.2.1'
-
-
+  integrationTestImplementation group: 'org.apache.kafka', name: 'kafka-streams-test-utils', version: '3.3.1'
 }
 
 group 'net.explorviz'

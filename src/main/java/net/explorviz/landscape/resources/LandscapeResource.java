@@ -1,6 +1,7 @@
 package net.explorviz.landscape.resources;
 
 import io.smallrye.mutiny.Uni;
+import javax.inject.Inject;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
@@ -32,6 +33,7 @@ public class LandscapeResource {
 
   private final ReactiveLandscapeService landscapeService;
 
+  @Inject
   public LandscapeResource(final ReactiveLandscapeService landscapeService) {
     this.landscapeService = landscapeService;
   }
