@@ -4,7 +4,6 @@ import com.datastax.oss.driver.api.mapper.annotations.ClusteringColumn;
 import com.datastax.oss.driver.api.mapper.annotations.CqlName;
 import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
-import java.time.Instant;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -179,9 +178,7 @@ public class SpanStructure {
     private String fqn;
 
     public Builder fromAvro(final net.explorviz.avro.SpanStructure avro) {
-      this.timestamp = Instant
-          .ofEpochSecond(avro.getTimestamp().getSeconds(), avro.getTimestamp().getNanoAdjust())
-          .toEpochMilli();
+      this.timestamp = avro.getTimestampInEpochMilli();
 
       this.landscapeToken = avro.getLandscapeToken();
       this.hashCode = avro.getHashCode();
