@@ -1,11 +1,8 @@
 package net.explorviz.landscape.kafka;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 import io.quarkus.test.junit.QuarkusTest;
-import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import javax.inject.Inject;
@@ -44,9 +41,6 @@ class TopologyTest {
   SpecificAvroSerde<SpanStructure> spanStructureSerDe; // NOCS
 
   @Inject
-  SpanCache spanCache;
-  
-  @Inject
   SpanStructureRepositoy repository;
 
   @BeforeEach
@@ -74,8 +68,7 @@ class TopologyTest {
     // CHECKSTYLE:OFF
 
     return SpanStructure.newBuilder().setSpanId("testSpanId")
-        .setLandscapeToken("testLandscapeToken")
-        .setTimestampInEpochMilli(123L)
+        .setLandscapeToken("testLandscapeToken").setTimestampInEpochMilli(123L)
         .setHashCode("testHashcode").setHostname("testHost").setHostIpAddress("testIp")
         .setAppName("testAppName").setAppInstanceId("testAppInstanceId")
         .setFullyQualifiedOperationName("testFqn").setAppLanguage("testAppLanguage").build();
@@ -87,18 +80,12 @@ class TopologyTest {
   @Disabled
   void testCache() throws InterruptedException, ExecutionException {
     final SpanStructure testSpan = this.sampleSpanStructure();
-    
-    List<net.explorviz.landscape.persistence.model.SpanStructure> spanStructuresWithToken = this.repository.getAll(testSpan.getLandscapeToken()).collect().asList().subscribeAsCompletionStage().get();
-    
-    assertTrue(spanStructuresWithToken.size() == 0);
-    assertFalse(this.spanCache.exists(testSpan.getHashCode()));
+
+    //List<net.explorviz.landscape.persistence.model.SpanStructure> spanStructuresWithToken =
+    // this.repository.getAll(testSpan.getLandscapeToken()).collect().asList()
+    // .subscribeAsCompletionStage().get();
 
     this.inputTopic.pipeInput(testSpan.getLandscapeToken(), testSpan);
-    
-    spanStructuresWithToken = this.repository.getAll(testSpan.getLandscapeToken()).collect().asList().subscribeAsCompletionStage().get();
-
-    assertTrue(spanStructuresWithToken.size() == 1);
-    assertTrue(this.spanCache.exists(testSpan.getHashCode()));
   }
 
 
