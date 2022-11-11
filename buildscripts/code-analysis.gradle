@@ -9,7 +9,21 @@ jacocoTestReport {
   }
 }
 
-jacocoTestReport.dependsOn test
+jacocoTestReport {
+  dependsOn test
+
+  afterEvaluate {
+    classDirectories.setFrom(files(classDirectories.files.collect {
+      fileTree(dir: it, exclude: [
+              "**/*MapperGenerated*",
+              "**/SpanStructureMapperBuilder.*",
+              "**/SpanStructureDaoProducer.*",
+              "**/SpanStructureMapper.*",
+              "**/SpanStructureDaoProducer.*"
+      ])
+    }))
+  }
+}
 
 pmd {
   // Empty ruleset is necessary for exclude-pattern
