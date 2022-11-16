@@ -1,8 +1,13 @@
 package net.explorviz.landscape.kafka;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import io.quarkus.scheduler.Scheduled;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import net.explorviz.avro.SpanStructure;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.Transformer;
@@ -27,14 +32,24 @@ public class SpanFilterTransformer implements
 
   private KeyValueStore<String, Integer> alreadySavedSpans;
 
+  @Inject
+  /* default */ MeterRegistry registry; // NOCS
+
+  Counter counter;
+
   @Override
   public void init(final ProcessorContext context) {
+
     this.alreadySavedSpans = (KeyValueStore<String, Integer>) context.getStateStore("cachedSpans");
+    counter = this.registry.counter("alex-test",
+        List.of(Tag.of("task_id", context.taskId().toString()),
+            Tag.of("partition_id", String.valueOf(context.taskId().partition()))));
   }
 
   @Override
   public KeyValue<String, SpanStructure> transform(final String key, final SpanStructure value) {
     this.lastReceivedTotalSpans.incrementAndGet();
+    counter.increment();
     if (alreadySavedSpans.get(value.getHashCode()) == null) {
       this.lastReceivedUnknownSpans.incrementAndGet();
       alreadySavedSpans.put(value.getHashCode(), 1);
@@ -51,7 +66,8 @@ public class SpanFilterTransformer implements
     // Do nothing
   }
 
-  @Scheduled(every = "{explorviz.log.span.interval}") // NOPMD
+  @Scheduled(every = "{explorviz.log.span.interval}")
+    // NOPMD
   void logStatus() { // NOPMD
     final int totalSpans = this.lastReceivedTotalSpans.getAndSet(0);
     final int cachedSpans = this.lastReceivedCachedSpans.getAndSet(0);
