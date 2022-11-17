@@ -1,15 +1,16 @@
 package net.explorviz.landscape.kafka;
 
-import io.quarkus.scheduler.Scheduled;
-import java.util.concurrent.atomic.AtomicInteger;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import net.explorviz.avro.SpanStructure;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.Transformer;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.state.KeyValueStore;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Builds a KafkaStream transformer that filters out already saved spans.
@@ -18,30 +19,50 @@ import org.slf4j.LoggerFactory;
 public class SpanFilterTransformer implements
     Transformer<String, SpanStructure, KeyValue<String, SpanStructure>> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SpanFilterTransformer.class);
+  private static final String METRIC_TAG_TASK_ID_KEY = "task_id";
+  private static final String METRIC_TAG_PARTITION_ID_KEY = "partition_id";
 
-  // Logged and reset every n seconds
-  private final AtomicInteger lastReceivedTotalSpans = new AtomicInteger(0);
-  private final AtomicInteger lastReceivedUnknownSpans = new AtomicInteger(0);
-  private final AtomicInteger lastReceivedCachedSpans = new AtomicInteger(0);
+  private static final String METRIC_NAME_RECEIVED_SPANS = "explorviz_total_received_spans";
+  private static final String METRIC_NAME_CACHED_SPANS = "explorviz_total_cached_spans";
+  private static final String METRIC_NAME_DISCARDED_SPANS = "explorviz_total_discarded_spans";
+
+  @Inject
+  /* default */ MeterRegistry registry; // NOCS
 
   private KeyValueStore<String, Integer> alreadySavedSpans;
 
+  private Counter counterAllSpans;
+  private Counter counterCachedSpans;
+  private Counter counterDiscardedSpans;
+
   @Override
   public void init(final ProcessorContext context) {
+
     this.alreadySavedSpans = (KeyValueStore<String, Integer>) context.getStateStore("cachedSpans");
+
+    counterAllSpans = this.registry.counter(METRIC_NAME_RECEIVED_SPANS,
+        List.of(Tag.of(METRIC_TAG_TASK_ID_KEY, context.taskId().toString()),
+            Tag.of(METRIC_TAG_PARTITION_ID_KEY, String.valueOf(context.taskId().partition()))));
+
+    counterCachedSpans = this.registry.counter(METRIC_NAME_CACHED_SPANS,
+        List.of(Tag.of(METRIC_TAG_TASK_ID_KEY, context.taskId().toString()),
+            Tag.of(METRIC_TAG_PARTITION_ID_KEY, String.valueOf(context.taskId().partition()))));
+
+    counterDiscardedSpans = this.registry.counter(METRIC_NAME_DISCARDED_SPANS,
+        List.of(Tag.of(METRIC_TAG_TASK_ID_KEY, context.taskId().toString()),
+            Tag.of(METRIC_TAG_PARTITION_ID_KEY, String.valueOf(context.taskId().partition()))));
   }
 
   @Override
   public KeyValue<String, SpanStructure> transform(final String key, final SpanStructure value) {
-    this.lastReceivedTotalSpans.incrementAndGet();
+    counterAllSpans.increment();
     if (alreadySavedSpans.get(value.getHashCode()) == null) {
-      this.lastReceivedUnknownSpans.incrementAndGet();
       alreadySavedSpans.put(value.getHashCode(), 1);
+      counterCachedSpans.increment();
       return KeyValue.pair(key, value);
     } else {
-      this.lastReceivedCachedSpans.incrementAndGet();
-      // As documentation states, this will remove the record from the returned stream
+      // As Kafka Streams documentation states, this will remove the record from the returned stream
+      counterDiscardedSpans.increment();
       return null;
     }
   }
@@ -49,18 +70,6 @@ public class SpanFilterTransformer implements
   @Override
   public void close() {
     // Do nothing
-  }
-
-  @Scheduled(every = "{explorviz.log.span.interval}") // NOPMD
-  void logStatus() { // NOPMD
-    final int totalSpans = this.lastReceivedTotalSpans.getAndSet(0);
-    final int cachedSpans = this.lastReceivedCachedSpans.getAndSet(0);
-    final int newSpans = this.lastReceivedUnknownSpans.getAndSet(0);
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug(
-          "Received {} " + "spans: {} cached / already saved spans, " + "{} unknown / saved spans.",
-          totalSpans, cachedSpans, newSpans);
-    }
   }
 
 }
