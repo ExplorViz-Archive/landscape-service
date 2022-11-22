@@ -51,6 +51,8 @@ public class SpanFilterTransformer implements
     counterDiscardedSpans = this.registry.counter(METRIC_NAME_DISCARDED_SPANS,
         List.of(Tag.of(METRIC_TAG_TASK_ID_KEY, context.taskId().toString()),
             Tag.of(METRIC_TAG_PARTITION_ID_KEY, String.valueOf(context.taskId().partition()))));
+
+    counterCachedSpans.increment(alreadySavedSpans.approximateNumEntries());
   }
 
   @Override
