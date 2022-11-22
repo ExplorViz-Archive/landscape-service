@@ -76,6 +76,7 @@ dependencies {
   implementation('com.datastax.oss.quarkus:cassandra-quarkus-client:1.0.2') {
     force = true
   }
+  implementation 'com.datastax.oss:java-driver-metrics-micrometer:4.15.0'
     
   testImplementation 'com.datastax.oss.quarkus:cassandra-quarkus-test-framework'
 
