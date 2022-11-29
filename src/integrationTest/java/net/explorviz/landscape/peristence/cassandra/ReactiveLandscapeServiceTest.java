@@ -6,6 +6,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import java.util.List;
 import javax.inject.Inject;
+import net.explorviz.landscape.persistence.SpanStructureRepositoy;
 import net.explorviz.landscape.persistence.cassandra.ReactiveSpanStructureRepositoryImpl;
 import net.explorviz.landscape.persistence.model.SpanStructure;
 import net.explorviz.landscape.service.ReactiveLandscapeServiceImpl;
@@ -18,15 +19,14 @@ import org.junit.jupiter.api.Test;
 @QuarkusTest
 @QuarkusTestResource(CassandraTestResource.class)
 @QuarkusTestResource(KafkaTestResource.class)
-@TestProfile(CassandraTestProfile.class)
 class ReactiveLandscapeServiceTest {
 
   private final ReactiveLandscapeServiceImpl service;
 
-  private final ReactiveSpanStructureRepositoryImpl repository;
+  private final SpanStructureRepositoy repository;
 
   @Inject
-  public ReactiveLandscapeServiceTest(final ReactiveSpanStructureRepositoryImpl repository,
+  public ReactiveLandscapeServiceTest(final SpanStructureRepositoy repository,
       final ReactiveLandscapeServiceImpl service) {
     this.repository = repository;
     this.service = service;
