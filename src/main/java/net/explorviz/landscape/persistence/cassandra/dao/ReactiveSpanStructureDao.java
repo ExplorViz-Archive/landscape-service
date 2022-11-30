@@ -23,10 +23,10 @@ public interface ReactiveSpanStructureDao {
       long fromTs, long toTs);
 
   @Insert(ifNotExists = true)
-  Uni<Void> insert(SpanStructure structure);
+  Uni<Void> insertAsync(SpanStructure structure);
 
   @Delete(entityClass = SpanStructure.class,
       customWhereClause = "landscape_token = :landscapeToken")
-  Uni<Void> deleteByToken(String landscapeToken);
+  Uni<Void> deleteByTokenAsync(String landscapeToken);
 
 }

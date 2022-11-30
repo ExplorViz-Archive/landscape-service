@@ -5,8 +5,6 @@ import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import java.util.List;
 import javax.inject.Inject;
-import net.explorviz.landscape.persistence.SpanStructureRepositoy;
-import net.explorviz.landscape.persistence.cassandra.ReactiveSpanStructureRepositoryImpl;
 import net.explorviz.landscape.persistence.model.SpanStructure;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

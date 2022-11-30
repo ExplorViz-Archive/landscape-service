@@ -1,4 +1,4 @@
-package net.explorviz.landscape.service;
+package net.explorviz.landscape.service.cassandra;
 
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;

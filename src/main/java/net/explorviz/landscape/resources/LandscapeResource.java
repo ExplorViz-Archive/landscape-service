@@ -12,7 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import net.explorviz.avro.landscape.model.Landscape;
-import net.explorviz.landscape.service.ReactiveLandscapeService;
+import net.explorviz.landscape.service.cassandra.ReactiveLandscapeService;
 import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
 import net.explorviz.landscape.service.assemble.impl.NoRecordsException;
 import org.eclipse.microprofile.openapi.annotations.Operation;

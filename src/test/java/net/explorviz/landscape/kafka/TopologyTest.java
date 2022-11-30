@@ -8,7 +8,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import java.util.Properties;
 import javax.inject.Inject;
 import net.explorviz.avro.SpanStructure;
-import net.explorviz.landscape.persistence.SpanStructureRepositoy;
+import net.explorviz.landscape.service.cassandra.ReactiveLandscapeService;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsConfig;
@@ -46,7 +46,7 @@ class TopologyTest {
   SpecificAvroSerde<SpanStructure> spanStructureSerDe; // NOCS
 
   @Inject
-  SpanStructureRepositoy repository;
+  ReactiveLandscapeService reactiveLandscapeService;
 
   @BeforeEach
   void setUp() {
