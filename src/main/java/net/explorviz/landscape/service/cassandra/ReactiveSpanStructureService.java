@@ -7,17 +7,21 @@ import javax.inject.Inject;
 import net.explorviz.landscape.persistence.cassandra.dao.ReactiveSpanStructureDao;
 import net.explorviz.landscape.persistence.model.SpanStructure;
 
+/**
+ * Service that leverages the reactive DAO {{@link ReactiveSpanStructureDao}}.
+ */
 @ApplicationScoped
 public class ReactiveSpanStructureService {
 
   @Inject
-  ReactiveSpanStructureDao spanStructureDao;
+  /* default */ ReactiveSpanStructureDao spanStructureDao; // NOCS
 
-  public Uni<Void> add(SpanStructure spanStructure) {
+  public Uni<Void> add(final SpanStructure spanStructure) {
     return this.spanStructureDao.insertAsync(spanStructure);
   }
 
-  public Multi<SpanStructure> findBetweenInterval(final String landscapeToken, final long fromTs, final long toTs) {
+  public Multi<SpanStructure> findBetweenInterval(final String landscapeToken, final long fromTs,
+      final long toTs) {
     return this.spanStructureDao.findBetweenInterval(landscapeToken, fromTs, toTs);
   }
 
