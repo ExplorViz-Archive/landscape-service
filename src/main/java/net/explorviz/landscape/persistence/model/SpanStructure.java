@@ -4,6 +4,7 @@ import com.datastax.oss.driver.api.mapper.annotations.ClusteringColumn;
 import com.datastax.oss.driver.api.mapper.annotations.CqlName;
 import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
+import com.datastax.oss.driver.api.mapper.annotations.PropertyStrategy;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,6 +13,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * Entity that holds structural information. Encodes a single branch in the landscape model graph,
  * were the root is the landscapeToken and the leaf the operation name.
  */
+@PropertyStrategy(mutable = false)
 @Entity
 public class SpanStructure {
 
@@ -33,7 +35,7 @@ public class SpanStructure {
   @CqlName("method_fqn")
   private String fullyQualifiedOperationName;
 
-  public SpanStructure(final String landscapeToken, final long timestamp, final String hashCode,
+  public SpanStructure(final String landscapeToken, final String hashCode, final long timestamp,
       final String hostName, final String hostIpAddress, final String applicationName,
       final String instanceId, final String applicationLanguage,
       final String fullyQualifiedOperationName) {
@@ -46,10 +48,6 @@ public class SpanStructure {
     this.instanceId = instanceId;
     this.applicationLanguage = applicationLanguage;
     this.fullyQualifiedOperationName = fullyQualifiedOperationName;
-  }
-
-  public SpanStructure() {
-    /* Object-Mapper required */
   }
 
   public String getLandscapeToken() {
@@ -237,7 +235,7 @@ public class SpanStructure {
     }
 
     public SpanStructure build() {
-      return new SpanStructure(this.landscapeToken, this.timestamp, this.hashCode, this.hostName,
+      return new SpanStructure(this.landscapeToken, this.hashCode, this.timestamp, this.hostName,
           this.hostIpAddress, this.applicationName, this.instanceId, this.applicationLanguage,
           this.fqn);
     }
