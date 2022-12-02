@@ -10,6 +10,8 @@ import net.explorviz.landscape.service.cassandra.ReactiveLandscapeServiceImpl;
 import net.explorviz.landscape.service.cassandra.ReactiveSpanStructureService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Tests for the {@link ReactiveLandscapeServiceImpl} and {@link ReactiveSpanStructureService}.
@@ -18,21 +20,22 @@ import org.junit.jupiter.api.Test;
 @QuarkusTestResource(CassandraTestResource.class)
 @QuarkusTestResource(KafkaTestResource.class)
 class ReactiveLandscapeServiceTest {
-
-  private final ReactiveLandscapeServiceImpl service;
-
-  private final ReactiveSpanStructureService reactiveSpanStructureService;
+  
+  private static final Logger LOGGER = LoggerFactory.getLogger(ReactiveLandscapeServiceTest.class);
 
   @Inject
-  public ReactiveLandscapeServiceTest(final ReactiveSpanStructureService reactiveSpanStructureService,
-      final ReactiveLandscapeServiceImpl service) {
-    this.reactiveSpanStructureService = reactiveSpanStructureService;
-    this.service = service;
-  }
+  ReactiveLandscapeServiceImpl service;
+
+  @Inject
+  ReactiveSpanStructureService reactiveSpanStructureService;
 
   @Test
   void cloneToken() {
     final List<SpanStructure> spanstrs = SpanStructureHelper.randomSpanStructures(20, true, true);
+    
+    System.out.println("ALEX HIER " + this.reactiveSpanStructureService == null);
+    LOGGER.error("ALEX HIER {}", this.reactiveSpanStructureService == null);
+    
     spanstrs.forEach(s -> this.reactiveSpanStructureService.add(s).await().indefinitely());
 
     final String tok = spanstrs.get(0).getLandscapeToken();
