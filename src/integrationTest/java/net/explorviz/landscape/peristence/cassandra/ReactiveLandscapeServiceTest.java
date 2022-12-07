@@ -10,8 +10,6 @@ import net.explorviz.landscape.service.cassandra.ReactiveLandscapeServiceImpl;
 import net.explorviz.landscape.service.cassandra.ReactiveSpanStructureService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Tests for the {@link ReactiveLandscapeServiceImpl} and {@link ReactiveSpanStructureService}.
@@ -21,7 +19,7 @@ import org.slf4j.LoggerFactory;
 @QuarkusTestResource(KafkaTestResource.class)
 class ReactiveLandscapeServiceTest {
   
-  private static final Logger LOGGER = LoggerFactory.getLogger(ReactiveLandscapeServiceTest.class);
+  //private static final Logger LOGGER = LoggerFactory.getLogger(ReactiveLandscapeServiceTest.class);
 
   @Inject
   ReactiveLandscapeServiceImpl service;
@@ -31,10 +29,7 @@ class ReactiveLandscapeServiceTest {
 
   @Test
   void cloneToken() {
-    final List<SpanStructure> spanstrs = SpanStructureHelper.randomSpanStructures(20, true, true);
-    
-    System.out.println("ALEX HIER " + this.reactiveSpanStructureService == null);
-    LOGGER.error("ALEX HIER {}", this.reactiveSpanStructureService == null);
+    final List<SpanStructure> spanstrs = SpanStructureHelper.randomSpanStructures(20, true, true);   
     
     spanstrs.forEach(s -> this.reactiveSpanStructureService.add(s).await().indefinitely());
 

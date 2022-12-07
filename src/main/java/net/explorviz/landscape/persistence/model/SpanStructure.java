@@ -18,12 +18,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class SpanStructure {
 
   @PartitionKey
+  @CqlName("landscape_token")
   private String landscapeToken;
 
   @ClusteringColumn
-  private String hashCode; // NOPMD
-
   private long timestamp;
+  
+  private String hashCode; // NOPMD  
 
   private String hostName;
   private String hostIpAddress;
@@ -35,7 +36,7 @@ public class SpanStructure {
   @CqlName("method_fqn")
   private String fullyQualifiedOperationName;
 
-  public SpanStructure(final String landscapeToken, final String hashCode, final long timestamp,
+  public SpanStructure(final String landscapeToken, final long timestamp, final String hashCode,
       final String hostName, final String hostIpAddress, final String applicationName,
       final String instanceId, final String applicationLanguage,
       final String fullyQualifiedOperationName) {
@@ -235,7 +236,7 @@ public class SpanStructure {
     }
 
     public SpanStructure build() {
-      return new SpanStructure(this.landscapeToken, this.hashCode, this.timestamp, this.hostName,
+      return new SpanStructure(this.landscapeToken, this.timestamp, this.hashCode, this.hostName,
           this.hostIpAddress, this.applicationName, this.instanceId, this.applicationLanguage,
           this.fqn);
     }
