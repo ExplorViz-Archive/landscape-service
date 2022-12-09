@@ -16,18 +16,26 @@ public class SpanStructureDaoProducer {
   private static final long CQL_TIMEOUT_SECONDS = 5;
 
   private final ReactiveSpanStructureDao reactiveSpanStructureDao;
+  private final Uni<ReactiveSpanStructureDao> reactiveUniSpanStructureDao;
 
   @Inject
   public SpanStructureDaoProducer(final Uni<QuarkusCqlSession> session) {
-    final SpanStructureMapper mapper = new SpanStructureMapperBuilder(session.await().atMost(
-        Duration.ofSeconds(CQL_TIMEOUT_SECONDS))).build();
-    this.reactiveSpanStructureDao = mapper.reactiveSpanStructureDao();
+    final SpanStructureMapper mapper = new SpanStructureMapperBuilder(
+        session.await().atMost(Duration.ofSeconds(CQL_TIMEOUT_SECONDS))).build();
+    this.reactiveSpanStructureDao = mapper.spanStructureDaoReactiveSync();
+    this.reactiveUniSpanStructureDao = mapper.spanStructureDaoReactiveUni();
   }
 
   @Produces
   @ApplicationScoped
   public ReactiveSpanStructureDao produceReactiveSpanStructureDao() {
     return this.reactiveSpanStructureDao;
+  }
+  
+  @Produces
+  @ApplicationScoped
+  public Uni<ReactiveSpanStructureDao> spanStructureDaoReactiveUni() {
+    return this.reactiveUniSpanStructureDao;
   }
 
 }

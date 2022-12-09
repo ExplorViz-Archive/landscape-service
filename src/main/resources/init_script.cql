@@ -12,5 +12,5 @@ CREATE TABLE IF NOT EXISTS explorviz.span_structure
     application_language text,
     instance_id          text,
     method_fqn           text,
-    PRIMARY KEY ((landscape_token), timestamp)
+    PRIMARY KEY (landscape_token, timestamp)
 );

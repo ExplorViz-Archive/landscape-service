@@ -16,14 +16,10 @@ import org.junit.jupiter.api.Test;
 @QuarkusTest
 @QuarkusTestResource(CassandraTestResource.class)
 @QuarkusTestResource(KafkaTestResource.class)
-class ReactiveSpanStructureRepositoryTest {
-
-  private final ReactiveSpanStructureService reactiveSpanStructureService;
+class ReactiveSpanStructureServiceTest {
 
   @Inject
-  public ReactiveSpanStructureRepositoryTest(final ReactiveSpanStructureService reactiveSpanStructureService) {
-    this.reactiveSpanStructureService = reactiveSpanStructureService;
-  }
+  ReactiveSpanStructureService reactiveSpanStructureService;
 
   /**
    * Insert a new SpanStructure into the database.

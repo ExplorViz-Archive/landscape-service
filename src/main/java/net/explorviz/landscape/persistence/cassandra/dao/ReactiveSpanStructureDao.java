@@ -4,7 +4,7 @@ import com.datastax.oss.driver.api.mapper.annotations.Dao;
 import com.datastax.oss.driver.api.mapper.annotations.Delete;
 import com.datastax.oss.driver.api.mapper.annotations.Insert;
 import com.datastax.oss.driver.api.mapper.annotations.Select;
-import com.datastax.oss.quarkus.runtime.api.reactive.mapper.MutinyMappedReactiveResultSet;
+import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import net.explorviz.landscape.persistence.model.SpanStructure;
 
@@ -15,11 +15,11 @@ import net.explorviz.landscape.persistence.model.SpanStructure;
 public interface ReactiveSpanStructureDao {
 
   @Select
-  MutinyMappedReactiveResultSet<SpanStructure> findByToken(String landscapeToken);
+  Multi<SpanStructure> findByToken(String landscapeToken);
 
   @Select(customWhereClause = "landscape_token = :landscapeToken AND "
       + "timestamp >= :fromTs AND timestamp <= :toTs")
-  MutinyMappedReactiveResultSet<SpanStructure> findBetweenInterval(String landscapeToken,
+  Multi<SpanStructure> findBetweenInterval(String landscapeToken,
       long fromTs, long toTs);
 
   @Insert(ifNotExists = true)
