@@ -1,14 +1,24 @@
 package net.explorviz.landscape.peristence.cassandra;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import com.datastax.oss.quarkus.runtime.api.session.QuarkusCqlSession;
 import com.datastax.oss.quarkus.test.CassandraTestResource;
+
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
-import java.util.List;
-import javax.inject.Inject;
+import io.smallrye.mutiny.Uni;
+import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import net.explorviz.landscape.persistence.model.SpanStructure;
 import net.explorviz.landscape.service.cassandra.ReactiveSpanStructureService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 /**
  * Tests for the {@link ReactiveSpanStructureService}.
@@ -17,9 +27,16 @@ import org.junit.jupiter.api.Test;
 @QuarkusTestResource(CassandraTestResource.class)
 @QuarkusTestResource(KafkaTestResource.class)
 class ReactiveSpanStructureServiceTest {
+	
+  @Inject QuarkusCqlSession session;
 
   @Inject
   ReactiveSpanStructureService reactiveSpanStructureService;
+  
+  @BeforeEach
+  void truncateTables() {
+    session.execute("TRUNCATE explorviz.span_structure");
+  }
 
   /**
    * Insert a new SpanStructure into the database.
@@ -27,14 +44,15 @@ class ReactiveSpanStructureServiceTest {
   @Test
   void insertNewRetrieve() {
     final SpanStructure ss = SpanStructureHelper.randomSpanStructure();
-    System.out.println(ss);
-    this.reactiveSpanStructureService.add(ss).await().indefinitely();
+    UniAssertSubscriber<Void> uniSubscriber = this.reactiveSpanStructureService.add(ss).subscribe().withSubscriber(UniAssertSubscriber.create());
 
+    uniSubscriber.awaitItem().assertCompleted().assertItem(null);
+    
     // Retrieve
-    final SpanStructure got =
-        this.reactiveSpanStructureService.findByToken(ss.getLandscapeToken()).collect().first().await().indefinitely();
+    UniAssertSubscriber<List<SpanStructure>> uniListSubscriber =
+        this.reactiveSpanStructureService.findByToken(ss.getLandscapeToken()).collect().asList().subscribe().withSubscriber(UniAssertSubscriber.create());
 
-    Assertions.assertEquals(ss, got);
+    uniListSubscriber.awaitItem().assertCompleted().assertItem(Arrays.asList(ss));
   }
 
   /**
@@ -64,7 +82,7 @@ class ReactiveSpanStructureServiceTest {
     this.reactiveSpanStructureService.add(ss).await().indefinitely();
 
     ss.setApplicationLanguage("New App name");
-    this.reactiveSpanStructureService.add(ss).await().indefinitely();
+    this.reactiveSpanStructureService.update(ss).await().indefinitely();
 
     // Retrieve
     final SpanStructure got =
@@ -127,20 +145,46 @@ class ReactiveSpanStructureServiceTest {
 
   /**
    * Delete all entities with the same token.
+ * @throws InterruptedException 
    */
   @Test
   void deleteByToken() {
-    final List<SpanStructure> spanstrs = SpanStructureHelper.randomSpanStructures(20, true, true);
+    final List<SpanStructure> spanstrs = SpanStructureHelper.randomSpanStructures(1000, true, true);
     spanstrs.forEach(s -> this.reactiveSpanStructureService.add(s).await().indefinitely());
 
-    // Retrieve all but the first an the last in the list
     final String tok = spanstrs.get(0).getLandscapeToken();
-    this.reactiveSpanStructureService.deleteByToken(tok).await().indefinitely();
+    Uni<Void> uni = this.reactiveSpanStructureService.deleteByToken(tok);
+    
+    UniAssertSubscriber<Void> subscriber = uni.subscribe().withSubscriber(UniAssertSubscriber.create());
 
-    final List<SpanStructure> got =
-        this.reactiveSpanStructureService.findByToken(tok).collect().asList().await().indefinitely();
+	subscriber.awaitItem().assertCompleted().assertItem(null);
+        
+    Uni<List<SpanStructure>> uniFindList = this.reactiveSpanStructureService.findByToken(tok).collect().asList();
 
-    Assertions.assertEquals(0, got.size());
+	UniAssertSubscriber<List<SpanStructure>> uniFindListAssertSubscriber = uniFindList.subscribe()
+			.withSubscriber(UniAssertSubscriber.create());
+
+	uniFindListAssertSubscriber.awaitItem().assertCompleted().assertItem(new ArrayList<>());
+    
+  }
+  
+  /**
+   * Delete all entities with the same token.
+ * @throws InterruptedException 
+   */
+  @Test
+  void deleteByTokenAwaitIndef() {
+    final List<SpanStructure> spanstrs = SpanStructureHelper.randomSpanStructures(1000, true, true);
+    spanstrs.forEach(s -> this.reactiveSpanStructureService.add(s).await().indefinitely());
+
+    final String tok = spanstrs.get(0).getLandscapeToken();
+    this.reactiveSpanStructureService.deleteByToken(tok).await().indefinitely();   
+   
+        
+    List<SpanStructure> uniFindList = this.reactiveSpanStructureService.findByToken(tok).collect().asList().await().indefinitely();
+
+	Assertions.assertEquals(new ArrayList<>(), uniFindList);
+    
   }
 
 

@@ -19,6 +19,10 @@ public class ReactiveSpanStructureService {
   public Uni<Void> add(final SpanStructure spanStructure) {
     return this.spanStructureDao.flatMap(dao -> dao.insertAsync(spanStructure));
   }
+  
+  public Uni<Void> update(final SpanStructure spanStructure) {
+	    return this.spanStructureDao.flatMap(dao -> dao.update(spanStructure));
+	  }
 
   public Multi<SpanStructure> findBetweenInterval(final String landscapeToken, final long fromTs,
       final long toTs) {

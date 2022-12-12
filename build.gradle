@@ -46,31 +46,24 @@ configurations {
 sourceSets.main.java.srcDirs = ['build/classes/java/quarkus-generated-sources/avdl', 'src/main/java', 'build/generated/sources/annotationProcessor/java/main']
 
 dependencies {
-  implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
-
-  implementation enforcedPlatform("com.datastax.oss.quarkus:cassandra-quarkus-bom:${quarkusCassandraPlatformVersion}")
-
-  implementation 'io.quarkus:quarkus-container-image-jib'
+  implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")  
   
   // Base
   implementation 'io.quarkus:quarkus-resteasy-reactive'
   implementation 'io.quarkus:quarkus-resteasy-reactive-jackson'
   implementation 'io.quarkus:quarkus-scheduler'
   implementation 'io.quarkus:quarkus-smallrye-openapi'
-
   implementation 'io.quarkus:quarkus-micrometer-registry-prometheus'
+  
+    // Container Build
+  implementation 'io.quarkus:quarkus-container-image-jib'
 
   // Cassandra
-  annotationProcessor group: 'com.datastax.oss', name: 'java-driver-mapper-processor', version: "${datastaxJavaDriverVersion}"
-  
+  implementation enforcedPlatform("com.datastax.oss.quarkus:cassandra-quarkus-bom:${quarkusCassandraPlatformVersion}")  
+  annotationProcessor group: 'com.datastax.oss.quarkus', name: 'cassandra-quarkus-mapper-processor', version: "${quarkusCassandraPlatformVersion}"  
   implementation group: 'com.datastax.oss', name: 'java-driver-mapper-runtime', version: "${datastaxJavaDriverVersion}"
-
   implementation'com.datastax.oss.quarkus:cassandra-quarkus-client'
-
-
   implementation 'com.datastax.oss:java-driver-metrics-micrometer:${datastaxJavaDriverVersion}'
-    
-  testImplementation 'com.datastax.oss.quarkus:cassandra-quarkus-test-framework'
 
   // Kafka
   implementation 'io.quarkus:quarkus-kafka-streams'
@@ -90,6 +83,7 @@ dependencies {
   testImplementation 'io.rest-assured:rest-assured'
   testImplementation group: 'org.apache.kafka', name: 'kafka-streams-test-utils', version: '3.2.1'
   testImplementation "org.testcontainers:kafka:1.17.5"
+  testImplementation 'com.datastax.oss.quarkus:cassandra-quarkus-test-framework'
 
   // Integration Testing
   integrationTestImplementation 'com.datastax.oss.quarkus:cassandra-quarkus-test-framework'
