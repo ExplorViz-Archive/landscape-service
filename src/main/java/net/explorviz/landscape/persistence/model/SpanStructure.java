@@ -4,6 +4,7 @@ import com.datastax.oss.driver.api.mapper.annotations.ClusteringColumn;
 import com.datastax.oss.driver.api.mapper.annotations.CqlName;
 import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
+import com.datastax.oss.driver.api.mapper.annotations.PropertyStrategy;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,16 +13,18 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * Entity that holds structural information. Encodes a single branch in the landscape model graph,
  * were the root is the landscapeToken and the leaf the operation name.
  */
+@PropertyStrategy(mutable = false)
 @Entity
 public class SpanStructure {
 
   @PartitionKey
+  @CqlName("landscape_token")
   private String landscapeToken;
 
   @ClusteringColumn
-  private String hashCode; // NOPMD
-
   private long timestamp;
+  
+  private String hashCode; // NOPMD  
 
   private String hostName;
   private String hostIpAddress;
@@ -46,10 +49,6 @@ public class SpanStructure {
     this.instanceId = instanceId;
     this.applicationLanguage = applicationLanguage;
     this.fullyQualifiedOperationName = fullyQualifiedOperationName;
-  }
-
-  public SpanStructure() {
-    /* Object-Mapper required */
   }
 
   public String getLandscapeToken() {

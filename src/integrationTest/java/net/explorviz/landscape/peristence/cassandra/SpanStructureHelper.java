@@ -3,9 +3,13 @@ package net.explorviz.landscape.peristence.cassandra;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
-import net.explorviz.landscape.persistence.model.SpanStructure;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import net.explorviz.landscape.persistence.model.SpanStructure;
 
 public final class SpanStructureHelper {
 
@@ -60,6 +64,18 @@ public final class SpanStructureHelper {
       strs.add(ss);
     }
     return strs;
+  }
+  
+  @Test
+  void testRandomSpanStructures() {
+	  List<SpanStructure> objectInTest = randomSpanStructures(3, true, true);
+	  
+	  String token = objectInTest.get(0).getLandscapeToken();
+	  
+	  for(SpanStructure s : objectInTest) {
+		  Assertions.assertEquals(token, s.getLandscapeToken());
+	  }
+	  
   }
 
   private static String randomIp() {

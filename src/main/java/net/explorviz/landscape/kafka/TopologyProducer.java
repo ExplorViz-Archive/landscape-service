@@ -5,7 +5,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import net.explorviz.avro.SpanStructure;
-import net.explorviz.landscape.persistence.SpanStructureRepositoy;
+import net.explorviz.landscape.service.cassandra.ReactiveSpanStructureService;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
@@ -31,7 +31,7 @@ public class TopologyProducer {
   /* default */ SpecificAvroSerde<SpanStructure> structureAvroSerde; // NOCS
 
   @Inject
-  /* default */ SpanStructureRepositoy repository; // NOCS
+  /* default */ ReactiveSpanStructureService spanStructureService; // NOCS
 
   @Inject
   /* default */ SpanFilterTransformer spanTransformer; // NOCS
@@ -60,7 +60,7 @@ public class TopologyProducer {
     toBeSavedSpans.mapValues(
         avro -> new net.explorviz.landscape.persistence.model.SpanStructure.Builder().fromAvro(avro)
             .build()).foreach((k, rec) -> {
-              this.repository.add(rec).subscribeAsCompletionStage();
+              this.spanStructureService.add(rec).subscribeAsCompletionStage();
             });
 
     // END Span conversion

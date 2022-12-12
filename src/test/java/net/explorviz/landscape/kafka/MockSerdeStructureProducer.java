@@ -1,5 +1,6 @@
 package net.explorviz.landscape.kafka;
 
+import io.confluent.kafka.schemaregistry.avro.AvroSchema;
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
@@ -30,7 +31,7 @@ public class MockSerdeStructureProducer {
   public SpecificAvroSerde<SpanStructure> produceMockSpecificAvroSerde()
       throws IOException, RestClientException {
 
-    this.registry.register(this.inTopicStructure + "-value", SpanStructure.SCHEMA$);
+    this.registry.register(this.inTopicStructure + "-value", new AvroSchema(SpanStructure.SCHEMA$));
 
     final SpecificAvroSerde<SpanStructure> valueSerde = new SpecificAvroSerde<>(this.registry);
     valueSerde.configure(

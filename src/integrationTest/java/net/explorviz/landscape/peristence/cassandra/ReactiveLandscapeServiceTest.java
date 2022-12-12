@@ -1,66 +1,81 @@
 package net.explorviz.landscape.peristence.cassandra;
 
-import com.datastax.oss.quarkus.test.CassandraTestResource;
-import io.quarkus.test.common.QuarkusTestResource;
-import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.TestProfile;
+import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
-import net.explorviz.landscape.persistence.cassandra.ReactiveSpanStructureRepositoryImpl;
-import net.explorviz.landscape.persistence.model.SpanStructure;
-import net.explorviz.landscape.service.ReactiveLandscapeServiceImpl;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.datastax.oss.quarkus.test.CassandraTestResource;
+
+import io.quarkus.test.common.QuarkusTestResource;
+import io.quarkus.test.junit.QuarkusTest;
+import io.smallrye.mutiny.Uni;
+import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
+import net.explorviz.landscape.persistence.model.SpanStructure;
+import net.explorviz.landscape.service.cassandra.ReactiveLandscapeServiceImpl;
+import net.explorviz.landscape.service.cassandra.ReactiveSpanStructureService;
+
 /**
- * Tests for the {@link ReactiveSpanStructureRepositoryImpl}.
+ * Tests for the {@link ReactiveLandscapeServiceImpl} and
+ * {@link ReactiveSpanStructureService}.
  */
 @QuarkusTest
 @QuarkusTestResource(CassandraTestResource.class)
 @QuarkusTestResource(KafkaTestResource.class)
-@TestProfile(CassandraTestProfile.class)
 class ReactiveLandscapeServiceTest {
 
-  private final ReactiveLandscapeServiceImpl service;
+	// private static final Logger LOGGER =
+	// LoggerFactory.getLogger(ReactiveLandscapeServiceTest.class);
 
-  private final ReactiveSpanStructureRepositoryImpl repository;
+	@Inject
+	ReactiveLandscapeServiceImpl reactiveLandscapeService;
 
-  @Inject
-  public ReactiveLandscapeServiceTest(final ReactiveSpanStructureRepositoryImpl repository,
-      final ReactiveLandscapeServiceImpl service) {
-    this.repository = repository;
-    this.service = service;
-  }
+	@Inject
+	ReactiveSpanStructureService reactiveSpanStructureService;
 
-  @Test
-  void cloneToken() {
-    final List<SpanStructure> spanstrs = SpanStructureHelper.randomSpanStructures(20, true, true);
-    spanstrs.forEach(s -> this.repository.add(s).await().indefinitely());
+	@Test
+	void cloneToken() {
+		final List<SpanStructure> spanstrs = SpanStructureHelper.randomSpanStructures(20, true, true);
 
-    final String tok = spanstrs.get(0).getLandscapeToken();
-    final String anotherToken = "123abc";
+		spanstrs.forEach(s -> this.reactiveSpanStructureService.add(s).subscribe()
+				.withSubscriber(UniAssertSubscriber.create()).awaitItem().assertCompleted());
 
-    this.service.cloneLandscape(anotherToken, tok).collect().asList().await().indefinitely();
+		final String tok = spanstrs.get(0).getLandscapeToken();
+		final String anotherToken = "123abc";
+		
+		// transform to expected, i.e., set new token
+		spanstrs.forEach(s -> s.setLandscapeToken(anotherToken));
 
-    final List<SpanStructure> got =
-        this.repository.getAll(anotherToken).collect().asList().await().indefinitely();
+		UniAssertSubscriber<List<SpanStructure>> uniCloneAssert = this.reactiveLandscapeService
+				.cloneLandscape(anotherToken, tok).collect().asList().subscribe()
+				.withSubscriber(UniAssertSubscriber.create());
+		uniCloneAssert.awaitItem().assertCompleted().assertItem(spanstrs);
+		
+		// TODO check if old and cloned spans are in DB
+	}
 
-    Assertions.assertEquals(20, got.size());
-  }
+	@Test
+	void deleteToken() {
+		final List<SpanStructure> spanstrs = SpanStructureHelper.randomSpanStructures(20, true, true);
+		spanstrs.forEach(s -> this.reactiveSpanStructureService.add(s).await().indefinitely());
 
-  @Test
-  void deleteToken() {
-    final List<SpanStructure> spanstrs = SpanStructureHelper.randomSpanStructures(20, true, true);
-    spanstrs.forEach(s -> this.repository.add(s).await().indefinitely());
+		final String tok = spanstrs.get(0).getLandscapeToken();
 
-    final String tok = spanstrs.get(0).getLandscapeToken();
+		Uni<Void> uni = this.reactiveLandscapeService.deleteLandscape(tok);
 
-    this.service.deleteLandscape(tok).await().indefinitely();
+		UniAssertSubscriber<Void> subscriber = uni.subscribe().withSubscriber(UniAssertSubscriber.create());
 
-    final List<SpanStructure> got =
-        this.repository.getAll(tok).collect().asList().await().indefinitely();
+		subscriber.awaitItem().assertCompleted().assertItem(null);
 
-    Assertions.assertEquals(0, got.size());
-  }
+		Uni<List<SpanStructure>> uniFindList = this.reactiveSpanStructureService.findByToken(tok).collect().asList();
+
+		UniAssertSubscriber<List<SpanStructure>> uniFindListAssertSubscriber = uniFindList.subscribe()
+				.withSubscriber(UniAssertSubscriber.create());
+
+		uniFindListAssertSubscriber.awaitItem().assertCompleted().assertItem(new ArrayList<>());
+	}
 
 }
