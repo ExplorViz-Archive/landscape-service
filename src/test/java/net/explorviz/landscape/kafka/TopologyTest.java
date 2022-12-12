@@ -2,13 +2,10 @@ package net.explorviz.landscape.kafka;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
-import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
-import io.quarkus.test.junit.QuarkusTest;
 import java.util.Properties;
+
 import javax.inject.Inject;
-import net.explorviz.avro.SpanStructure;
-import net.explorviz.landscape.service.cassandra.ReactiveLandscapeService;
+
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsConfig;
@@ -19,16 +16,21 @@ import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
+import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
+import io.quarkus.test.junit.QuarkusTest;
+import net.explorviz.avro.SpanStructure;
+import net.explorviz.landscape.service.cassandra.ReactiveSpanStructureService;
 
 
 @QuarkusTest
 class TopologyTest {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(TopologyTest.class);
+  //private static final Logger LOGGER = LoggerFactory.getLogger(TopologyTest.class);
 
   private TopologyTestDriver driver;
 
@@ -44,12 +46,11 @@ class TopologyTest {
 
   @Inject
   SpecificAvroSerde<SpanStructure> spanStructureSerDe; // NOCS
-
-  @Inject
-  ReactiveLandscapeService reactiveLandscapeService;
+  
+  @Inject ReactiveSpanStructureService reactiveSpanStructureService;
 
   @BeforeEach
-  void setUp() {
+  void setUp() {	  
     final Properties config = new Properties();
     config.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
     config.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, SpecificAvroSerde.class.getName());
