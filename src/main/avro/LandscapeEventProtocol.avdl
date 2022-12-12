@@ -1,0 +1,38 @@
+@namespace("net.explorviz.avro")
+protocol LandscapeEventProtocol {
+	
+	enum EventType {
+	   CREATED,
+	   DELETED,
+	   ACCESS_GRANTED,
+	   ACCESS_REVOKED,
+	   CLONED
+	}
+	
+	record LandscapeToken {
+		string value;
+		string ownerId;
+		string secret;
+		long created;
+		string alias;
+	}
+	
+	record TokenEvent {
+		EventType type;
+		LandscapeToken token;
+		string clonedToken;
+	}
+	
+	record SpanStructure {
+		string spanId;
+		string landscapeToken;
+		long timestampInEpochMilli;
+		string hashCode;
+		string fullyQualifiedOperationName;
+		string hostname;
+		string hostIpAddress;
+		string appName;
+		string appInstanceId;
+		string appLanguage;
+	}
+}

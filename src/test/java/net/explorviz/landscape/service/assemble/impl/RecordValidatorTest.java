@@ -22,9 +22,8 @@ class RecordValidatorTest {
     final String pkg = "foo.bar";
     final String clazz = "Foo";
     final Method method = new Method("method", "1234");
-    this.validRecord =
-        new LandscapeRecord("tok", System.currentTimeMillis(), n, app, pkg, clazz, method.getName(),
-            method.getHashCode());
+    this.validRecord = new LandscapeRecord("tok", System.currentTimeMillis(), n, app, pkg, clazz,
+        method.getName(), method.getHashCode());
 
     this.validator = new RecordValidator();
   }
@@ -36,8 +35,7 @@ class RecordValidatorTest {
 
   @Test
   void noToken() {
-    final LandscapeRecord nullToken =
-        LandscapeRecord.newBuilder(this.validRecord).build();
+    final LandscapeRecord nullToken = LandscapeRecord.newBuilder(this.validRecord).build();
     nullToken.setLandscapeToken(null);
 
     final LandscapeRecord emptyToken =
@@ -56,13 +54,11 @@ class RecordValidatorTest {
     final LandscapeRecord nullNode = LandscapeRecord.newBuilder(this.validRecord).build();
     nullNode.setNode(null);
 
-    final LandscapeRecord emptyHostName =
-        LandscapeRecord.newBuilder(this.validRecord).setNode(nodeBuilder.setHostName("").build())
-            .build();
+    final LandscapeRecord emptyHostName = LandscapeRecord.newBuilder(this.validRecord)
+        .setNode(nodeBuilder.setHostName("").build()).build();
 
-    final LandscapeRecord emptyIpAddress =
-        LandscapeRecord.newBuilder(this.validRecord).setNode(nodeBuilder.setIpAddress("").build())
-            .build();
+    final LandscapeRecord emptyIpAddress = LandscapeRecord.newBuilder(this.validRecord)
+        .setNode(nodeBuilder.setIpAddress("").build()).build();
 
     for (final LandscapeRecord r : new LandscapeRecord[] {nullNode, emptyHostName,
         emptyIpAddress}) {
@@ -74,19 +70,15 @@ class RecordValidatorTest {
   void invalidApp() {
     final Application.Builder appBuilder =
         Application.newBuilder(this.validRecord.getApplication());
-    final LandscapeRecord nullApp =
-        LandscapeRecord.newBuilder(this.validRecord).build();
+    final LandscapeRecord nullApp = LandscapeRecord.newBuilder(this.validRecord).build();
     nullApp.setApplication(null);
 
 
-    final LandscapeRecord emptyAppName =
-        LandscapeRecord.newBuilder(this.validRecord).setApplication(appBuilder.setName("").build())
-            .build();
+    final LandscapeRecord emptyAppName = LandscapeRecord.newBuilder(this.validRecord)
+        .setApplication(appBuilder.setName("").build()).build();
 
-    final LandscapeRecord emptyLanguage =
-        LandscapeRecord.newBuilder(this.validRecord)
-            .setApplication(appBuilder.setLanguage("").build())
-            .build();
+    final LandscapeRecord emptyLanguage = LandscapeRecord.newBuilder(this.validRecord)
+        .setApplication(appBuilder.setLanguage("").build()).build();
 
     for (final LandscapeRecord r : new LandscapeRecord[] {nullApp, emptyAppName, emptyLanguage}) {
       Assertions.assertThrows(InvalidRecordException.class, () -> this.validator.validate(r));

@@ -1,10 +1,10 @@
-package net.explorviz.landscape.peristence.model;
+package net.explorviz.landscape.persistence.model;
 
 import com.datastax.oss.driver.api.mapper.annotations.ClusteringColumn;
 import com.datastax.oss.driver.api.mapper.annotations.CqlName;
 import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
-import java.time.Instant;
+import com.datastax.oss.driver.api.mapper.annotations.PropertyStrategy;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -13,16 +13,18 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * Entity that holds structural information. Encodes a single branch in the landscape model graph,
  * were the root is the landscapeToken and the leaf the operation name.
  */
+@PropertyStrategy(mutable = false)
 @Entity
 public class SpanStructure {
 
   @PartitionKey
+  @CqlName("landscape_token")
   private String landscapeToken;
 
   @ClusteringColumn
-  private String hashCode; // NOPMD
-
   private long timestamp;
+  
+  private String hashCode; // NOPMD  
 
   private String hostName;
   private String hostIpAddress;
@@ -34,10 +36,8 @@ public class SpanStructure {
   @CqlName("method_fqn")
   private String fullyQualifiedOperationName;
 
-
   public SpanStructure(final String landscapeToken, final long timestamp, final String hashCode,
-      final String hostName, final String hostIpAddress,
-      final String applicationName,
+      final String hostName, final String hostIpAddress, final String applicationName,
       final String instanceId, final String applicationLanguage,
       final String fullyQualifiedOperationName) {
     this.landscapeToken = landscapeToken;
@@ -50,8 +50,6 @@ public class SpanStructure {
     this.applicationLanguage = applicationLanguage;
     this.fullyQualifiedOperationName = fullyQualifiedOperationName;
   }
-
-  public SpanStructure() { /* Object-Mapper required */ }
 
   public String getLandscapeToken() {
     return this.landscapeToken;
@@ -125,20 +123,14 @@ public class SpanStructure {
     this.fullyQualifiedOperationName = fullyQualifiedOperationName;
   }
 
-
   @Override
   public String toString() {
-    return new ToStringBuilder(this)
-        .append("landscapeToken", this.landscapeToken)
-        .append("timestamp", this.timestamp)
-        .append("hashCode", this.hashCode)
-        .append("hostName", this.hostName)
-        .append("hostIpAddress", this.hostIpAddress)
-        .append("applicationName", this.applicationName)
-        .append("instanceId", this.instanceId)
+    return new ToStringBuilder(this).append("landscapeToken", this.landscapeToken)
+        .append("timestamp", this.timestamp).append("hashCode", this.hashCode)
+        .append("hostName", this.hostName).append("hostIpAddress", this.hostIpAddress)
+        .append("applicationName", this.applicationName).append("instanceId", this.instanceId)
         .append("applicationLanguage", this.applicationLanguage)
-        .append("fullyQualifiedOperationName", this.fullyQualifiedOperationName)
-        .toString();
+        .append("fullyQualifiedOperationName", this.fullyQualifiedOperationName).toString();
   }
 
   @Override
@@ -164,10 +156,9 @@ public class SpanStructure {
   @Override
   public int hashCode() {
     return new HashCodeBuilder(17, 37).append(this.landscapeToken).append(this.timestamp) // NOCS
-        .append(this.hashCode)
-        .append(this.hostName).append(this.hostIpAddress).append(this.applicationName)
-        .append(this.instanceId)
-        .append(this.applicationLanguage).append(this.fullyQualifiedOperationName).toHashCode();
+        .append(this.hashCode).append(this.hostName).append(this.hostIpAddress)
+        .append(this.applicationName).append(this.instanceId).append(this.applicationLanguage)
+        .append(this.fullyQualifiedOperationName).toHashCode();
   }
 
   /**
@@ -186,10 +177,7 @@ public class SpanStructure {
     private String fqn;
 
     public Builder fromAvro(final net.explorviz.avro.SpanStructure avro) {
-      this.timestamp =
-          Instant
-              .ofEpochSecond(avro.getTimestamp().getSeconds(), avro.getTimestamp().getNanoAdjust())
-              .toEpochMilli();
+      this.timestamp = avro.getTimestampInEpochMilli();
 
       this.landscapeToken = avro.getLandscapeToken();
       this.hashCode = avro.getHashCode();
@@ -249,11 +237,10 @@ public class SpanStructure {
 
     public SpanStructure build() {
       return new SpanStructure(this.landscapeToken, this.timestamp, this.hashCode, this.hostName,
-          this.hostIpAddress,
-          this.applicationName, this.instanceId, this.applicationLanguage, this.fqn);
+          this.hostIpAddress, this.applicationName, this.instanceId, this.applicationLanguage,
+          this.fqn);
     }
 
   }
-
 
 }

@@ -1,8 +1,7 @@
 plugins {
   id 'java'
   id 'io.quarkus'
-  id 'com.adarshr.test-logger' version '2.1.0'
-  id 'com.github.davidmc24.gradle.plugin.avro' version '1.2.0'
+  id 'com.adarshr.test-logger' version '3.2.0'
 }
 
 apply from: 'buildscripts/code-analysis.gradle'
@@ -10,7 +9,6 @@ apply from: 'buildscripts/code-analysis.gradle'
 repositories {
   mavenLocal()
   mavenCentral()
-  jcenter()
   maven {
     url "https://packages.confluent.io/maven/"
   }
@@ -33,6 +31,21 @@ task integrationTest(type: Test) {
   shouldRunAfter test
 }
 
+jacocoTestReport {
+  dependsOn test
+
+  afterEvaluate {
+    classDirectories.setFrom(files(classDirectories.files.collect {
+      fileTree(dir: it, exclude: [
+              "**/*MapperGenerated*",
+              "**/SpanStructureMapperBuilder.*",
+              "**/SpanStructureDaoProducer.*",
+              "**/SpanStructureMapper.*",
+              "**/SpanStructureDaoProducer.*"
+      ])
+    }))
+  }
+}
 jacocoTestReport.dependsOn integrationTest
 
 check.dependsOn integrationTest
@@ -46,61 +59,55 @@ configurations {
 }
 
 
-
-
 // Add generated avro sources to main source sets
-sourceSets.main.java.srcDirs = ['build/generated-main-avro-java', 'src/main/java', 'build/generated/sources/annotationProcessor/java/main']
-
-// Fix: com.datastax.oss:* uses old, mandatory Groovy version
-configurations.all {
-  resolutionStrategy.force group: 'org.codehaus.groovy', name: 'groovy-json', version: '2.5.7'
-  resolutionStrategy.force group: 'org.codehaus.groovy', name: 'groovy', version: '2.5.7'
-}
+sourceSets.main.java.srcDirs = ['build/classes/java/quarkus-generated-sources/avdl', 'src/main/java', 'build/generated/sources/annotationProcessor/java/main']
 
 dependencies {
-  implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
-
+  implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")  
+  
+  // Base
+  implementation 'io.quarkus:quarkus-resteasy-reactive'
+  implementation 'io.quarkus:quarkus-resteasy-reactive-jackson'
+  implementation 'io.quarkus:quarkus-scheduler'
+  implementation 'io.quarkus:quarkus-smallrye-openapi'
+  implementation 'io.quarkus:quarkus-micrometer-registry-prometheus'
+  
+    // Container Build
   implementation 'io.quarkus:quarkus-container-image-jib'
 
-  // Base
-  implementation 'io.quarkus:quarkus-resteasy'
-  implementation 'io.quarkus:quarkus-scheduler'
-  implementation 'io.quarkus:quarkus-resteasy-jackson'
-  implementation 'io.quarkus:quarkus-smallrye-openapi'
-  implementation 'io.quarkus:quarkus-resteasy-mutiny'
-
   // Cassandra
-  annotationProcessor group: 'com.datastax.oss', name: 'java-driver-mapper-processor', version: '4.10.0'
-  implementation group: 'com.datastax.oss', name: 'java-driver-mapper-runtime', version: '4.10.0'
-  implementation 'com.datastax.oss.quarkus:cassandra-quarkus-client'
-  testImplementation 'com.datastax.oss.quarkus:cassandra-quarkus-test-framework'
+  implementation enforcedPlatform("com.datastax.oss.quarkus:cassandra-quarkus-bom:${quarkusCassandraPlatformVersion}")  
+  annotationProcessor group: 'com.datastax.oss.quarkus', name: 'cassandra-quarkus-mapper-processor', version: "${quarkusCassandraPlatformVersion}"  
+  implementation group: 'com.datastax.oss', name: 'java-driver-mapper-runtime', version: "${datastaxJavaDriverVersion}"
+  implementation'com.datastax.oss.quarkus:cassandra-quarkus-client'
+  implementation 'com.datastax.oss:java-driver-metrics-micrometer:${datastaxJavaDriverVersion}'
 
   // Kafka
   implementation 'io.quarkus:quarkus-kafka-streams'
   implementation 'io.quarkus:quarkus-kafka-client'
-  implementation group: 'io.confluent', name: 'kafka-avro-serializer', version: '5.5.0'
-  implementation group: 'io.confluent', name: 'kafka-streams-avro-serde', version: '5.5.0'
+  implementation 'io.quarkus:quarkus-confluent-registry-avro'
+  implementation group: 'io.confluent', name: 'kafka-avro-serializer', version: '7.2.1'
+  implementation group: 'io.confluent', name: 'kafka-streams-avro-serde', version: '7.2.1'
   implementation 'io.quarkus:quarkus-avro'
   implementation group: 'io.quarkus', name: 'quarkus-smallrye-reactive-messaging-kafka'
 
   // Utility
-  implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
-  implementation group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'
+  implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 
   // Tests
   testImplementation 'io.quarkus:quarkus-junit5'
   testImplementation "org.mockito:mockito-core:2.+"
   testImplementation 'io.rest-assured:rest-assured'
-  testImplementation "org.testcontainers:kafka:1.15.2"
+  testImplementation group: 'org.apache.kafka', name: 'kafka-streams-test-utils', version: '3.2.1'
+  testImplementation "org.testcontainers:kafka:1.17.5"
+  testImplementation 'com.datastax.oss.quarkus:cassandra-quarkus-test-framework'
 
   // Integration Testing
   integrationTestImplementation 'com.datastax.oss.quarkus:cassandra-quarkus-test-framework'
-  integrationTestImplementation "org.testcontainers:kafka:1.15.2"
+  integrationTestImplementation "org.testcontainers:kafka:1.17.5"
   integrationTestImplementation 'io.quarkus:quarkus-junit5'
   integrationTestImplementation 'org.mockito:mockito-junit-jupiter'
-  integrationTestImplementation group: 'org.apache.kafka', name: 'kafka-streams-test-utils', version: '2.4.1'
-
-
+  integrationTestImplementation group: 'org.apache.kafka', name: 'kafka-streams-test-utils', version: '3.3.1'
 }
 
 group 'net.explorviz'

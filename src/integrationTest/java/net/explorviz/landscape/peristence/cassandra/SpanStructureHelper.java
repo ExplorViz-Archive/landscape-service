@@ -3,9 +3,13 @@ package net.explorviz.landscape.peristence.cassandra;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
-import net.explorviz.landscape.peristence.model.SpanStructure;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import net.explorviz.landscape.persistence.model.SpanStructure;
 
 public final class SpanStructureHelper {
 
@@ -22,13 +26,11 @@ public final class SpanStructureHelper {
     final SpanStructure.Builder builder = new SpanStructure.Builder();
     builder.withLandscapeToken(RandomStringUtils.randomAlphanumeric(32))
         .withTimestamp(RandomUtils.nextInt(1_614_591_055, 1_714_591_055))
-        .withHostIpAddress(randomIp())
-        .withHostName(RandomStringUtils.randomAlphabetic(10))
+        .withHostIpAddress(randomIp()).withHostName(RandomStringUtils.randomAlphabetic(10))
         .withApplicationName(RandomStringUtils.randomAlphabetic(10))
         .withInstanceId(RandomStringUtils.randomNumeric(3))
         .withHashCode(RandomStringUtils.randomAlphanumeric(32))
-        .withApplicationLanguage(RandomStringUtils.randomAlphabetic(5))
-        .withFqn(randomFqn());
+        .withApplicationLanguage(RandomStringUtils.randomAlphabetic(5)).withFqn(randomFqn());
 
     return builder.build();
   }
@@ -62,6 +64,18 @@ public final class SpanStructureHelper {
       strs.add(ss);
     }
     return strs;
+  }
+  
+  @Test
+  void testRandomSpanStructures() {
+	  List<SpanStructure> objectInTest = randomSpanStructures(3, true, true);
+	  
+	  String token = objectInTest.get(0).getLandscapeToken();
+	  
+	  for(SpanStructure s : objectInTest) {
+		  Assertions.assertEquals(token, s.getLandscapeToken());
+	  }
+	  
   }
 
   private static String randomIp() {

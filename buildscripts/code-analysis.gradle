@@ -4,7 +4,7 @@ apply plugin: 'jacoco'
 
 jacocoTestReport {
 
- executionData { tasks.withType(Test).findAll { it.jacoco.destinationFile.exists() }*.jacoco.destinationFile }
+  executionData { tasks.withType(Test).findAll { it.jacoco.destinationFile.exists() }*.jacoco.destinationFile }
 
   reports {
     xml.enabled true
@@ -12,19 +12,17 @@ jacocoTestReport {
   }
 }
 
-
-
 pmd {
   // Empty ruleset is necessary for exclude-pattern
   // https://stackoverflow.com/questions/32247190/pmd-exclude-pattern-with-gradle
   ruleSets = []
   ruleSetFiles = files("code-analysis/pmd.xml")
   ignoreFailures = false
-  toolVersion = "6.7.0"
+  toolVersion = "6.41.0"
 }
 
 checkstyle {
-  configDir = file("code-analysis")
+  configDirectory = file("code-analysis")
   configFile = file("code-analysis/checkstyle.xml")
   maxWarnings = 0
   ignoreFailures = false

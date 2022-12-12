@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.util.List;
 import net.explorviz.avro.landscape.flat.LandscapeRecord;
 
-
 /**
  * Loads sample {@link LandscapeRecord} objects out of a json file located in the resources
  * directory. Used for testing/debugging only.
@@ -17,8 +16,9 @@ public final class SampleLoader {
 
   private static final String SIMPLE = "samples/sampleApplicationRecords.json";
 
-  private SampleLoader() {/* Utility */}
-
+  private SampleLoader() {
+    /* Utility */
+  }
 
   /**
    * Loads a list of {@link LandscapeRecord} from file {@code sampleApplicationRecords.json}. This
@@ -28,13 +28,11 @@ public final class SampleLoader {
    * @throws IOException if the list could not be loaded
    */
   public static List<LandscapeRecord> loadSampleApplication() throws IOException {
-    final InputStream recordInputStream =
+    final InputStream recordInputStream = // NOPMD
         Thread.currentThread().getContextClassLoader().getResourceAsStream(SIMPLE);
 
     final ObjectMapper mapper = new JsonMapper();
     return mapper.readValue(recordInputStream, new TypeReference<List<LandscapeRecord>>() {});
   }
-
-
 
 }

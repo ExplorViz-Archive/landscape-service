@@ -1,0 +1,24 @@
+@namespace("net.explorviz.avro.landscape.flat")
+protocol LandscapFlatProtocol {
+	record Node {
+		string ipAddress;
+		string hostName;
+	}
+	
+	record Application {
+		string name;
+		string instanceId;
+		string language = "java";
+	}
+	
+	record LandscapeRecord {
+		string landscapeToken;
+		long timestamp;
+		Node node;
+		Application application;
+		string package;
+		string class;
+		string method;
+		string hashCode;
+	}	
+}

@@ -1,10 +1,10 @@
-package net.explorviz.landscape.service;
+package net.explorviz.landscape.service.cassandra;
 
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
+import java.time.Instant;
 import net.explorviz.avro.landscape.model.Landscape;
-import net.explorviz.landscape.peristence.model.SpanStructure;
-import net.explorviz.landscape.service.assemble.LandscapeAssemblyException;
+import net.explorviz.landscape.persistence.model.SpanStructure;
 
 /**
  * Service for building landscape graphs out of a set of flat records.
@@ -17,11 +17,9 @@ public interface ReactiveLandscapeService {
    * @param landscapeToken the token of the landscape to assemble
    * @return the landscape assembled out of all records associated to the given token
    */
-  default Uni<Landscape> buildLandscape(final String landscapeToken)
-      throws LandscapeAssemblyException {
-    return this.buildLandscapeBetween(landscapeToken, 0, System.currentTimeMillis());
+  default Uni<Landscape> buildLandscape(final String landscapeToken) {
+    return this.buildLandscapeBetween(landscapeToken, 0, Instant.now().toEpochMilli());
   }
-
 
   /**
    * Assembles the landscape with the given token using all known records that were discovered at
@@ -33,10 +31,8 @@ public interface ReactiveLandscapeService {
    * @return the landscape assembled out of all records with the given token and matching the time
    *         constraint
    */
-  default Uni<Landscape> buildLandscapeFrom(final String landscapeToken, final long fromTimestamp)
-      throws LandscapeAssemblyException {
-    return this
-        .buildLandscapeBetween(landscapeToken, fromTimestamp, System.currentTimeMillis());
+  default Uni<Landscape> buildLandscapeFrom(final String landscapeToken, final long fromTimestamp) {
+    return this.buildLandscapeBetween(landscapeToken, fromTimestamp, System.currentTimeMillis());
   }
 
   /**
@@ -49,8 +45,7 @@ public interface ReactiveLandscapeService {
    * @return the landscape assembled out of all records with the given token and matching the time
    *         constraint
    */
-  default Uni<Landscape> buildLandscapeTo(final String landscapeToken, final long toTimestamp)
-      throws LandscapeAssemblyException {
+  default Uni<Landscape> buildLandscapeTo(final String landscapeToken, final long toTimestamp) {
     return this.buildLandscapeBetween(landscapeToken, 0, toTimestamp);
   }
 
@@ -66,9 +61,7 @@ public interface ReactiveLandscapeService {
    * @return the landscape assembled out of all records with the given token and matching the time
    *         constraint
    */
-  Uni<Landscape> buildLandscapeBetween(String landscapeToken, long from, long to)
-      throws LandscapeAssemblyException;
-
+  Uni<Landscape> buildLandscapeBetween(String landscapeToken, long from, long to);
 
   /**
    * Deletes the complete landscape with the given token, if it exists. If there is no landscape

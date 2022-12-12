@@ -11,7 +11,7 @@ import net.explorviz.avro.landscape.flat.Node;
 @ApplicationScoped
 public class RecordValidator {
 
-  public void validate(final LandscapeRecord record) throws InvalidRecordException {
+  public void validate(final LandscapeRecord record) {
     this.validateToken(record.getLandscapeToken());
     this.validateNode(record.getNode());
     this.validateApplication(record.getApplication());
@@ -19,14 +19,13 @@ public class RecordValidator {
     this.validateClass(record.getClass$());
   }
 
-
-  private void validateToken(final String token) throws InvalidRecordException {
+  private void validateToken(final String token) {
     if (token == null || token.length() == 0) {
       throw new InvalidRecordException("Record has no token");
     }
   }
 
-  private void validateNode(final Node node) throws InvalidRecordException {
+  private void validateNode(final Node node) {
     if (node == null) {
       throw new InvalidRecordException("Record has no node");
     }
@@ -39,7 +38,7 @@ public class RecordValidator {
     }
   }
 
-  private void validateApplication(final Application app) throws InvalidRecordException { // NOPMD
+  private void validateApplication(final Application app) {
     if (app == null) {
       throw new InvalidRecordException("Record has no application");
     }
@@ -52,13 +51,13 @@ public class RecordValidator {
     }
   }
 
-  private void validatePackage(final String pkg) throws InvalidRecordException {
+  private void validatePackage(final String pkg) {
     if (pkg == null || pkg.length() == 0) {
       throw new InvalidRecordException("A package is required");
     }
   }
 
-  private void validateClass(final String clazz) throws InvalidRecordException {
+  private void validateClass(final String clazz) {
     if (clazz == null || clazz.length() == 0) {
       throw new InvalidRecordException("A class is required");
     }
