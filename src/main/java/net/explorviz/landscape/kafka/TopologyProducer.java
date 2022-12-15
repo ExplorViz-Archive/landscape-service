@@ -4,7 +4,8 @@ import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
-import net.explorviz.avro.SpanStructure;
+import net.explorviz.avro.Span;
+import net.explorviz.landscape.service.HashHelper;
 import net.explorviz.landscape.service.cassandra.ReactiveSpanStructureService;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -28,7 +29,7 @@ public class TopologyProducer {
   /* default */ String inTopic; // NOCS
 
   @Inject
-  /* default */ SpecificAvroSerde<SpanStructure> structureAvroSerde; // NOCS
+  /* default */ SpecificAvroSerde<Span> spanAvroSerde; // NOCS
 
   @Inject
   /* default */ ReactiveSpanStructureService spanStructureService; // NOCS
@@ -49,11 +50,18 @@ public class TopologyProducer {
 
     // BEGIN Span conversion
 
-    // Span Structure stream
-    final KStream<String, SpanStructure> spanStream = builder.stream(this.inTopic,
-        Consumed.with(Serdes.String(), this.structureAvroSerde));
+    // Span stream
+    final KStream<String, Span> spanStream = builder.stream(this.inTopic,
+        Consumed.with(Serdes.String(), this.spanAvroSerde));
 
-    final KStream<String, SpanStructure> toBeSavedSpans = spanStream.transform(
+    // Generate HashCode
+    final KStream<String, Span> spanStreamWithHashCodes = spanStream.mapValues(
+        (readOnlyKey, value) -> {
+          value.setHashCode(HashHelper.createHash(value));
+          return value;
+        });
+
+    final KStream<String, Span> toBeSavedSpans = spanStreamWithHashCodes.transform(
         () -> spanTransformer, KEY_VALUE_STORE_NAME);
 
     // TODO: How to handle failures in dao? Use insert(...).onFailure() to handle

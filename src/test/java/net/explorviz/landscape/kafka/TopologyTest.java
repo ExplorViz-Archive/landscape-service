@@ -2,10 +2,15 @@ package net.explorviz.landscape.kafka;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
+import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
+import io.quarkus.test.junit.QuarkusTest;
 import java.util.Properties;
-
 import javax.inject.Inject;
-
+import net.explorviz.avro.Span;
+import net.explorviz.landscape.service.HashHelper;
+import net.explorviz.landscape.service.cassandra.ReactiveSpanStructureService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsConfig;
@@ -16,15 +21,8 @@ import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
-import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
-import io.quarkus.test.junit.QuarkusTest;
-import net.explorviz.avro.SpanStructure;
-import net.explorviz.landscape.service.cassandra.ReactiveSpanStructureService;
 
 
 @QuarkusTest
@@ -34,7 +32,7 @@ class TopologyTest {
 
   private TopologyTestDriver driver;
 
-  private TestInputTopic<String, SpanStructure> inputTopic;
+  private TestInputTopic<String, Span> inputTopic;
 
   private ReadOnlyKeyValueStore<String, Integer> spanKeyValueStore;
 
@@ -45,7 +43,7 @@ class TopologyTest {
   Topology topology;
 
   @Inject
-  SpecificAvroSerde<SpanStructure> spanStructureSerDe; // NOCS
+  SpecificAvroSerde<Span> spanStructureSerDe; // NOCS
   
   @Inject ReactiveSpanStructureService reactiveSpanStructureService;
 
@@ -70,22 +68,31 @@ class TopologyTest {
     this.driver.close();
   }
 
-  private SpanStructure sampleSpanStructure() {
+  private Span sampleSpanStructure() {
 
     // CHECKSTYLE:OFF
 
-    return SpanStructure.newBuilder().setSpanId("testSpanId")
-        .setLandscapeToken("testLandscapeToken").setTimestampInEpochMilli(123L)
-        .setHashCode("testHashcode").setHostname("testHost").setHostIpAddress("testIp")
-        .setAppName("testAppName").setAppInstanceId("testAppInstanceId")
-        .setFullyQualifiedOperationName("testFqn").setAppLanguage("testAppLanguage").build();
+    return Span.newBuilder()
+        .setLandscapeToken(RandomStringUtils.random(8, true, true))
+        .setSpanId(RandomStringUtils.random(8, true, true))
+        .setParentSpanId(RandomStringUtils.random(8, true, true))
+        .setTraceId(RandomStringUtils.random(8, true, false))
+        .setStartTimeEpochMilli(123l)
+        .setEndTimeEpochMilli(123l)
+        .setFullyQualifiedOperationName(RandomStringUtils.random(8, true, true))
+        .setHostname(RandomStringUtils.randomAlphabetic(10))
+        .setHostIpAddress(RandomStringUtils.random(8, true, true))
+        .setAppName(RandomStringUtils.randomAlphabetic(10))
+        .setAppInstanceId(RandomStringUtils.randomNumeric(3))
+        .setAppLanguage(RandomStringUtils.randomAlphabetic(5))
+        .build();
 
     // CHECKSTYLE:ON
   }
 
   @Test
   void testSingleSpanInCache() {
-    final SpanStructure testSpan = this.sampleSpanStructure();
+    final Span testSpan = this.sampleSpanStructure();
     this.inputTopic.pipeInput(testSpan.getLandscapeToken(), testSpan);
 
     int numberOfRecordsInStore = 0;
@@ -96,12 +103,12 @@ class TopologyTest {
     }
 
     assertEquals(1, numberOfRecordsInStore);
-    assertEquals(1, spanKeyValueStore.get(testSpan.getHashCode()));
+    assertEquals(1, spanKeyValueStore.get(HashHelper.createHash(testSpan)));
   }
 
   @Test
   void testSameHashCodeOnlyOnceInCash() {
-    final SpanStructure testSpan = this.sampleSpanStructure();
+    final Span testSpan = this.sampleSpanStructure();
 
     for(int i = 0; i <= 100; i++) {
       this.inputTopic.pipeInput(testSpan.getLandscapeToken(), testSpan);
@@ -115,30 +122,24 @@ class TopologyTest {
     }
 
     assertEquals(1, numberOfRecordsInStore);
-    assertEquals(1, spanKeyValueStore.get(testSpan.getHashCode()));
+    assertEquals(1, spanKeyValueStore.get(HashHelper.createHash(testSpan)));
   }
 
   @Test
   void testMultipleHashCodesOnlyOnceInCash() {
-    final SpanStructure testSpan1 = this.sampleSpanStructure();
+    final Span testSpan1 = this.sampleSpanStructure();
 
-    final SpanStructure testSpan2 = this.sampleSpanStructure();
-    testSpan2.setHashCode("testSpan2");
+    final Span testSpan2 = this.sampleSpanStructure();
 
-    final SpanStructure testSpan3 = this.sampleSpanStructure();
-    testSpan3.setHashCode("testSpan3");
+    final Span testSpan3 = this.sampleSpanStructure();
 
-    final SpanStructure testSpan4 = this.sampleSpanStructure();
-    testSpan4.setHashCode("testSpan4");
-
-    final SpanStructure testSpan11 = this.sampleSpanStructure();
+    final Span testSpan4 = this.sampleSpanStructure();
 
     for(int i = 0; i <= 100; i++) {
       this.inputTopic.pipeInput(testSpan1.getLandscapeToken(), testSpan1);
       this.inputTopic.pipeInput(testSpan1.getLandscapeToken(), testSpan2);
       this.inputTopic.pipeInput(testSpan1.getLandscapeToken(), testSpan3);
       this.inputTopic.pipeInput(testSpan1.getLandscapeToken(), testSpan4);
-      this.inputTopic.pipeInput(testSpan1.getLandscapeToken(), testSpan11);
     }
 
     int numberOfRecordsInStore = 0;
@@ -149,10 +150,10 @@ class TopologyTest {
     }
 
     assertEquals(4, numberOfRecordsInStore);
-    assertEquals(1, spanKeyValueStore.get(testSpan1.getHashCode()));
-    assertEquals(1, spanKeyValueStore.get(testSpan2.getHashCode()));
-    assertEquals(1, spanKeyValueStore.get(testSpan3.getHashCode()));
-    assertEquals(1, spanKeyValueStore.get(testSpan4.getHashCode()));
+    assertEquals(1, spanKeyValueStore.get(HashHelper.createHash(testSpan1)));
+    assertEquals(1, spanKeyValueStore.get(HashHelper.createHash(testSpan2)));
+    assertEquals(1, spanKeyValueStore.get(HashHelper.createHash(testSpan3)));
+    assertEquals(1, spanKeyValueStore.get(HashHelper.createHash(testSpan4)));
   }
 
 

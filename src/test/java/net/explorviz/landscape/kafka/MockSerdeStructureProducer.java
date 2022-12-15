@@ -11,7 +11,7 @@ import java.util.Map;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
-import net.explorviz.avro.SpanStructure;
+import net.explorviz.avro.Span;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 /**
@@ -28,12 +28,12 @@ public class MockSerdeStructureProducer {
 
   @Produces
   @IfBuildProfile("test")
-  public SpecificAvroSerde<SpanStructure> produceMockSpecificAvroSerde()
+  public SpecificAvroSerde<Span> produceMockSpecificAvroSerde()
       throws IOException, RestClientException {
 
-    this.registry.register(this.inTopicStructure + "-value", new AvroSchema(SpanStructure.SCHEMA$));
+    this.registry.register(this.inTopicStructure + "-value", new AvroSchema(Span.SCHEMA$));
 
-    final SpecificAvroSerde<SpanStructure> valueSerde = new SpecificAvroSerde<>(this.registry);
+    final SpecificAvroSerde<Span> valueSerde = new SpecificAvroSerde<>(this.registry);
     valueSerde.configure(
         Map.of(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://registry:1234"),
         false);

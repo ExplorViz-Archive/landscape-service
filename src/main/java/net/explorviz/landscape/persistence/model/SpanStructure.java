@@ -5,6 +5,7 @@ import com.datastax.oss.driver.api.mapper.annotations.CqlName;
 import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
 import com.datastax.oss.driver.api.mapper.annotations.PropertyStrategy;
+import net.explorviz.avro.Span;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -176,8 +177,8 @@ public class SpanStructure {
     private String applicationLanguage;
     private String fqn;
 
-    public Builder fromAvro(final net.explorviz.avro.SpanStructure avro) {
-      this.timestamp = avro.getTimestampInEpochMilli();
+    public Builder fromAvro(final Span avro) {
+      this.timestamp = avro.getStartTimeEpochMilli();
 
       this.landscapeToken = avro.getLandscapeToken();
       this.hashCode = avro.getHashCode();
