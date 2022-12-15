@@ -6,7 +6,7 @@ import io.micrometer.core.instrument.Tag;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import net.explorviz.avro.SpanStructure;
+import net.explorviz.avro.Span;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.Transformer;
 import org.apache.kafka.streams.processor.ProcessorContext;
@@ -17,7 +17,7 @@ import org.apache.kafka.streams.state.KeyValueStore;
  */
 @ApplicationScoped
 public class SpanFilterTransformer implements
-    Transformer<String, SpanStructure, KeyValue<String, SpanStructure>> {
+    Transformer<String, Span, KeyValue<String, Span>> {
 
   private static final String METRIC_TAG_TASK_ID_KEY = "task_id";
   private static final String METRIC_TAG_PARTITION_ID_KEY = "partition_id";
@@ -56,7 +56,7 @@ public class SpanFilterTransformer implements
   }
 
   @Override
-  public KeyValue<String, SpanStructure> transform(final String key, final SpanStructure value) {
+  public KeyValue<String, Span> transform(final String key, final Span value) {
     counterAllSpans.increment();
     if (alreadySavedSpans.get(value.getHashCode()) == null) {
       alreadySavedSpans.put(value.getHashCode(), 1);
