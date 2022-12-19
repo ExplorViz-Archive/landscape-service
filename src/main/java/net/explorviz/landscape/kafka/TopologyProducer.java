@@ -1,10 +1,13 @@
 package net.explorviz.landscape.kafka;
 
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
+
 import net.explorviz.avro.Span;
+import net.explorviz.landscape.persistence.model.SpanStructure;
 import net.explorviz.landscape.service.HashHelper;
 import net.explorviz.landscape.service.cassandra.ReactiveSpanStructureService;
 import org.apache.kafka.common.serialization.Serdes;
@@ -16,6 +19,8 @@ import org.apache.kafka.streams.state.KeyValueStore;
 import org.apache.kafka.streams.state.StoreBuilder;
 import org.apache.kafka.streams.state.Stores;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Builds a KafkaStream topology instance with all its transformers. Entry point of the stream
@@ -23,6 +28,8 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
  */
 @ApplicationScoped
 public class TopologyProducer {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(TopologyProducer.class);
 
   private static final String KEY_VALUE_STORE_NAME = "cachedSpans";
 
@@ -66,12 +73,15 @@ public class TopologyProducer {
     final KStream<String, Span> toBeSavedSpans = spanStreamWithHashCodes.transform(
         () -> spanTransformer, KEY_VALUE_STORE_NAME);
 
-    // TODO: How to handle failures in dao? Use insert(...).onFailure() to handle
-    toBeSavedSpans.mapValues(
-        avro -> new net.explorviz.landscape.persistence.model.SpanStructure.Builder().fromAvro(avro)
-            .build()).foreach((k, rec) -> {
-              this.spanStructureService.add(rec).subscribeAsCompletionStage();
-            });
+    toBeSavedSpans
+        .mapValues(avro -> new SpanStructure.Builder().fromAvro(avro).build())
+        .foreach((k, rec) ->
+            this.spanStructureService.add(rec).subscribe().with(unused -> {
+            }, failure -> {
+                if (LOGGER.isErrorEnabled()) {
+                  LOGGER.error("Could not persist structure", failure);
+                }
+              }));
 
     // END Span conversion
 
