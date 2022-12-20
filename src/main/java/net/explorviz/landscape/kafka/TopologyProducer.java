@@ -12,6 +12,7 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.state.KeyValueStore;
 import org.apache.kafka.streams.state.StoreBuilder;
 import org.apache.kafka.streams.state.Stores;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -43,7 +44,7 @@ public class TopologyProducer {
     final StreamsBuilder builder = new StreamsBuilder();
 
     // create store
-    final StoreBuilder storeBuilder = Stores.keyValueStoreBuilder(
+    final StoreBuilder<KeyValueStore<String, Integer>> storeBuilder = Stores.keyValueStoreBuilder(
         Stores.persistentKeyValueStore(KEY_VALUE_STORE_NAME), Serdes.String(), Serdes.Integer());
     // register store
     builder.addStateStore(storeBuilder);
@@ -61,6 +62,7 @@ public class TopologyProducer {
           return value;
         });
 
+    // TODO: Replace deprecated transform() with process()
     final KStream<String, Span> toBeSavedSpans = spanStreamWithHashCodes.transform(
         () -> spanTransformer, KEY_VALUE_STORE_NAME);
 

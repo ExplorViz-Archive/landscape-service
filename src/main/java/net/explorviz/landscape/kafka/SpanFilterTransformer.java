@@ -38,7 +38,7 @@ public class SpanFilterTransformer implements
   @Override
   public void init(final ProcessorContext context) {
 
-    this.alreadySavedSpans = (KeyValueStore<String, Integer>) context.getStateStore("cachedSpans");
+    this.alreadySavedSpans = context.getStateStore("cachedSpans");
 
     counterAllSpans = this.registry.counter(METRIC_NAME_RECEIVED_SPANS,
         List.of(Tag.of(METRIC_TAG_TASK_ID_KEY, context.taskId().toString()),

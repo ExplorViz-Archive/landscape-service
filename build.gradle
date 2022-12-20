@@ -4,7 +4,7 @@ plugins {
   id 'com.adarshr.test-logger' version '3.2.0'
 }
 
-apply from: 'buildscripts/code-analysis.gradle'
+apply from: 'code-analysis/code-analysis.gradle'
 
 repositories {
   mavenLocal()
@@ -37,11 +37,11 @@ jacocoTestReport {
   afterEvaluate {
     classDirectories.setFrom(files(classDirectories.files.collect {
       fileTree(dir: it, exclude: [
-              "**/*MapperGenerated*",
-              "**/SpanStructureMapperBuilder.*",
-              "**/SpanStructureDaoProducer.*",
-              "**/SpanStructureMapper.*",
-              "**/SpanStructureDaoProducer.*"
+          "**/*MapperGenerated*",
+          "**/SpanStructureMapperBuilder.*",
+          "**/SpanStructureDaoProducer.*",
+          "**/SpanStructureMapper.*",
+          "**/SpanStructureDaoProducer.*"
       ])
     }))
   }
@@ -111,7 +111,7 @@ dependencies {
 }
 
 group 'net.explorviz'
-version '1.0.0-SNAPSHOT'
+version '1.0-SNAPSHOT'
 
 compileJava {
   options.encoding = 'UTF-8'
@@ -125,6 +125,12 @@ compileTestJava {
 java {
   sourceCompatibility = JavaVersion.VERSION_11
   targetCompatibility = JavaVersion.VERSION_11
+}
+
+tasks.withType(JavaCompile) {
+  // Turn on all javac warnings instead of classfile and processing, which produces many false-positives about
+  // annotations and cast which is triggered by the auto-generated Dao implementations
+  options.compilerArgs << "-Xlint:all" << "-Xlint:-classfile" << "-Xlint:-processing" << "-Xlint:-cast"
 }
 
 test {
