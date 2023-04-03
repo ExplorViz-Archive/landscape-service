@@ -24,6 +24,13 @@ public class ReactiveLandscapeServiceImpl implements ReactiveLandscapeService {
   private final LandscapeAssembler assembler;
   private final SpanToRecordConverter converter;
 
+  /**
+   * Reactive interface to initialize landscape service attributes.
+   *
+   * @param spanStructureService Service for span structures
+   * @param assembler Assembler for landscape
+   * @param converter Span to record converter
+   */
   @Inject
   public ReactiveLandscapeServiceImpl(final ReactiveSpanStructureService spanStructureService,
       final LandscapeAssembler assembler, final SpanToRecordConverter converter) {
@@ -36,9 +43,9 @@ public class ReactiveLandscapeServiceImpl implements ReactiveLandscapeService {
   public Uni<Landscape> buildLandscapeBetween(final String landscapeToken, final long from,
       final long to) {
 
-    final Uni<List<LandscapeRecord>> recordsList = this.spanStructureService
-        .findBetweenInterval(landscapeToken, from, to)
-        .map(this.converter::toRecord).collect().asList();
+    final Uni<List<LandscapeRecord>> recordsList =
+        this.spanStructureService.findBetweenInterval(landscapeToken, from, to)
+            .map(this.converter::toRecord).collect().asList();
 
     return recordsList.onItem().transform(this.assembler::assembleFromRecords);
 
@@ -53,8 +60,7 @@ public class ReactiveLandscapeServiceImpl implements ReactiveLandscapeService {
   public Multi<SpanStructure> cloneLandscape(final String landscapeToken,
       final String clonedLandscapeToken) {
     return this.spanStructureService.findByToken(clonedLandscapeToken)
-        .invoke(x -> x.setLandscapeToken(landscapeToken))
-        .call(this.spanStructureService::add);
+        .invoke(x -> x.setLandscapeToken(landscapeToken)).call(this.spanStructureService::add);
   }
 
 }

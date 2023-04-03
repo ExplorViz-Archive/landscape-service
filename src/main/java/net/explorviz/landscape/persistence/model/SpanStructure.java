@@ -4,7 +4,6 @@ import com.datastax.oss.driver.api.mapper.annotations.ClusteringColumn;
 import com.datastax.oss.driver.api.mapper.annotations.CqlName;
 import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
-import com.datastax.oss.driver.api.mapper.annotations.PropertyStrategy;
 import net.explorviz.avro.Span;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -14,18 +13,16 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * Entity that holds structural information. Encodes a single branch in the landscape model graph,
  * were the root is the landscapeToken and the leaf the operation name.
  */
-@PropertyStrategy(mutable = false)
 @Entity
 public class SpanStructure {
 
   @PartitionKey
-  @CqlName("landscape_token")
   private String landscapeToken;
 
   @ClusteringColumn
+  private String hashCode; // NOPMD
+
   private long timestamp;
-  
-  private String hashCode; // NOPMD  
 
   private String hostName;
   private String hostIpAddress;
@@ -37,6 +34,19 @@ public class SpanStructure {
   @CqlName("method_fqn")
   private String fullyQualifiedOperationName;
 
+  /**
+   * Constructor for a span structure.
+   *
+   * @param landscapeToken Token of the associated landscape
+   * @param timestamp Timestamp of the span
+   * @param hashCode Computed hash code to identify span
+   * @param hostName Name of the host machine
+   * @param hostIpAddress Ip address of the host machine
+   * @param applicationName Name of the application that the span belongs to
+   * @param instanceId Id of the instrumented instance
+   * @param applicationLanguage Programming language of the associated application
+   * @param fullyQualifiedOperationName Operation name including package hierarchy
+   */
   public SpanStructure(final String landscapeToken, final long timestamp, final String hashCode,
       final String hostName, final String hostIpAddress, final String applicationName,
       final String instanceId, final String applicationLanguage,
@@ -50,6 +60,10 @@ public class SpanStructure {
     this.instanceId = instanceId;
     this.applicationLanguage = applicationLanguage;
     this.fullyQualifiedOperationName = fullyQualifiedOperationName;
+  }
+
+  public SpanStructure() {
+    /* Object-Mapper required */
   }
 
   public String getLandscapeToken() {
@@ -177,6 +191,12 @@ public class SpanStructure {
     private String applicationLanguage;
     private String fqn;
 
+    /**
+     * Takes an avro span structure and converts it to a span structure object.
+     *
+     * @param avro Span structure in avro format
+     * @return Instantiated span structure from avro data
+     */
     public Builder fromAvro(final Span avro) {
       this.timestamp = avro.getStartTimeEpochMilli();
 
@@ -236,6 +256,11 @@ public class SpanStructure {
       return this;
     }
 
+    /**
+     * Build a SpanStructure instance from stored attributes.
+     *
+     * @return SpanStructure instance
+     */
     public SpanStructure build() {
       return new SpanStructure(this.landscapeToken, this.timestamp, this.hashCode, this.hostName,
           this.hostIpAddress, this.applicationName, this.instanceId, this.applicationLanguage,

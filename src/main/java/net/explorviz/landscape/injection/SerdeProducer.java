@@ -23,6 +23,12 @@ public class SerdeProducer {
   @ConfigProperty(name = "quarkus.kafka-streams.schema-registry-url")
   /* default */ String schemaRegistryUrl; // NOCS
 
+  /**
+   * Produce serializer/deserializer for avro.
+   *
+   * @param <T> SpecificAvroSerde
+   * @return Specific avro record
+   */
   @Produces
   @DefaultBean
   public <T extends SpecificRecord> SpecificAvroSerde<T> produceSpecificAvroSerde() {
