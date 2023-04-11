@@ -37,14 +37,14 @@ public class SpanStructure {
   /**
    * Constructor for a span structure.
    *
-   * @param landscapeToken Token of the associated landscape
-   * @param timestamp Timestamp of the span
-   * @param hashCode Computed hash code to identify span
-   * @param hostName Name of the host machine
-   * @param hostIpAddress Ip address of the host machine
-   * @param applicationName Name of the application that the span belongs to
-   * @param instanceId Id of the instrumented instance
-   * @param applicationLanguage Programming language of the associated application
+   * @param landscapeToken              Token of the associated landscape
+   * @param timestamp                   Timestamp of the span
+   * @param hashCode                    Computed hash code to identify span
+   * @param hostName                    Name of the host machine
+   * @param hostIpAddress               Ip address of the host machine
+   * @param applicationName             Name of the application that the span belongs to
+   * @param instanceId                  Id of the instrumented instance
+   * @param applicationLanguage         Programming language of the associated application
    * @param fullyQualifiedOperationName Operation name including package hierarchy
    */
   public SpanStructure(final String landscapeToken, final long timestamp, final String hashCode,

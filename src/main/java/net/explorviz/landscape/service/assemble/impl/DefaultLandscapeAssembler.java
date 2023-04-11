@@ -93,8 +93,7 @@ public class DefaultLandscapeAssembler implements LandscapeAssembler {
     final String appName = record.getApplication().getName();
     final String instanceId = record.getApplication().getInstanceId();
     final String appLanguage = record.getApplication().getLanguage();
-    final Optional<Application> foundApp =
-        AssemblyUtils.findApplication(node, appName, instanceId);
+    final Optional<Application> foundApp = AssemblyUtils.findApplication(node, appName, instanceId);
     if (foundApp.isPresent()) {
       app = foundApp.get();
     } else {

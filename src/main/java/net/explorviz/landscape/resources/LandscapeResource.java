@@ -42,8 +42,8 @@ public class LandscapeResource {
    * REST interface to request landscape records.
    *
    * @param token Token associated with the requested landscape.
-   * @param from Timestamp to filter how old records may be.
-   * @param to Timestamp to filter how old records may be.
+   * @param from  Timestamp to filter how old records may be.
+   * @param to    Timestamp to filter how old records may be.
    * @return Stream of the requested landscape data
    */
   @GET

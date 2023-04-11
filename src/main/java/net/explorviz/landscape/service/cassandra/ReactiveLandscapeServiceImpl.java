@@ -28,8 +28,8 @@ public class ReactiveLandscapeServiceImpl implements ReactiveLandscapeService {
    * Reactive interface to initialize landscape service attributes.
    *
    * @param spanStructureService Service for span structures
-   * @param assembler Assembler for landscape
-   * @param converter Span to record converter
+   * @param assembler            Assembler for landscape
+   * @param converter            Span to record converter
    */
   @Inject
   public ReactiveLandscapeServiceImpl(final ReactiveSpanStructureService spanStructureService,
