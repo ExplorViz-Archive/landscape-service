@@ -30,25 +30,20 @@ class TopologyTest {
 
   //private static final Logger LOGGER = LoggerFactory.getLogger(TopologyTest.class);
 
-  private TopologyTestDriver driver;
-
-  private TestInputTopic<String, Span> inputTopic;
-
-  private ReadOnlyKeyValueStore<String, Integer> spanKeyValueStore;
-
   @ConfigProperty(name = "explorviz.kafka-streams.topics.in")
   /* default */ String inTopic;
-
   @Inject
   Topology topology;
-
   @Inject
   SpecificAvroSerde<Span> spanStructureSerDe; // NOCS
-  
-  @Inject ReactiveSpanStructureService reactiveSpanStructureService;
+  @Inject
+  ReactiveSpanStructureService reactiveSpanStructureService;
+  private TopologyTestDriver driver;
+  private TestInputTopic<String, Span> inputTopic;
+  private ReadOnlyKeyValueStore<String, Integer> spanKeyValueStore;
 
   @BeforeEach
-  void setUp() {	  
+  void setUp() {
     final Properties config = new Properties();
     config.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
     config.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, SpecificAvroSerde.class.getName());
@@ -72,20 +67,17 @@ class TopologyTest {
 
     // CHECKSTYLE:OFF
 
-    return Span.newBuilder()
-        .setLandscapeToken(RandomStringUtils.random(8, true, true))
+    return Span.newBuilder().setLandscapeToken(RandomStringUtils.random(8, true, true))
         .setSpanId(RandomStringUtils.random(8, true, true))
         .setParentSpanId(RandomStringUtils.random(8, true, true))
-        .setTraceId(RandomStringUtils.random(8, true, false))
-        .setStartTimeEpochMilli(123l)
-        .setEndTimeEpochMilli(123l)
+        .setTraceId(RandomStringUtils.random(8, true, false)).setStartTimeEpochMilli(123L)
+        .setEndTimeEpochMilli(123L)
         .setFullyQualifiedOperationName(RandomStringUtils.random(8, true, true))
         .setHostname(RandomStringUtils.randomAlphabetic(10))
         .setHostIpAddress(RandomStringUtils.random(8, true, true))
         .setAppName(RandomStringUtils.randomAlphabetic(10))
         .setAppInstanceId(RandomStringUtils.randomNumeric(3))
-        .setAppLanguage(RandomStringUtils.randomAlphabetic(5))
-        .build();
+        .setAppLanguage(RandomStringUtils.randomAlphabetic(5)).build();
 
     // CHECKSTYLE:ON
   }
@@ -110,7 +102,7 @@ class TopologyTest {
   void testSameHashCodeOnlyOnceInCash() {
     final Span testSpan = this.sampleSpanStructure();
 
-    for(int i = 0; i <= 100; i++) {
+    for (int i = 0; i <= 100; i++) {
       this.inputTopic.pipeInput(testSpan.getLandscapeToken(), testSpan);
     }
 
@@ -135,7 +127,7 @@ class TopologyTest {
 
     final Span testSpan4 = this.sampleSpanStructure();
 
-    for(int i = 0; i <= 100; i++) {
+    for (int i = 0; i <= 100; i++) {
       this.inputTopic.pipeInput(testSpan1.getLandscapeToken(), testSpan1);
       this.inputTopic.pipeInput(testSpan1.getLandscapeToken(), testSpan2);
       this.inputTopic.pipeInput(testSpan1.getLandscapeToken(), testSpan3);

@@ -29,11 +29,10 @@ class SpanToRecordConverterTest {
 
     this.record = LandscapeRecord.newBuilder().setLandscapeToken(this.span.getLandscapeToken())
         .setHashCode(this.span.getHashCode()).setTimestamp(this.span.getTimestamp())
-        .setNode(new Node(this.span.getHostIpAddress(), this.span.getHostName()))
-        .setApplication(new Application(this.span.getApplicationName(), this.span.getInstanceId(),
-            this.span.getApplicationLanguage()))
-        .setPackage$(pkg).setClass$(cls).setMethod(mthd).setHashCode(this.span.getHashCode())
-        .build();
+        .setNode(new Node(this.span.getHostIpAddress(), this.span.getHostName())).setApplication(
+            new Application(this.span.getApplicationName(), this.span.getInstanceId(),
+                this.span.getApplicationLanguage())).setPackage$(pkg).setClass$(cls).setMethod(mthd)
+        .setHashCode(this.span.getHashCode()).build();
 
   }
 

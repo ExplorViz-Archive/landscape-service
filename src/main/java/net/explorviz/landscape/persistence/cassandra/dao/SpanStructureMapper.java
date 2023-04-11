@@ -8,11 +8,11 @@ import io.smallrye.mutiny.Uni;
  * TODO.
  */
 @Mapper
-public interface SpanStructureMapper { 
+public interface SpanStructureMapper {
 
   @DaoFactory
   ReactiveSpanStructureDao spanStructureDaoReactiveSync();
-  
+
   @DaoFactory
   Uni<ReactiveSpanStructureDao> spanStructureDaoReactiveUni();
 

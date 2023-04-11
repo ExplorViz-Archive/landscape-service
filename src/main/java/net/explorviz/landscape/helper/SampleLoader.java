@@ -32,7 +32,8 @@ public final class SampleLoader {
         Thread.currentThread().getContextClassLoader().getResourceAsStream(SIMPLE);
 
     final ObjectMapper mapper = new JsonMapper();
-    return mapper.readValue(recordInputStream, new TypeReference<List<LandscapeRecord>>() {});
+    return mapper.readValue(recordInputStream, new TypeReference<List<LandscapeRecord>>() {
+    });
   }
 
 }

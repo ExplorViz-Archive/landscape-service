@@ -34,9 +34,9 @@ public class SpanToRecordConverter {
 
     // Set node and application
     recordBuilder.setTimestamp(timestamp)
-        .setNode(new Node(span.getHostIpAddress(), span.getHostName()))
-        .setApplication(new Application(span.getApplicationName(), span.getInstanceId(),
-            span.getApplicationLanguage()));
+        .setNode(new Node(span.getHostIpAddress(), span.getHostName())).setApplication(
+            new Application(span.getApplicationName(), span.getInstanceId(),
+                span.getApplicationLanguage()));
 
     /*
      * By definition getFullyQualifiedOperationName().split("."): Last entry is method name, next to

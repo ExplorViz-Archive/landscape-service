@@ -46,16 +46,17 @@ public final class PackageHelper {
    * <li>{@code ["org", "acme"]} -> 0</li>
    * </ul>
    *
-   * @param app the app to search th
+   * @param app      the app to search th
    * @param packages the package path match
    * @return the index {@code i} of the path such that all packages up to {@code i} are in the
-   *         package hierarchy of the application
+   *     package hierarchy of the application
    */
   public static int lowestPackageIndex(final Application app, final String[] packages) {
     int i = 0;
     final int finalI1 = i; // Must be final for lambda expression
-    Package current = app.getPackages().stream().filter(p -> p.getName().equals(packages[finalI1]))
-        .findFirst().orElse(null);
+    Package current =
+        app.getPackages().stream().filter(p -> p.getName().equals(packages[finalI1])).findFirst()
+            .orElse(null);
     if (current == null) {
       return 0;
     }
@@ -65,8 +66,9 @@ public final class PackageHelper {
       i++;
       final int finalI = i; // Must be final for lambda expression
       if (finalI < packages.length) {
-        current = current.getSubPackages().stream()
-            .filter(p -> p.getName().equals(packages[finalI])).findFirst().orElse(null);
+        current =
+            current.getSubPackages().stream().filter(p -> p.getName().equals(packages[finalI]))
+                .findFirst().orElse(null);
       } else {
         current = null; // NOPMD
       }
@@ -98,7 +100,7 @@ public final class PackageHelper {
   /**
    * Searches through the package hierarchy for a specific path.
    *
-   * @param app the application to search in
+   * @param app  the application to search in
    * @param path the path of package names to search for
    * @return The lowest {@link Package} of the path
    * @throws LandscapeAssemblyException if there is no such path in the package hierarchy
@@ -110,8 +112,9 @@ public final class PackageHelper {
     final LandscapeAssemblyException noSuchPathException =
         new LandscapeAssemblyException("No such path in given application");
 
-    Package current = app.getPackages().stream().filter(p -> p.getName().equals(path[0]))
-        .findFirst().orElseThrow(() -> noSuchPathException);
+    Package current =
+        app.getPackages().stream().filter(p -> p.getName().equals(path[0])).findFirst()
+            .orElseThrow(() -> noSuchPathException);
 
     for (int i = 1; i < path.length; i++) {
       final int finalI = i;

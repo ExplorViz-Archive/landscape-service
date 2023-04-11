@@ -2,7 +2,6 @@ package net.explorviz.landscape.service.assemble.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,8 +21,6 @@ import org.junit.jupiter.api.Test;
 class DefaultLandscapeAssemblerTest {
 
 
-  private DefaultLandscapeAssembler assembler;
-
   // Stats of the "simple" sample records (samplerecordss/sampleApplicationRecords.json)
   // If `sampleApplicationRecords.json` is modified this values need to be adjusted accordingly
   private final String token = "samplelandscape";
@@ -31,8 +28,7 @@ class DefaultLandscapeAssemblerTest {
   private final String nodeName = "testhost";
   private final String appName = "UNKNOWN-APPLICATION";
   private final String appLanguage = "java";
-
-
+  private DefaultLandscapeAssembler assembler;
 
   @BeforeEach
   void setUp() {
@@ -44,8 +40,9 @@ class DefaultLandscapeAssemblerTest {
   void assembleFromRecords() throws IOException, LandscapeAssemblyException {
     final List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
     final String tok = records.get(0).getLandscapeToken();
-    final List<LandscapeRecord> singleTokenRecords = records.stream()
-        .filter(r -> tok.equals(r.getLandscapeToken())).collect(Collectors.toList());
+    final List<LandscapeRecord> singleTokenRecords =
+        records.stream().filter(r -> tok.equals(r.getLandscapeToken()))
+            .collect(Collectors.toList());
 
     final Landscape generated = this.assembler.assembleFromRecords(singleTokenRecords);
 
@@ -66,10 +63,12 @@ class DefaultLandscapeAssemblerTest {
     // Find classes
     final Package netPkg =
         app.getPackages().stream().filter(p -> "net".equals(p.getName())).findAny().orElseThrow();
-    final Package explorvizPkg = netPkg.getSubPackages().stream()
-        .filter(p -> "explorviz".equals(p.getName())).findAny().orElseThrow();
-    final Package sampleAppPkg = explorvizPkg.getSubPackages().stream()
-        .filter(p -> "sampleApplication".equals(p.getName())).findAny().orElseThrow();
+    final Package explorvizPkg =
+        netPkg.getSubPackages().stream().filter(p -> "explorviz".equals(p.getName())).findAny()
+            .orElseThrow();
+    final Package sampleAppPkg =
+        explorvizPkg.getSubPackages().stream().filter(p -> "sampleApplication".equals(p.getName()))
+            .findAny().orElseThrow();
 
     Assertions.assertTrue(sampleAppPkg.getClasses().stream()
         .anyMatch(c -> "Main$ApplicationTask".equals(c.getName())));
@@ -99,20 +98,21 @@ class DefaultLandscapeAssemblerTest {
   void insertAll() throws IOException, LandscapeAssemblyException {
     final List<LandscapeRecord> records = SampleLoader.loadSampleApplication();
     final String tok = records.get(0).getLandscapeToken();
-    final List<LandscapeRecord> singleTokenRecords = records.stream()
-        .filter(r -> tok.equals(r.getLandscapeToken())).collect(Collectors.toList());
+    final List<LandscapeRecord> singleTokenRecords =
+        records.stream().filter(r -> tok.equals(r.getLandscapeToken()))
+            .collect(Collectors.toList());
 
 
     final String hostname = "host";
     final String ip = "0.0.0.0";
     final String appname = "app";
     final String instanceId = "1L";
-    final List<Class> classes = new ArrayList<>(Arrays.asList(new Class("TestClass",
+    final List<Class> classes = new ArrayList<>(java.util.List.of(new Class("TestClass",
         new ArrayList<>(Collections.singleton(new Method("method", "1234"))))));
 
     final Package rootPkg1 = new Package("net", new ArrayList<>(), classes);
-    final List<Application> apps =
-        new ArrayList<>(Collections.singletonList(new Application(appname, "java", instanceId,
+    final List<Application> apps = new ArrayList<>(Collections.singletonList(
+        new Application(appname, "java", instanceId,
             new ArrayList<>(Collections.singletonList(rootPkg1)))));
     final List<Node> nodes =
         new ArrayList<>(new ArrayList<>(Collections.singletonList(new Node(ip, hostname, apps))));
@@ -139,11 +139,13 @@ class DefaultLandscapeAssemblerTest {
         foundNode.getApplications().stream().filter(a -> a.getName().equals(appname))
             .filter(a -> a.getLanguage().equals("java")).findAny().orElseThrow();
 
-    final Package foundPkg = foundApp.getPackages().stream().filter(p -> p.getName().equals("net"))
-        .findAny().orElseThrow().getSubPackages().stream().filter(p -> p.getName().equals("test"))
-        .findAny().orElseThrow();
-    final Class foundClazz = foundPkg.getClasses().stream()
-        .filter(c -> c.getName().equals(newClass)).findAny().orElseThrow();
+    final Package foundPkg =
+        foundApp.getPackages().stream().filter(p -> p.getName().equals("net")).findAny()
+            .orElseThrow().getSubPackages().stream().filter(p -> p.getName().equals("test"))
+            .findAny().orElseThrow();
+    final Class foundClazz =
+        foundPkg.getClasses().stream().filter(c -> c.getName().equals(newClass)).findAny()
+            .orElseThrow();
     Assertions.assertTrue(foundClazz.getMethods().stream().anyMatch(m -> m.equals(newMethod)));
 
   }

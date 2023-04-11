@@ -26,10 +26,11 @@ public interface ReactiveLandscapeService {
    * and after the given timestamp.
    *
    * @param landscapeToken the token of the landscape to assemble
-   * @param fromTimestamp the timestamp of the earliest record to factor into the landscape. All
-   *        records that were discovered at or after this timestamp are used to build the landscape
+   * @param fromTimestamp  the timestamp of the earliest record to factor into the landscape. All
+   *                       records that were discovered at or after this timestamp are used to build
+   *                       the landscape
    * @return the landscape assembled out of all records with the given token and matching the time
-   *         constraint
+   *     constraint
    */
   default Uni<Landscape> buildLandscapeFrom(final String landscapeToken, final long fromTimestamp) {
     return this.buildLandscapeBetween(landscapeToken, fromTimestamp, System.currentTimeMillis());
@@ -40,10 +41,10 @@ public interface ReactiveLandscapeService {
    * before the given timestamp.
    *
    * @param landscapeToken the token of the landscape to assemble
-   * @param toTimestamp the timestamp of the latest record to factor into the landscape. All records
-   *        that were discovered after this timestamp are are ignored.
+   * @param toTimestamp    the timestamp of the latest record to factor into the landscape. All
+   *                       records that were discovered after this timestamp are are ignored.
    * @return the landscape assembled out of all records with the given token and matching the time
-   *         constraint
+   *     constraint
    */
   default Uni<Landscape> buildLandscapeTo(final String landscapeToken, final long toTimestamp) {
     return this.buildLandscapeBetween(landscapeToken, 0, toTimestamp);
@@ -54,12 +55,12 @@ public interface ReactiveLandscapeService {
    * between to timestamps.
    *
    * @param landscapeToken the token of the landscape to assemble
-   * @param from the timestamp of the earliest record to use. All records discovered before this
-   *        timestamp are ignored.
-   * @param to the timestamp of the latest record to use. All records discovered after this
-   *        timestamp are ignored.
+   * @param from           the timestamp of the earliest record to use. All records discovered
+   *                       before this timestamp are ignored.
+   * @param to             the timestamp of the latest record to use. All records discovered after
+   *                       this timestamp are ignored.
    * @return the landscape assembled out of all records with the given token and matching the time
-   *         constraint
+   *     constraint
    */
   Uni<Landscape> buildLandscapeBetween(String landscapeToken, long from, long to);
 
@@ -68,7 +69,7 @@ public interface ReactiveLandscapeService {
    * associated to the given token, this operation does nothing.
    *
    * @param landscapeToken the token of the landscape to delete
-   * @return
+   * @return void Uni stream which emits null or a failure
    */
   Uni<Void> deleteLandscape(String landscapeToken);
 

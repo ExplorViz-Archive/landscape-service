@@ -22,8 +22,9 @@ class RecordValidatorTest {
     final String pkg = "foo.bar";
     final String clazz = "Foo";
     final Method method = new Method("method", "1234");
-    this.validRecord = new LandscapeRecord("tok", System.currentTimeMillis(), n, app, pkg, clazz,
-        method.getName(), method.getHashCode());
+    this.validRecord =
+        new LandscapeRecord("tok", System.currentTimeMillis(), n, app, pkg, clazz, method.getName(),
+            method.getHashCode());
 
     this.validator = new RecordValidator();
   }
@@ -54,11 +55,13 @@ class RecordValidatorTest {
     final LandscapeRecord nullNode = LandscapeRecord.newBuilder(this.validRecord).build();
     nullNode.setNode(null);
 
-    final LandscapeRecord emptyHostName = LandscapeRecord.newBuilder(this.validRecord)
-        .setNode(nodeBuilder.setHostName("").build()).build();
+    final LandscapeRecord emptyHostName =
+        LandscapeRecord.newBuilder(this.validRecord).setNode(nodeBuilder.setHostName("").build())
+            .build();
 
-    final LandscapeRecord emptyIpAddress = LandscapeRecord.newBuilder(this.validRecord)
-        .setNode(nodeBuilder.setIpAddress("").build()).build();
+    final LandscapeRecord emptyIpAddress =
+        LandscapeRecord.newBuilder(this.validRecord).setNode(nodeBuilder.setIpAddress("").build())
+            .build();
 
     for (final LandscapeRecord r : new LandscapeRecord[] {nullNode, emptyHostName,
         emptyIpAddress}) {
@@ -74,8 +77,9 @@ class RecordValidatorTest {
     nullApp.setApplication(null);
 
 
-    final LandscapeRecord emptyAppName = LandscapeRecord.newBuilder(this.validRecord)
-        .setApplication(appBuilder.setName("").build()).build();
+    final LandscapeRecord emptyAppName =
+        LandscapeRecord.newBuilder(this.validRecord).setApplication(appBuilder.setName("").build())
+            .build();
 
     final LandscapeRecord emptyLanguage = LandscapeRecord.newBuilder(this.validRecord)
         .setApplication(appBuilder.setLanguage("").build()).build();

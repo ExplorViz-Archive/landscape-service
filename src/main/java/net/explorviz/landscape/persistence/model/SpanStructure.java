@@ -14,18 +14,18 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * Entity that holds structural information. Encodes a single branch in the landscape model graph,
  * were the root is the landscapeToken and the leaf the operation name.
  */
-@PropertyStrategy(mutable = false)
 @Entity
+@PropertyStrategy(mutable = false)
 public class SpanStructure {
 
   @PartitionKey
   @CqlName("landscape_token")
   private String landscapeToken;
 
+  private String hashCode; // NOPMD
+
   @ClusteringColumn
   private long timestamp;
-  
-  private String hashCode; // NOPMD  
 
   private String hostName;
   private String hostIpAddress;
@@ -37,6 +37,19 @@ public class SpanStructure {
   @CqlName("method_fqn")
   private String fullyQualifiedOperationName;
 
+  /**
+   * Constructor for a span structure.
+   *
+   * @param landscapeToken              Token of the associated landscape
+   * @param timestamp                   Timestamp of the span
+   * @param hashCode                    Computed hash code to identify span
+   * @param hostName                    Name of the host machine
+   * @param hostIpAddress               Ip address of the host machine
+   * @param applicationName             Name of the application that the span belongs to
+   * @param instanceId                  Id of the instrumented instance
+   * @param applicationLanguage         Programming language of the associated application
+   * @param fullyQualifiedOperationName Operation name including package hierarchy
+   */
   public SpanStructure(final String landscapeToken, final long timestamp, final String hashCode,
       final String hostName, final String hostIpAddress, final String applicationName,
       final String instanceId, final String applicationLanguage,
@@ -52,72 +65,76 @@ public class SpanStructure {
     this.fullyQualifiedOperationName = fullyQualifiedOperationName;
   }
 
+  public SpanStructure() {
+    /* Object-Mapper required */
+  }
+
   public String getLandscapeToken() {
     return this.landscapeToken;
-  }
-
-  public long getTimestamp() {
-    return this.timestamp;
-  }
-
-  public String getHashCode() {
-    return this.hashCode;
-  }
-
-  public String getHostName() {
-    return this.hostName;
-  }
-
-  public String getHostIpAddress() {
-    return this.hostIpAddress;
-  }
-
-  public String getApplicationName() {
-    return this.applicationName;
-  }
-
-  public String getInstanceId() {
-    return this.instanceId;
-  }
-
-  public String getApplicationLanguage() {
-    return this.applicationLanguage;
-  }
-
-  public String getFullyQualifiedOperationName() {
-    return this.fullyQualifiedOperationName;
   }
 
   public void setLandscapeToken(final String landscapeToken) {
     this.landscapeToken = landscapeToken;
   }
 
+  public long getTimestamp() {
+    return this.timestamp;
+  }
+
   public void setTimestamp(final long timestamp) {
     this.timestamp = timestamp;
+  }
+
+  public String getHashCode() {
+    return this.hashCode;
   }
 
   public void setHashCode(final String hashCode) {
     this.hashCode = hashCode;
   }
 
+  public String getHostName() {
+    return this.hostName;
+  }
+
   public void setHostName(final String hostName) {
     this.hostName = hostName;
+  }
+
+  public String getHostIpAddress() {
+    return this.hostIpAddress;
   }
 
   public void setHostIpAddress(final String hostIpAddress) {
     this.hostIpAddress = hostIpAddress;
   }
 
+  public String getApplicationName() {
+    return this.applicationName;
+  }
+
   public void setApplicationName(final String applicationName) {
     this.applicationName = applicationName;
+  }
+
+  public String getInstanceId() {
+    return this.instanceId;
   }
 
   public void setInstanceId(final String instanceId) {
     this.instanceId = instanceId;
   }
 
+  public String getApplicationLanguage() {
+    return this.applicationLanguage;
+  }
+
   public void setApplicationLanguage(final String applicationLanguage) {
     this.applicationLanguage = applicationLanguage;
+  }
+
+  public String getFullyQualifiedOperationName() {
+    return this.fullyQualifiedOperationName;
   }
 
   public void setFullyQualifiedOperationName(final String fullyQualifiedOperationName) {
@@ -177,6 +194,12 @@ public class SpanStructure {
     private String applicationLanguage;
     private String fqn;
 
+    /**
+     * Takes an avro span structure and converts it to a span structure object.
+     *
+     * @param avro Span structure in avro format
+     * @return Instantiated span structure from avro data
+     */
     public Builder fromAvro(final Span avro) {
       this.timestamp = avro.getStartTimeEpochMilli();
 
@@ -236,6 +259,11 @@ public class SpanStructure {
       return this;
     }
 
+    /**
+     * Build a SpanStructure instance from stored attributes.
+     *
+     * @return SpanStructure instance
+     */
     public SpanStructure build() {
       return new SpanStructure(this.landscapeToken, this.timestamp, this.hashCode, this.hostName,
           this.hostIpAddress, this.applicationName, this.instanceId, this.applicationLanguage,

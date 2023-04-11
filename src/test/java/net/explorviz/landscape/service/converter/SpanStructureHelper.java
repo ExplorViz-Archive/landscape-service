@@ -35,8 +35,8 @@ public final class SpanStructureHelper {
   /**
    * Generates multiple span structures with increasing timestamp
    *
-   * @param count the amount to create
-   * @param equalToken if true, all SpanStructures will have the same landscape token
+   * @param count          the amount to create
+   * @param equalToken     if true, all SpanStructures will have the same landscape token
    * @param increasingTime if true, timestamps will be in increasing order
    * @return a list of span structures
    */

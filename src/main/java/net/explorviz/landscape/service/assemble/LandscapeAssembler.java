@@ -39,7 +39,7 @@ public interface LandscapeAssembler {
    * are ignored. Every new record must have the same landscape token as the landscape.
    *
    * @param landscape the landscape to insert the records into
-   * @param records the records to insert
+   * @param records   the records to insert
    * @throws LandscapeAssemblyException if at least one record could not be inserted.
    */
   void insertAll(Landscape landscape, Collection<LandscapeRecord> records);

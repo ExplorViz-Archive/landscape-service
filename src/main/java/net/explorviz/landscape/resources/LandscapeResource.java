@@ -38,6 +38,14 @@ public class LandscapeResource {
     this.landscapeService = landscapeService;
   }
 
+  /**
+   * REST interface to request landscape records.
+   *
+   * @param token Token associated with the requested landscape.
+   * @param from  Timestamp to filter how old records may be.
+   * @param to    Timestamp to filter how old records may be.
+   * @return Stream of the requested landscape data
+   */
   @GET
   @Path("/{token}/structure")
   @Produces(MediaType.APPLICATION_JSON)

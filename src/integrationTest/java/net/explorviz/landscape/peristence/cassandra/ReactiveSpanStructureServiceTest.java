@@ -7,7 +7,6 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 import net.explorviz.landscape.persistence.model.SpanStructure;
@@ -51,7 +50,7 @@ class ReactiveSpanStructureServiceTest {
         this.reactiveSpanStructureService.findByToken(ss.getLandscapeToken()).collect().asList()
             .subscribe().withSubscriber(UniAssertSubscriber.create());
 
-    uniListSubscriber.awaitItem().assertCompleted().assertItem(Arrays.asList(ss));
+    uniListSubscriber.awaitItem().assertCompleted().assertItem(List.of(ss));
   }
 
   /**
@@ -160,16 +159,16 @@ class ReactiveSpanStructureServiceTest {
     final String tok = spanstrs.get(0).getLandscapeToken();
     Uni<Void> uni = this.reactiveSpanStructureService.deleteByToken(tok);
 
-    UniAssertSubscriber<Void> subscriber = uni.subscribe()
-        .withSubscriber(UniAssertSubscriber.create());
+    UniAssertSubscriber<Void> subscriber =
+        uni.subscribe().withSubscriber(UniAssertSubscriber.create());
 
     subscriber.awaitItem().assertCompleted().assertItem(null);
-        
-    Uni<List<SpanStructure>> uniFindList = this.reactiveSpanStructureService.findByToken(tok)
-        .collect().asList();
 
-    UniAssertSubscriber<List<SpanStructure>> uniFindListAssertSubscriber = uniFindList.subscribe()
-        .withSubscriber(UniAssertSubscriber.create());
+    Uni<List<SpanStructure>> uniFindList =
+        this.reactiveSpanStructureService.findByToken(tok).collect().asList();
+
+    UniAssertSubscriber<List<SpanStructure>> uniFindListAssertSubscriber =
+        uniFindList.subscribe().withSubscriber(UniAssertSubscriber.create());
 
     uniFindListAssertSubscriber.awaitItem().assertCompleted().assertItem(new ArrayList<>());
 
@@ -188,8 +187,9 @@ class ReactiveSpanStructureServiceTest {
     final String tok = spanstrs.get(0).getLandscapeToken();
     this.reactiveSpanStructureService.deleteByToken(tok).await().indefinitely();
 
-    List<SpanStructure> uniFindList = this.reactiveSpanStructureService.findByToken(tok).collect()
-        .asList().await().indefinitely();
+    List<SpanStructure> uniFindList =
+        this.reactiveSpanStructureService.findByToken(tok).collect().asList().await()
+            .indefinitely();
 
     Assertions.assertEquals(new ArrayList<>(), uniFindList);
 

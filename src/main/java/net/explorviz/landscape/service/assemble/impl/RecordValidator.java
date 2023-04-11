@@ -11,6 +11,11 @@ import net.explorviz.avro.landscape.flat.Node;
 @ApplicationScoped
 public class RecordValidator {
 
+  /**
+   * Validates token, node, application, package, and class of a landscape record.
+   *
+   * @param record Landscape record which shall be validated
+   */
   public void validate(final LandscapeRecord record) {
     this.validateToken(record.getLandscapeToken());
     this.validateNode(record.getNode());

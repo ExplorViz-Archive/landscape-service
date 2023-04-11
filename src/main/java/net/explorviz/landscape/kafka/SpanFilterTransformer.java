@@ -16,8 +16,7 @@ import org.apache.kafka.streams.state.KeyValueStore;
  * Builds a KafkaStream transformer that filters out already saved spans.
  */
 @ApplicationScoped
-public class SpanFilterTransformer implements
-    Transformer<String, Span, KeyValue<String, Span>> {
+public class SpanFilterTransformer implements Transformer<String, Span, KeyValue<String, Span>> {
 
   private static final String METRIC_TAG_TASK_ID_KEY = "task_id";
   private static final String METRIC_TAG_PARTITION_ID_KEY = "partition_id";
