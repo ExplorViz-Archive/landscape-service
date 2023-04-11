@@ -70,68 +70,68 @@ public class SpanStructure {
     return this.landscapeToken;
   }
 
-  public long getTimestamp() {
-    return this.timestamp;
-  }
-
-  public String getHashCode() {
-    return this.hashCode;
-  }
-
-  public String getHostName() {
-    return this.hostName;
-  }
-
-  public String getHostIpAddress() {
-    return this.hostIpAddress;
-  }
-
-  public String getApplicationName() {
-    return this.applicationName;
-  }
-
-  public String getInstanceId() {
-    return this.instanceId;
-  }
-
-  public String getApplicationLanguage() {
-    return this.applicationLanguage;
-  }
-
-  public String getFullyQualifiedOperationName() {
-    return this.fullyQualifiedOperationName;
-  }
-
   public void setLandscapeToken(final String landscapeToken) {
     this.landscapeToken = landscapeToken;
+  }
+
+  public long getTimestamp() {
+    return this.timestamp;
   }
 
   public void setTimestamp(final long timestamp) {
     this.timestamp = timestamp;
   }
 
+  public String getHashCode() {
+    return this.hashCode;
+  }
+
   public void setHashCode(final String hashCode) {
     this.hashCode = hashCode;
+  }
+
+  public String getHostName() {
+    return this.hostName;
   }
 
   public void setHostName(final String hostName) {
     this.hostName = hostName;
   }
 
+  public String getHostIpAddress() {
+    return this.hostIpAddress;
+  }
+
   public void setHostIpAddress(final String hostIpAddress) {
     this.hostIpAddress = hostIpAddress;
+  }
+
+  public String getApplicationName() {
+    return this.applicationName;
   }
 
   public void setApplicationName(final String applicationName) {
     this.applicationName = applicationName;
   }
 
+  public String getInstanceId() {
+    return this.instanceId;
+  }
+
   public void setInstanceId(final String instanceId) {
     this.instanceId = instanceId;
   }
 
+  public String getApplicationLanguage() {
+    return this.applicationLanguage;
+  }
+
   public void setApplicationLanguage(final String applicationLanguage) {
     this.applicationLanguage = applicationLanguage;
+  }
+
+  public String getFullyQualifiedOperationName() {
+    return this.fullyQualifiedOperationName;
   }
 
   public void setFullyQualifiedOperationName(final String fullyQualifiedOperationName) {

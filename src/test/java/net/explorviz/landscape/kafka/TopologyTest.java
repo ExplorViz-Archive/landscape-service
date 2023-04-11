@@ -30,23 +30,17 @@ class TopologyTest {
 
   //private static final Logger LOGGER = LoggerFactory.getLogger(TopologyTest.class);
 
-  private TopologyTestDriver driver;
-
-  private TestInputTopic<String, Span> inputTopic;
-
-  private ReadOnlyKeyValueStore<String, Integer> spanKeyValueStore;
-
   @ConfigProperty(name = "explorviz.kafka-streams.topics.in")
   /* default */ String inTopic;
-
   @Inject
   Topology topology;
-
   @Inject
   SpecificAvroSerde<Span> spanStructureSerDe; // NOCS
-
   @Inject
   ReactiveSpanStructureService reactiveSpanStructureService;
+  private TopologyTestDriver driver;
+  private TestInputTopic<String, Span> inputTopic;
+  private ReadOnlyKeyValueStore<String, Integer> spanKeyValueStore;
 
   @BeforeEach
   void setUp() {

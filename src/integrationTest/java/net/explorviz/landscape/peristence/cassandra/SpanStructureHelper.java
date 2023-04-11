@@ -64,18 +64,6 @@ public final class SpanStructureHelper {
     return strs;
   }
 
-  @Test
-  void testRandomSpanStructures() {
-    List<SpanStructure> objectInTest = randomSpanStructures(3, true, true);
-
-    String token = objectInTest.get(0).getLandscapeToken();
-
-    for (SpanStructure s : objectInTest) {
-      Assertions.assertEquals(token, s.getLandscapeToken());
-    }
-
-  }
-
   private static String randomIp() {
     final String[] parts = new String[4];
     IntStream.rangeClosed(0, 3).forEach(i -> parts[i] = RandomStringUtils.randomNumeric(1, 4));
@@ -86,6 +74,18 @@ public final class SpanStructureHelper {
     final String[] parts = new String[3];
     IntStream.rangeClosed(0, 2).forEach(i -> parts[i] = RandomStringUtils.randomAlphabetic(1, 10));
     return String.join(".", parts);
+  }
+
+  @Test
+  void testRandomSpanStructures() {
+    List<SpanStructure> objectInTest = randomSpanStructures(3, true, true);
+
+    String token = objectInTest.get(0).getLandscapeToken();
+
+    for (SpanStructure s : objectInTest) {
+      Assertions.assertEquals(token, s.getLandscapeToken());
+    }
+
   }
 
 }

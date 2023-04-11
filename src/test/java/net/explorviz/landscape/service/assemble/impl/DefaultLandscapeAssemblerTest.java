@@ -21,8 +21,6 @@ import org.junit.jupiter.api.Test;
 class DefaultLandscapeAssemblerTest {
 
 
-  private DefaultLandscapeAssembler assembler;
-
   // Stats of the "simple" sample records (samplerecordss/sampleApplicationRecords.json)
   // If `sampleApplicationRecords.json` is modified this values need to be adjusted accordingly
   private final String token = "samplelandscape";
@@ -30,8 +28,7 @@ class DefaultLandscapeAssemblerTest {
   private final String nodeName = "testhost";
   private final String appName = "UNKNOWN-APPLICATION";
   private final String appLanguage = "java";
-
-
+  private DefaultLandscapeAssembler assembler;
 
   @BeforeEach
   void setUp() {
