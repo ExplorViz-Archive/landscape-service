@@ -4,6 +4,7 @@ import com.datastax.oss.driver.api.mapper.annotations.ClusteringColumn;
 import com.datastax.oss.driver.api.mapper.annotations.CqlName;
 import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
+import com.datastax.oss.driver.api.mapper.annotations.PropertyStrategy;
 import net.explorviz.avro.Span;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -14,14 +15,16 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * were the root is the landscapeToken and the leaf the operation name.
  */
 @Entity
+@PropertyStrategy(mutable = false)
 public class SpanStructure {
 
   @PartitionKey
+  @CqlName("landscape_token")
   private String landscapeToken;
 
-  @ClusteringColumn
   private String hashCode; // NOPMD
 
+  @ClusteringColumn
   private long timestamp;
 
   private String hostName;
