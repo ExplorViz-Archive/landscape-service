@@ -2,6 +2,7 @@
 
 [![coverage report](https://git.se.informatik.uni-kiel.de/ExplorViz/code/landscape-service/badges/master/coverage.svg)](https://git.se.informatik.uni-kiel.de/ExplorViz/code/landscape-service/-/commits/master)
 
+Hallo Gruppe
 
 # ExplorViz Landscape-Service
 
